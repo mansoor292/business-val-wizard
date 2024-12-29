@@ -43,7 +43,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
               <p className="text-sm font-medium mb-1">Skills</p>
               <div className="flex flex-wrap gap-1">
                 {member.skills.map((skill: string) => (
-                  <Badge key={skill} variant="secondary">
+                  <Badge key={`${member.id}-${skill}`} variant="secondary">
                     {skill}
                   </Badge>
                 ))}

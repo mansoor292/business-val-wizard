@@ -23,7 +23,7 @@ import {
 } from './ui/popover';
 
 export function CreateProjectDialog() {
-  const { createProject } = useData();
+  const { createProject, loadProject } = useData();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,7 +48,8 @@ export function CreateProjectDialog() {
         teamIds: [],
       };
       
-      await createProject(projectData);
+      const newProject = await createProject(projectData);
+      await loadProject(newProject.id);
       toast({
         title: "Project created",
         description: `Successfully created project "${formData.name}"`,

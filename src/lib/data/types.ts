@@ -151,6 +151,27 @@ export interface TeamMemberFilters {
   searchTerm?: string;
 }
 
+// Agent Schema
+export const agentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  handle: z.string(),
+  status: z.enum(['active', 'idle']),
+});
+
+export type Agent = z.infer<typeof agentSchema>;
+
+// Message Schema
+export const messageSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  sender: z.enum(['user', 'agent']),
+  timestamp: z.string(),
+  agentId: z.string(),
+});
+
+export type Message = z.infer<typeof messageSchema>;
+
 // Data Adapter Interface
 export interface DataAdapter {
   // Value Proposition operations

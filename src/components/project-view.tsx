@@ -1,89 +1,37 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useData } from '../lib/data/context';
-import ProjectKanbanBoard from './project-kanban-board';
-import { Card } from './ui/card';
+import React from 'react';
 import { ScrollArea } from './ui/scroll-area';
 import { Badge } from './ui/badge';
+import { Card } from './ui/card';
+import ProjectKanbanBoard from './project-kanban-board';
+import { Project, Task, Document } from '../lib/data/types';
 
-const ProjectView: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { 
-    projects, 
-    tasks, 
-    documents,
-    selectedProjectId,
-    loadProject,
-    updateTaskStatus 
-  } = useData();
+interface ProjectViewProps {
+  selectedProjectId: string | null;
+  projects: Project[];
+  tasks: Task[];
+  documents: Document[];
+  onTaskStatusChange: (taskId: string, newStatus: Task['status']) => Promise<void>;
+}
 
-  useEffect(() => {
-    if (selectedProjectId) {
-      const loadSelectedProject = async () => {
-        setIsLoading(true);
-        await loadProject(selectedProjectId);
-        setIsLoading(false);
-      };
-      loadSelectedProject();
-    }
-  }, [selectedProjectId, loadProject]);
-
+export function ProjectView({ selectedProjectId, projects, tasks, documents, onTaskStatusChange }: ProjectViewProps) {
   const project = projects.find(p => p.id === selectedProjectId);
+  const projectTasks = tasks.filter(task => task.projectId === selectedProjectId);
+  const projectDocuments = documents.filter(doc => doc.projectId === selectedProjectId);
 
   if (!selectedProjectId || !project) {
     return (
-      <div className="text-center p-8 text-muted-foreground">
-        Select a project from above to view its details
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col gap-6 p-6">
-        <div className="flex justify-between items-start">
-          <div className="space-y-2">
-            <div className="h-8 bg-secondary/60 rounded w-48 animate-pulse" />
-            <div className="h-4 bg-secondary/60 rounded w-96 animate-pulse" />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-3">
-            <Card className="p-6">
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-24 bg-secondary/60 rounded animate-pulse" />
-                ))}
-              </div>
-            </Card>
-          </div>
-
-          <div className="space-y-6">
-            <Card className="p-4">
-              <div className="space-y-3">
-                <div className="h-4 bg-secondary/60 rounded w-3/4 animate-pulse" />
-                <div className="h-4 bg-secondary/60 rounded w-1/2 animate-pulse" />
-                <div className="h-4 bg-secondary/60 rounded w-1/4 animate-pulse" />
-              </div>
-            </Card>
-
-            <Card className="p-4">
-              <div className="space-y-3">
-                <div className="h-4 bg-secondary/60 rounded w-3/4 animate-pulse" />
-                <div className="h-4 bg-secondary/60 rounded w-1/2 animate-pulse" />
-                <div className="h-4 bg-secondary/60 rounded w-1/4 animate-pulse" />
-              </div>
-            </Card>
-          </div>
+      <div className="flex-1 flex items-center justify-center bg-background">
+        <div className="text-center p-8 text-muted-foreground">
+          Select a project from the sidebar to view its details
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex-1 flex flex-col gap-6 p-6 bg-background">
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold">{project.name}</h1>
@@ -107,8 +55,8 @@ const ProjectView: React.FC = () => {
           <Card className="p-0">
             <ProjectKanbanBoard
               projectId={project.id}
-              tasks={tasks}
-              onTaskStatusChange={updateTaskStatus}
+              tasks={projectTasks}
+              onTaskStatusChange={onTaskStatusChange}
             />
           </Card>
         </div>
@@ -118,7 +66,7 @@ const ProjectView: React.FC = () => {
             <h3 className="font-semibold mb-3">Project Documents</h3>
             <ScrollArea className="h-[300px]">
               <div className="space-y-2">
-                {documents.map((doc) => (
+                {projectDocuments.map((doc) => (
                   <div
                     key={doc.id}
                     className="p-2 hover:bg-secondary/50 rounded cursor-pointer"
