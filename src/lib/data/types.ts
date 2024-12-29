@@ -84,6 +84,7 @@ export const teamMemberSchema = z.object({
   avatar: z.string().optional(),
   skills: z.array(z.string()).optional(),
   department: z.string(),
+  reportsTo: z.string().nullable(),
 });
 
 export type TeamMember = z.infer<typeof teamMemberSchema> & BaseEntity;
