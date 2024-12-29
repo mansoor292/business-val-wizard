@@ -16,7 +16,6 @@ interface ChirpViewProps {
 
 export function ChirpView({ participantId, participantType }: ChirpViewProps) {
   const { 
-    initializeChat,
     activeChat,
     chatMessages: contextMessages,
     sendChatMessage,
@@ -31,11 +30,6 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
   const participant = participantType === 'AGENT' 
     ? agents?.find(a => a.id === participantId)
     : teamMembers?.find(t => t.id === participantId);
-
-  // Initialize chat
-  useEffect(() => {
-    initializeChat(participantId, participantType);
-  }, [participantId, participantType, initializeChat]);
 
   // Get current chat messages
   const currentMessages = activeChat 

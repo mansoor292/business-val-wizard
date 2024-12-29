@@ -281,7 +281,7 @@ export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
   };
 
   return (
-    <div className="p-12 bg-white min-h-screen overflow-x-auto relative" ref={chartRef}>
+    <div className="p-12 min-h-screen overflow-x-auto relative" ref={chartRef}>
       <AddTeamMemberDialog
         open={addDialogOpen}
         onOpenChange={setAddDialogOpen}

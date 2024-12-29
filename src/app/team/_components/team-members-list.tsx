@@ -36,7 +36,7 @@ export function TeamMembersList() {
   }
 
   return (
-    <Tabs defaultValue="list" className="w-full">
+    <Tabs defaultValue="org" className="w-full">
       <TabsList className="mb-4">
         <TabsTrigger value="list">List View</TabsTrigger>
         <TabsTrigger value="org">Organization Chart</TabsTrigger>
