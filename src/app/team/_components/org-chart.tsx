@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import { TeamMember, TeamMember as BaseTeamMember } from "src/lib/data/types";
+import { Button } from "src/components/ui/button";
+import { MessageCircle, Plus } from "lucide-react";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
 import { TeamMemberCard } from "./team-member-card";
-import { TeamMemberChat } from "./team-member-chat";
-import { Button } from "../ui/button";
-import { MessageCircle, Plus } from "lucide-react";
+import { ChirpView } from "src/components/chat/chirp-view";
 
 interface OrgChartProps {
   teamMembers: BaseTeamMember[];
@@ -143,7 +143,7 @@ const OrgChartNode: React.FC<OrgChartNodeProps> = ({ member, onMemberClick, onAd
   );
 };
 
-export default function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
+export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
   const [selectedMember, setSelectedMember] = useState<TeamMemberNode | null>(null);
   const [cardPosition, setCardPosition] = useState<{ x: number; y: number } | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -319,7 +319,7 @@ export default function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
             overflow: 'auto'
           }}
         >
-          <TeamMemberChat member={chatMember} />
+          <ChirpView participantId={chatMember.id} participantType="TEAM_MEMBER" />
         </div>
       )}
     </div>

@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useData } from "src/lib/data/context";
-import { TeamMemberCard } from "src/components/team/team-member-card";
 import { TeamMember } from "src/lib/data/types";
-import OrgChart from "./org-chart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "src/components/ui/tabs";
 import { Button } from "src/components/ui/button";
 import { Plus } from "lucide-react";
+import { TeamMemberCard } from "./team-member-card";
+import { OrgChart } from "./org-chart";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
 
 export function TeamMembersList() {

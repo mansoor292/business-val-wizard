@@ -175,6 +175,9 @@ export type Message = z.infer<typeof messageSchema>;
 
 // Data Adapter Interface
 export interface DataAdapter {
+  // Initialization
+  initialize(): Promise<void>;
+
   // Value Proposition operations
   getValueProposition(id: string): Promise<ValueProposition>;
   listValuePropositions(filters?: ValuePropositionFilters): Promise<ValueProposition[]>;

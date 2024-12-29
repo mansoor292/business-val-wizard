@@ -4,7 +4,7 @@ import ProjectView from '../../components/project/project-view';
 import { ProjectSidebar } from '../../components/project/project-sidebar';
 import { useData } from '../../lib/data/context';
 
-export default function DashboardPage() {
+export default function ProjectDashboardView() {
   const { 
     projects, 
     tasks,

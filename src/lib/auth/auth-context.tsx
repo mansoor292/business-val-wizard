@@ -3,11 +3,12 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { signIn as nextAuthSignIn, signOut as nextAuthSignOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
+import { AuthUser } from './types';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any | null;
-  login: (username: string, password: string) => Promise<void>;
+  user: AuthUser | null;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -21,10 +22,10 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     try {
       const result = await nextAuthSignIn('credentials', {
-        username,
+        email,
         password,
         redirect: false,
         callbackUrl: window.location.origin,

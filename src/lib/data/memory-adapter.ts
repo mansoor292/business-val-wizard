@@ -40,6 +40,8 @@ export class MemoryAdapter implements DataAdapter {
   private comments: CommentsAdapter;
   private teamMembers: TeamMembersAdapter;
 
+  private initialized = false;
+
   constructor() {
     // Initialize all adapters first
     this.teamMembers = new TeamMembersAdapter();
@@ -50,11 +52,12 @@ export class MemoryAdapter implements DataAdapter {
     this.tasks = new TasksAdapter([], []);    // Empty arrays initially
     this.documents = new DocumentsAdapter([]); // Empty array initially
     this.comments = new CommentsAdapter([], [], [], []); // Empty arrays initially
+  }
 
-    // Initialize with mock data
-    this.initializeMockData().catch(error => {
-      console.error('Failed to initialize mock data:', error);
-    });
+  async initialize() {
+    if (this.initialized) return;
+    await this.initializeMockData();
+    this.initialized = true;
   }
 
   private async initializeMockData(): Promise<void> {
