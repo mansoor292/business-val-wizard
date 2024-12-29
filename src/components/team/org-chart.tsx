@@ -1,167 +1,135 @@
-// "use client";
+"use client";
 
-// import React, { useState, useEffect, useCallback, useMemo } from 'react';
-// import { TeamMember } from "src/lib/data/types";
-// import { useData } from "src/lib/data/context";
-// import { useTeamMemberOperations } from "src/lib/data/context/operations/team-members";
-// import { OrgChartNode } from './org-chart/org-chart-node';
+import React, { useMemo } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { TeamMember as BaseTeamMember } from "src/lib/data/types";
 
-// // Pre-compute relationships outside of component to avoid recalculation
-// function buildMemberMaps(members: TeamMember[]) {
-//   const emailToMember = new Map<string, TeamMember>();
-//   const emailToChildren = new Map<string, TeamMember[]>();
+interface OrgChartProps {
+  teamMembers: BaseTeamMember[];
+}
 
-//   // First pass: build email to member map
-//   members.forEach(member => {
-//     emailToMember.set(member.email, member);
-//   });
+// Extend TeamMember type to include reports for hierarchy
+interface TeamMemberNode extends BaseTeamMember {
+  reports?: TeamMemberNode[];
+}
 
-//   // Second pass: build parent to children map
-//   members.forEach(member => {
-//     if (member.reportsTo) {
-//       const children = emailToChildren.get(member.reportsTo) || [];
-//       children.push(member);
-//       emailToChildren.set(member.reportsTo, children);
-//     }
-//   });
+interface OrgChartNodeProps {
+  member: TeamMemberNode;
+}
 
-//   return { emailToMember, emailToChildren };
-// }
+// Build the reporting hierarchy using a top-down approach
+function buildHierarchy(members: BaseTeamMember[]): TeamMemberNode | null {
+  // Find the root member (no reportsTo)
+  const rootMember = members.find(m => !m.reportsTo);
+  if (!rootMember) return null;
 
-// export function OrgChart() {
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [isUpdating, setIsUpdating] = useState(false);
-//   const [error, setError] = useState<string | null>(null);
-//   const data = useData();
-//   const { teamMembers, listTeamMembers, createTeamMember, updateTeamMember } = useTeamMemberOperations(data);
+  // Helper function to recursively build the hierarchy
+  function buildNode(member: BaseTeamMember, availableMembers: BaseTeamMember[]): TeamMemberNode {
+    // Create node with reports array
+    const node: TeamMemberNode = {
+      ...member,
+      reports: []
+    };
 
-//   const [draggedNodeId, setDraggedNodeId] = useState<string | null>(null);
-
-//   // Memoize the member maps
-//   const { emailToMember, emailToChildren } = useMemo(() => 
-//     teamMembers ? buildMemberMaps(teamMembers) : { emailToMember: new Map(), emailToChildren: new Map() },
-//     [teamMembers]
-//   );
-
-//   // Find root member
-//   const rootMember = useMemo(() => 
-//     teamMembers?.find(member => !member.reportsTo),
-//     [teamMembers]
-//   );
-
-//   useEffect(() => {
-//     let mounted = true;
+    // Find all direct reports
+    const directReports = availableMembers.filter(m => m.reportsTo === member.email);
     
-//     async function loadMembers() {
-//       if (!mounted) return;
+    // Remove these members from available pool and process them
+    directReports.forEach(report => {
+      const reportIndex = availableMembers.findIndex(m => m.email === report.email);
+      if (reportIndex !== -1) {
+        // Remove the member from available pool
+        const [reportMember] = availableMembers.splice(reportIndex, 1);
+        // Process this report and add to current node's reports
+        node.reports!.push(buildNode(reportMember, availableMembers));
+      }
+    });
+
+    return node;
+  }
+
+  // Start with all members except root
+  const availableMembers = members.filter(m => m.email !== rootMember.email);
+  
+  // Build the hierarchy starting from root
+  return buildNode(rootMember, availableMembers);
+}
+
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="relative w-16 h-16">
+      <div className="absolute top-0 left-0 w-full h-full border-4 border-orange-200 rounded-full"></div>
+      <div className="absolute top-0 left-0 w-full h-full border-4 border-orange-400 rounded-full border-t-transparent animate-spin"></div>
+    </div>
+  </div>
+);
+
+const OrgChartNode: React.FC<OrgChartNodeProps> = ({ member }) => {
+  const displayName = member.name || member.email.split('@')[0];
+  return (
+    <div className="flex flex-col items-center">
+      <div className="member-card flex flex-col items-center">
+        <Avatar className="w-20 h-20 mb-2 border-2 border-orange-400">
+          <AvatarImage src={member.avatar || ''} alt={displayName} />
+          <AvatarFallback>{displayName.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <div className="text-center">
+          <h3 className="font-medium text-lg">{displayName}</h3>
+          <p className="text-sm text-gray-500">{member.role || 'Team Member'}</p>
+        </div>
+      </div>
       
-//       try {
-//         setIsLoading(true);
-//         setError(null);
-//         await listTeamMembers();
-//       } catch (error) {
-//         if (mounted) {
-//           console.error('Failed to load team members:', error);
-//           setError('Failed to load team members. Please try again.');
-//         }
-//       } finally {
-//         if (mounted) {
-//           setIsLoading(false);
-//         }
-//       }
-//     }
+      {member.reports && member.reports.length > 0 && (
+        <>
+          <div className="connector-line h-8 w-px bg-orange-400 my-4"></div>
+          <div className="reports-container relative">
+            <div className="horizontal-line absolute top-0 left-1/2 h-px bg-orange-400" 
+                 style={{
+                   width: `${Math.max((member.reports.length - 1) * 240, 0)}px`,
+                   transform: 'translateX(-50%)'
+                 }}
+            />
+            <div className="flex gap-x-16 relative pt-4">
+              {member.reports.map((report) => (
+                <div key={report.id} className="flex flex-col items-center">
+                  <OrgChartNode member={report} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
-//     loadMembers();
-//     return () => { mounted = false; };
-//   }, [listTeamMembers]);
+export default function OrgChart({ teamMembers }: OrgChartProps) {
+  const rootMember = useMemo(() => {
+    if (!teamMembers?.length) return null;
+    return buildHierarchy(teamMembers);
+  }, [teamMembers]);
 
-//   const handleDragStart = useCallback((email: string) => {
-//     if (isUpdating) return;
-//     setDraggedNodeId(email);
-//   }, [isUpdating]);
+  if (!teamMembers?.length) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px] text-gray-500">
+        No team members found. Add team members to see the organization chart.
+      </div>
+    );
+  }
 
-//   const handleDragOver = useCallback((email: string) => {
-//     if (isUpdating) return;
-//   }, [isUpdating]);
+  if (!rootMember) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px] text-gray-500">
+        Please ensure one team member is designated as the organization head.
+      </div>
+    );
+  }
 
-//   const handleDrop = useCallback(async (targetEmail: string) => {
-//     if (isUpdating || !draggedNodeId || draggedNodeId === targetEmail) return;
-
-//     try {
-//       setIsUpdating(true);
-//       const draggedMember = emailToMember.get(draggedNodeId);
-//       if (draggedMember) {
-//         await updateTeamMember(draggedMember.id, { reportsTo: targetEmail });
-//       }
-//     } catch (error) {
-//       console.error('Failed to update reporting structure:', error);
-//       setError('Failed to update reporting structure. Please try again.');
-//     } finally {
-//       setIsUpdating(false);
-//       setDraggedNodeId(null);
-//     }
-//   }, [draggedNodeId, emailToMember, updateTeamMember, isUpdating]);
-
-//   const handleAddMember = useCallback(async (newMember: Omit<TeamMember, 'id' | 'createdAt' | 'updatedAt'>) => {
-//     if (isUpdating) return;
-
-//     try {
-//       setIsUpdating(true);
-//       await createTeamMember(newMember as Omit<TeamMember, 'id'>);
-//     } catch (error) {
-//       console.error('Failed to add team member:', error);
-//       setError('Failed to add team member. Please try again.');
-//     } finally {
-//       setIsUpdating(false);
-//     }
-//   }, [createTeamMember, isUpdating]);
-
-//   if (isLoading) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[200px]">
-//         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-//       </div>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[200px] text-red-500">
-//         {error}
-//       </div>
-//     );
-//   }
-
-//   if (!teamMembers?.length) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[200px] text-gray-500">
-//         No team members found. Add a team member to get started.
-//       </div>
-//     );
-//   }
-
-//   if (!rootMember) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[200px] text-red-500">
-//         No root member found. Please ensure one team member is designated as the root.
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className={`p-12 bg-gray-50 min-h-screen overflow-x-auto ${isUpdating ? 'cursor-wait' : ''}`}>
-//       <div className="inline-block min-w-max">
-//         <OrgChartNode
-//           member={rootMember}
-//           children={emailToChildren.get(rootMember.email) || []}
-//           childrenMap={emailToChildren}
-//           onDragStart={handleDragStart}
-//           onDrop={handleDrop}
-//           onDragOver={handleDragOver}
-//           isBeingDragged={draggedNodeId === rootMember.email}
-//           onAddMember={handleAddMember}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <div className="p-12 bg-white min-h-screen overflow-x-auto">
+      <div className="inline-block min-w-max">
+        <OrgChartNode member={rootMember} />
+      </div>
+    </div>
+  );
+}

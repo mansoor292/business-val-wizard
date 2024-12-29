@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { generateMockProjects, generateMockTasks, generateMockDocuments, generateMockTeamMembers } from '../mock/business-data';
+import { generateMockProjects, generateMockTasks, generateMockDocuments, generateMockTeamMembers, generateMockValuePropositions } from '../mock/business-data';
 import type {
   DataAdapter,
   ValueProposition,
@@ -59,8 +59,14 @@ export class MemoryAdapter implements DataAdapter {
 
   private async initializeMockData(): Promise<void> {
     try {
+      // Initialize value propositions
+      const mockValueProps = generateMockValuePropositions(10);
+      for (const vp of mockValueProps) {
+        await this.valuePropositions.create(vp);
+      }
+
       // Initialize team members first
-      const mockTeamMembers = generateMockTeamMembers(10);
+      const mockTeamMembers = generateMockTeamMembers();
       for (const member of mockTeamMembers) {
         await this.teamMembers.create(member);
       }

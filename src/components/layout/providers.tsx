@@ -5,21 +5,9 @@ import { AuthProvider } from "src/lib/auth/auth-context";
 import { ThemeProvider } from "next-themes";
 import { DataProvider } from "src/lib/data/context";
 import { MemoryAdapter } from "src/lib/data/memory-adapter";
-import { generateMockValuePropositions, generateMockTeamMembers } from "src/lib/mock/business-data";
 
+// Create a single instance of the adapter for the entire app
 const dataAdapter = new MemoryAdapter();
-
-// Initialize mock data
-const mockValuePropositions = generateMockValuePropositions(10);
-mockValuePropositions.forEach(vp => {
-  dataAdapter.createValueProposition(vp);
-});
-
-// Initialize mock team members
-const mockTeamMembers = generateMockTeamMembers(10);
-mockTeamMembers.forEach(member => {
-  dataAdapter.createTeamMember(member);
-});
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
