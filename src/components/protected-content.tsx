@@ -1,8 +1,8 @@
 'use client';
 
-import { withAuth } from "@/lib/auth/auth-context";
-import { useAuth } from "@/lib/auth/auth-context";
-import { Button } from "@/components/ui/button";
+import { withAuth } from "src/lib/auth/auth-context";
+import { useAuth } from "src/lib/auth/auth-context";
+import { Button } from "src/components/ui/button";
 
 function ProtectedContent() {
   const { user, logout } = useAuth();

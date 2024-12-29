@@ -1,6 +1,6 @@
-import { useAuth } from "@/lib/auth/auth-context"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { useAuth } from "src/lib/auth/auth-context"
+import { Button } from "src/components/ui/button"
+import { Avatar, AvatarFallback } from "src/components/ui/avatar"
 import { useTheme } from "next-themes"
 import { Moon, Sun, Settings, User, LogOut } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -10,12 +10,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+} from "src/components/ui/dropdown-menu"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "src/components/ui/sheet"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "src/components/ui/dialog"
 import { UserProfile } from "./user-profile"
 import { UserSettings } from "./user-settings"
-import { mockUserData, UserProfile as UserProfileType } from "@/lib/mock/user-data"
+import { mockUserData, UserProfile as UserProfileType } from "src/lib/mock/user-data"
 import { useState } from "react"
 
 type PreferencesSection = keyof UserProfileType['preferences'];

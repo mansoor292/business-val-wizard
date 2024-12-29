@@ -1,9 +1,9 @@
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { UserProfile } from "@/lib/mock/user-data"
+import { Switch } from "src/components/ui/switch"
+import { Label } from "src/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "src/components/ui/radio-group"
+import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "src/components/ui/select"
+import type { UserProfile } from "src/lib/mock/user-data"
 
 type PreferencesSection = keyof UserProfile['preferences'];
 type PreferenceValue<T extends PreferencesSection> = UserProfile['preferences'][T];

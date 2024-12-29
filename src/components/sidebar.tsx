@@ -1,12 +1,12 @@
 'use client';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "src/lib/utils";
+import { Button } from "src/components/ui/button";
+import { ScrollArea } from "src/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "src/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "src/hooks/use-mobile";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 

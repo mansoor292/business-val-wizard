@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Label } from "@/components/ui/label"
-import type { UserProfile } from "@/lib/mock/user-data"
+import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card"
+import { Avatar, AvatarFallback } from "src/components/ui/avatar"
+import { Label } from "src/components/ui/label"
+import type { UserProfile } from "src/lib/mock/user-data"
 
 interface UserProfileProps {
   user: UserProfile;

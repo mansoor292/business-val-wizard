@@ -1,10 +1,10 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "src/components/ui/button";
+import { Input } from "src/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card";
 import { useState } from "react";
-import { useAuth } from "@/lib/auth/auth-context";
+import { useAuth } from "src/lib/auth/auth-context";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
