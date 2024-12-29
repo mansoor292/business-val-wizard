@@ -27,6 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         username,
         password,
         redirect: false,
+        callbackUrl: window.location.origin,
       });
       
       if (result?.error) {

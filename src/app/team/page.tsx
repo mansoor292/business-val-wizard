@@ -1,6 +1,6 @@
 'use client';
 
-import { TeamMembersList } from "src/components/team-members-list";
+import { TeamMembersList } from "src/components/team/team-members-list";
 
 export default function TeamPage() {
   return (

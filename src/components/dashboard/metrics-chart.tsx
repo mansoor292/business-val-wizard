@@ -1,7 +1,7 @@
 'use client'
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { ChartContainer, ChartTooltip } from './ui/chart'
+import { ChartContainer, ChartTooltip } from '../ui/chart'
 
 const data = [
   { name: 'Jan', value: 400 },

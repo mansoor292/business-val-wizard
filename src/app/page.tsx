@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from "react";
-import { Header, ActiveView } from "src/components/header";
-import { Sidebar } from "src/components/sidebar";
-import { AgentView } from "src/components/agent-view";
+import { Header, ActiveView } from "src/components/layout/header";
+import { Sidebar } from "src/components/layout/sidebar";
+import { AgentView } from "src/components/agent/agent-view";
 import DashboardPage from "src/app/dashboard/project";
-import { DashboardView } from "src/components/dashboard-view";
+import { DashboardView } from "src/components/dashboard/dashboard-view";
 import TeamPage from "src/app/team/page";
 
 

@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Task } from '../lib/data/types';
-import { Card } from './ui/card';
-import { ScrollArea } from './ui/scroll-area';
-import { Badge } from './ui/badge';
+import { Task } from 'src/lib/data/types';
+import { Card } from '../ui/card';
+import { ScrollArea } from '../ui/scroll-area';
+import { Badge } from '../ui/badge';
 import { format } from 'date-fns';
 
 interface KanbanColumnProps {

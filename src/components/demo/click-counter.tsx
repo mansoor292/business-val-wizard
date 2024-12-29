@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '../components/ui/button'
-import { incrementClickCount } from '../lib/api/clickCounter'
+import { Button } from '../ui/button'
+import { incrementClickCount } from '../../lib/api/clickCounter'
 
 export function ClickCounter() {
   const [count, setCount] = useState<number | null>(null)

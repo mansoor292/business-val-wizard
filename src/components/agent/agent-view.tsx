@@ -2,8 +2,8 @@
 
 import { Bot, Info, Settings, PlusCircle, MessageCircle, Plus, Send } from "lucide-react";
 import { useState } from "react";
-import { ScrollArea } from "./ui/scroll-area";
-import { Avatar } from "./ui/avatar";
+import { ScrollArea } from "../ui/scroll-area";
+import { Avatar } from "../ui/avatar";
 import { cn } from "src/lib/utils";
 import { useData } from "src/lib/data/context";
 

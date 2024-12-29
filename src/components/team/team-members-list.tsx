@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useData } from "src/lib/data/context";
-import { TeamMemberCard } from "src/components/team-member-card";
+import { TeamMemberCard } from "src/components/team/team-member-card";
 import { TeamMember } from "src/lib/data/types";
 
 export function TeamMembersList() {

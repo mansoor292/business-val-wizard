@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { ScrollArea } from './ui/scroll-area';
-import { Badge } from './ui/badge';
-import { Card } from './ui/card';
+import { ScrollArea } from '../ui/scroll-area';
+import { Badge } from '../ui/badge';
+import { Card } from '../ui/card';
 import ProjectKanbanBoard from './project-kanban-board';
-import { Project, Task, Document } from '../lib/data/types';
+import { Project, Task, Document } from 'src/lib/data/types';
 
 interface ProjectViewProps {
   selectedProjectId: string | null;

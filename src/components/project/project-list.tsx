@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useData } from '../lib/data/context';
-import { Card } from './ui/card';
-import { Badge } from './ui/badge';
+import { useData } from 'src/lib/data/context';
+import { Card } from '../ui/card';
+import { Badge } from '../ui/badge';
 import { CreateProjectDialog } from './create-project-dialog';
 import { format } from 'date-fns';
 

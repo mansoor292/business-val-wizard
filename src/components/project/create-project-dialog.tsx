@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useToast } from 'src/hooks/use-toast';
-import { useData } from '../lib/data/context';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Calendar } from './ui/calendar';
+import { useData } from 'src/lib/data/context';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
 import { CalendarIcon, Plus } from 'lucide-react';
 import {
@@ -15,12 +15,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
+} from '../ui/dialog';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from './ui/popover';
+} from '../ui/popover';
 
 export function CreateProjectDialog() {
   const { createProject, loadProject } = useData();

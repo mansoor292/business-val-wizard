@@ -33,8 +33,8 @@ import {
 } from "src/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "src/components/ui/sheet"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "src/components/ui/dialog"
-import { UserProfile } from "./user-profile"
-import { UserSettings } from "./user-settings"
+import { UserProfile } from "../team/user-profile"
+import { UserSettings } from "../team/user-settings"
 import { mockUserData, UserProfile as UserProfileType } from "src/lib/mock/user-data"
 import { useState } from "react"
 

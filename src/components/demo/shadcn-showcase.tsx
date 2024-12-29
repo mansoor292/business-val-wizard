@@ -1,13 +1,13 @@
 'use client'
 
-import { Button } from 'src/components/ui/button'
+import { Button } from '../ui/button'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '../components/ui/carousel'
+} from '../ui/carousel'
 
 export function ShadcnShowcase() {
   return (

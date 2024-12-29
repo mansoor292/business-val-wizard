@@ -16,8 +16,10 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const callbackUrl = searchParams.get('callbackUrl') || '/';
       await login(username, password);
-      router.push("/"); // Redirect to home after login
+      router.push(callbackUrl);
     } catch (error) {
       console.error("Login failed:", error);
     }

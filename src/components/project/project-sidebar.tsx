@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useData } from '../lib/data/context';
-import { ScrollArea } from './ui/scroll-area';
-import { Badge } from './ui/badge';
+import { useData } from 'src/lib/data/context';
+import { ScrollArea } from '../ui/scroll-area';
+import { Badge } from '../ui/badge';
 import { Loader2 } from 'lucide-react';
 import { CreateProjectDialog } from './create-project-dialog';
 

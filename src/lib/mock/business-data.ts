@@ -56,16 +56,15 @@ export function generateMockTeamMembers(count: number = 10): Omit<TeamMember, 'i
   return Array.from({ length: count }, () => {
     const department = faker.helpers.arrayElement(departments);
     const role = faker.helpers.arrayElement(roles[department as keyof typeof roles]);
-    const skills = Array.from(
-      { length: faker.number.int({ min: 2, max: 5 }) },
-      () => faker.helpers.arrayElement([
-        'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python',
-        'UI/UX', 'Figma', 'Adobe XD', 'Sketch',
-        'Agile', 'Scrum', 'Kanban',
-        'SEO', 'Content Marketing', 'Social Media',
-        'Sales', 'Negotiation', 'Customer Relations'
-      ])
-    );
+    const allSkills = [
+      'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python',
+      'UI/UX', 'Figma', 'Adobe XD', 'Sketch',
+      'Agile', 'Scrum', 'Kanban',
+      'SEO', 'Content Marketing', 'Social Media',
+      'Sales', 'Negotiation', 'Customer Relations'
+    ];
+    const numSkills = faker.number.int({ min: 2, max: 5 });
+    const skills = faker.helpers.arrayElements(allSkills, numSkills);
 
     return {
       name: faker.person.fullName(),

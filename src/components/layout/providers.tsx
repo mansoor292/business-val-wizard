@@ -1,11 +1,11 @@
 'use client';
 
 import { SessionProvider } from "next-auth/react";
-import { AuthProvider } from "../lib/auth/auth-context";
+import { AuthProvider } from "src/lib/auth/auth-context";
 import { ThemeProvider } from "next-themes";
-import { DataProvider } from "../lib/data/context";
-import { MemoryAdapter } from "../lib/data/memory-adapter";
-import { generateMockValuePropositions, generateMockTeamMembers } from "../lib/mock/business-data";
+import { DataProvider } from "src/lib/data/context";
+import { MemoryAdapter } from "src/lib/data/memory-adapter";
+import { generateMockValuePropositions, generateMockTeamMembers } from "src/lib/mock/business-data";
 
 const dataAdapter = new MemoryAdapter();
 

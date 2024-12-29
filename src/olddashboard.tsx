@@ -1,8 +1,8 @@
 "use client";
 
-import { MetricsChart } from "src/components/metrics-chart";
+import { MetricsChart } from "src/components/dashboard/metrics-chart";
 import { Card } from "src/components/ui/card";
-import { ValuePropositionsList } from "src/components/value-propositions-list";
+import { ValuePropositionsList } from "src/components/value-prop/value-propositions-list";
 export default function Home() {
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
