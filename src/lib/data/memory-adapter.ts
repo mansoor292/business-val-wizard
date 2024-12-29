@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { faker } from '@faker-js/faker';
+import { generateMockProjects, generateMockTasks, generateMockDocuments, generateMockTeamMembers } from '../mock/business-data';
 import {
   DataAdapter,
   ValueProposition,
@@ -8,6 +10,7 @@ import {
   Task,
   Document,
   Comment,
+  TeamMember,
   ValuePropositionFilters,
   InitiativeFilters,
   MetricFilters,
@@ -15,6 +18,7 @@ import {
   TaskFilters,
   DocumentFilters,
   CommentFilters,
+  TeamMemberFilters,
   BaseEntity
 } from './types';
 
@@ -26,6 +30,39 @@ export class MemoryAdapter implements DataAdapter {
   private tasks: Task[] = [];
   private documents: Document[] = [];
   private comments: Comment[] = [];
+  private teamMembers: TeamMember[] = [];
+
+  constructor() {
+    // Initialize with mock team members first
+    const mockTeamMembers = generateMockTeamMembers(10).map(m => this.createEntity<TeamMember>(m));
+    this.teamMembers = mockTeamMembers;
+    const teamMemberIds = mockTeamMembers.map(m => m.id);
+
+    // Initialize projects with real team member IDs
+    const mockProjects = generateMockProjects(5).map(p => {
+      const numTeamMembers = faker.number.int({ min: 2, max: 5 });
+      const projectTeamIds = faker.helpers.arrayElements(teamMemberIds, numTeamMembers);
+      return this.createEntity<Project>({ ...p, teamIds: projectTeamIds });
+    });
+    this.projects = mockProjects;
+    
+    // Generate tasks and documents for each project
+    mockProjects.forEach(project => {
+      const projectTeamIds = project.teamIds;
+      const mockTasks = generateMockTasks(project.id, 8).map(t => 
+        this.createEntity<Task>({
+          ...t,
+          assigneeId: faker.helpers.arrayElement(projectTeamIds)
+        })
+      );
+      const mockDocs = generateMockDocuments(project.id, 4).map(d => 
+        this.createEntity<Document>(d)
+      );
+      
+      this.tasks.push(...mockTasks);
+      this.documents.push(...mockDocs);
+    });
+  }
 
   private createEntity<T extends BaseEntity>(data: Omit<T, keyof BaseEntity>): T {
     const now = new Date();
@@ -308,6 +345,43 @@ export class MemoryAdapter implements DataAdapter {
     if (index === -1) throw new Error(`Comment not found: ${id}`);
     const updated = this.updateEntity(this.comments[index], data);
     this.comments[index] = updated;
+    return updated;
+  }
+
+  // Team Member operations
+  async getTeamMember(id: string): Promise<TeamMember> {
+    const member = this.teamMembers.find(m => m.id === id);
+    if (!member) throw new Error(`Team member not found: ${id}`);
+    return member;
+  }
+
+  async listTeamMembers(filters?: TeamMemberFilters): Promise<TeamMember[]> {
+    let filtered = [...this.teamMembers];
+    if (filters) {
+      if (filters.department) filtered = filtered.filter(m => m.department === filters.department);
+      if (filters.searchTerm) {
+        const term = filters.searchTerm.toLowerCase();
+        filtered = filtered.filter(m => 
+          m.name.toLowerCase().includes(term) || 
+          m.email.toLowerCase().includes(term) ||
+          m.role.toLowerCase().includes(term)
+        );
+      }
+    }
+    return filtered;
+  }
+
+  async createTeamMember(data: Omit<TeamMember, keyof BaseEntity>): Promise<TeamMember> {
+    const member = this.createEntity<TeamMember>(data);
+    this.teamMembers.push(member);
+    return member;
+  }
+
+  async updateTeamMember(id: string, data: Partial<TeamMember>): Promise<TeamMember> {
+    const index = this.teamMembers.findIndex(m => m.id === id);
+    if (index === -1) throw new Error(`Team member not found: ${id}`);
+    const updated = this.updateEntity(this.teamMembers[index], data);
+    this.teamMembers[index] = updated;
     return updated;
   }
 }

@@ -76,6 +76,18 @@ export const commentSchema = z.object({
 
 export type Comment = z.infer<typeof commentSchema> & BaseEntity;
 
+// Team Member Schema
+export const teamMemberSchema = z.object({
+  name: z.string(),
+  role: z.string(),
+  email: z.string().email(),
+  avatar: z.string().optional(),
+  skills: z.array(z.string()).optional(),
+  department: z.string(),
+});
+
+export type TeamMember = z.infer<typeof teamMemberSchema> & BaseEntity;
+
 // Project Schema
 export const projectSchema = z.object({
   name: z.string(),
@@ -134,6 +146,11 @@ export interface CommentFilters {
   authorId?: string;
 }
 
+export interface TeamMemberFilters {
+  department?: string;
+  searchTerm?: string;
+}
+
 // Data Adapter Interface
 export interface DataAdapter {
   // Value Proposition operations
@@ -177,4 +194,10 @@ export interface DataAdapter {
   listComments(filters?: CommentFilters): Promise<Comment[]>;
   createComment(data: Omit<Comment, keyof BaseEntity>): Promise<Comment>;
   updateComment(id: string, data: Partial<Comment>): Promise<Comment>;
+
+  // Team Member operations
+  getTeamMember(id: string): Promise<TeamMember>;
+  listTeamMembers(filters?: TeamMemberFilters): Promise<TeamMember[]>;
+  createTeamMember(data: Omit<TeamMember, keyof BaseEntity>): Promise<TeamMember>;
+  updateTeamMember(id: string, data: Partial<TeamMember>): Promise<TeamMember>;
 }

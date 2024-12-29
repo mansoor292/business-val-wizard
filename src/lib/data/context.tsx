@@ -10,6 +10,7 @@ import {
   Task,
   Document,
   Comment,
+  TeamMember,
   ValuePropositionFilters,
   InitiativeFilters,
   MetricFilters,
@@ -17,6 +18,7 @@ import {
   TaskFilters,
   DocumentFilters,
   CommentFilters,
+  TeamMemberFilters,
   BaseEntity
 } from './types';
 
@@ -29,6 +31,7 @@ interface DataContextType {
   tasks: Task[];
   documents: Document[];
   comments: Comment[];
+  teamMembers: TeamMember[];
   selectedProjectId: string | null;
 
   // Value Proposition operations
@@ -75,6 +78,12 @@ interface DataContextType {
   listComments: (filters?: CommentFilters) => Promise<Comment[]>;
   createComment: (data: Omit<Comment, keyof BaseEntity>) => Promise<Comment>;
   updateComment: (id: string, data: Partial<Comment>) => Promise<Comment>;
+
+  // Team Member operations
+  getTeamMember: (id: string) => Promise<TeamMember>;
+  listTeamMembers: (filters?: TeamMemberFilters) => Promise<TeamMember[]>;
+  createTeamMember: (data: Omit<TeamMember, keyof BaseEntity>) => Promise<TeamMember>;
+  updateTeamMember: (id: string, data: Partial<TeamMember>) => Promise<TeamMember>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -93,6 +102,7 @@ export function DataProvider({
   const [tasks, setTasks] = useState<Task[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
   // Value Proposition operations
@@ -347,6 +357,37 @@ export function DataProvider({
     return comment;
   }, [adapter]);
 
+  // Team Member operations
+  const getTeamMember = useCallback(async (id: string) => {
+    const member = await adapter.getTeamMember(id);
+    setTeamMembers(prev => {
+      const filtered = prev.filter(m => m.id !== id);
+      return [...filtered, member];
+    });
+    return member;
+  }, [adapter]);
+
+  const listTeamMembers = useCallback(async (filters?: TeamMemberFilters) => {
+    const members = await adapter.listTeamMembers(filters);
+    setTeamMembers(members);
+    return members;
+  }, [adapter]);
+
+  const createTeamMember = useCallback(async (data: Omit<TeamMember, keyof BaseEntity>) => {
+    const member = await adapter.createTeamMember(data);
+    setTeamMembers(prev => [...prev, member]);
+    return member;
+  }, [adapter]);
+
+  const updateTeamMember = useCallback(async (id: string, data: Partial<TeamMember>) => {
+    const member = await adapter.updateTeamMember(id, data);
+    setTeamMembers(prev => {
+      const filtered = prev.filter(m => m.id !== id);
+      return [...filtered, member];
+    });
+    return member;
+  }, [adapter]);
+
   const value = {
     // State
     valuePropositions,
@@ -402,6 +443,15 @@ export function DataProvider({
     listComments,
     createComment,
     updateComment,
+
+    // Team Member operations
+    getTeamMember,
+    listTeamMembers,
+    createTeamMember,
+    updateTeamMember,
+
+    // State
+    teamMembers,
   };
 
   return (

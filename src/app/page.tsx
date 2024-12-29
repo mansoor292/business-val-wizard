@@ -1,18 +1,24 @@
 'use client';
 
+import { useState, useEffect } from "react";
 import { MetricsChart } from "src/components/metrics-chart";
 import { Card } from "src/components/ui/card";
 import { Header } from "src/components/header";
 import { Sidebar } from "src/components/sidebar";
 import { ValuePropositionsList } from "src/components/value-propositions-list";
+import DashboardContent from "src/app/dashboard/project";
+import TeamPage from "src/app/team/page";
 export default function Home() {
+  const [activeTab, setActiveTab] = useState('dashboard');
+
   return (
       <div className="min-h-screen flex flex-col">
         <Header />
         <div className="flex-1 flex">
-          <Sidebar />
+          <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
           <main className="flex-1">
-            <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+            {activeTab === 'dashboard' ? (
+              <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
               <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
               </div>
@@ -90,7 +96,12 @@ export default function Home() {
                   </div>
                 </Card>
               </div>
-            </div>
+              </div>
+            ) : activeTab === 'projects' ? (
+              <DashboardContent />
+            ) : activeTab === 'team' ? (
+              <TeamPage />
+            ) : null}
           </main>
         </div>
       </div>

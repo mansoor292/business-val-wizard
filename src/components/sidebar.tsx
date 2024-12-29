@@ -8,9 +8,12 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import { useIsMobile } from "src/hooks/use-mobile";
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
+}
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className, activeTab = 'dashboard', onTabChange }: SidebarProps) {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -23,22 +26,11 @@ export function Sidebar({ className }: SidebarProps) {
           </h2>
           <div className="space-y-1">
             <Button
-              variant="secondary"
+              variant={activeTab === "dashboard" ? "secondary" : "ghost"}
               className="w-full justify-start"
+              onClick={() => onTabChange?.("dashboard")}
             >
               Dashboard
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start"
-            >
-              Analytics
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start"
-            >
-              Reports
             </Button>
           </div>
         </div>
@@ -48,22 +40,18 @@ export function Sidebar({ className }: SidebarProps) {
           </h2>
           <div className="space-y-1">
             <Button
-              variant="ghost"
+              variant={activeTab === "projects" ? "secondary" : "ghost"}
               className="w-full justify-start"
+              onClick={() => onTabChange?.("projects")}
             >
               Projects
             </Button>
             <Button
-              variant="ghost"
+              variant={activeTab === "team" ? "secondary" : "ghost"}
               className="w-full justify-start"
+              onClick={() => onTabChange?.("team")}
             >
-              Tasks
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start"
-            >
-              Calendar
+              Team Members
             </Button>
           </div>
         </div>
