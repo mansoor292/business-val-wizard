@@ -6,6 +6,6 @@ export default {
   dialect: 'postgresql',
   driver: 'pglite',
   dbCredentials: {
-    url: './data.db'  // Points to your file database
+    url: './datadb'  // Points to your file database
   }
 } satisfies Config;

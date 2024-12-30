@@ -3,7 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
-/data.db
+/datadb
 .pnp.*
 .yarn/*
 !.yarn/patches

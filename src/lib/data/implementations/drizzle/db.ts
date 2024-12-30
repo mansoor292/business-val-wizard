@@ -4,7 +4,7 @@ import * as schema from './schema/schema';
 import { DrizzleAdapter } from './drizzle-adapter';
 
 // Initialize PGLite with file persistence
-export const client = new PGlite("./data.db");
+export const client = new PGlite("./datadb");
 
 // Create drizzle database instance
 export const db = drizzle(client, { schema, logger: true });
