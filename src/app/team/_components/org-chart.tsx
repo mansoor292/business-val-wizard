@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
-import { TeamMember } from "src/lib/data";
+import { TeamMember, ParticipantType } from "src/lib/data";
 import { Button } from "src/components/ui/button";
 import { MessageCircle, Plus } from "lucide-react";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
@@ -319,7 +319,7 @@ export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
             overflow: 'auto'
           }}
         >
-          <ChirpView participantId={chatMember.id} participantType="TEAM_MEMBER" />
+          <ChirpView participantId={chatMember.id} participantType={ParticipantType.TEAM_MEMBER} />
         </div>
       )}
     </div>

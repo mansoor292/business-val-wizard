@@ -11,19 +11,20 @@ import {
   User
 } from "lucide-react";
 import { useData } from "src/lib/data/context";
+import { ParticipantType } from "src/lib/data";
 import { AddTeamChatDropdown } from "src/components/chat/add-team-chat-dropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedParticipant?: string;
-  selectedType?: 'AGENT' | 'TEAM_MEMBER';
-  onParticipantSelect?: (id: string, type: 'AGENT' | 'TEAM_MEMBER') => void;
+  selectedType?: ParticipantType;
+  onParticipantSelect?: (id: string, type: ParticipantType) => void;
 }
 
 export function Sidebar({ 
   className, 
   selectedParticipant,
-  selectedType = 'AGENT',
+  selectedType = ParticipantType.AGENT,
   onParticipantSelect 
 }: SidebarProps) {
   const { agents, teamMembers, chats, listChats } = useData();
@@ -33,7 +34,7 @@ export function Sidebar({
   }, [listChats]);
 
   // Filter chats to get only team member chats
-  const teamChats = chats?.filter(chat => chat.participantType === 'TEAM_MEMBER') || [];
+  const teamChats = chats?.filter(chat => chat.participantType === ParticipantType.TEAM_MEMBER) || [];
 
   return (
     <div className="w-64 flex flex-col bg-background border-r border-border">
@@ -68,7 +69,7 @@ export function Sidebar({
                 <span className="font-semibold">Team Members</span>
               </div>
               <AddTeamChatDropdown 
-                onSelect={(memberId) => onParticipantSelect?.(memberId, 'TEAM_MEMBER')}
+                onSelect={(memberId) => onParticipantSelect?.(memberId, ParticipantType.TEAM_MEMBER)}
               />
             </div>
             
@@ -81,9 +82,9 @@ export function Sidebar({
                 return (
                   <button
                     key={chat.id}
-                    onClick={() => onParticipantSelect?.(chat.participantId, 'TEAM_MEMBER')}
+                    onClick={() => onParticipantSelect?.(chat.participantId, ParticipantType.TEAM_MEMBER)}
                     className={`flex items-center px-2 py-1.5 rounded cursor-pointer w-full
-                      ${selectedParticipant === chat.participantId && selectedType === 'TEAM_MEMBER'
+                      ${selectedParticipant === chat.participantId && selectedType === ParticipantType.TEAM_MEMBER
                         ? 'bg-primary text-primary-foreground' 
                         : 'text-muted-foreground hover:bg-accent'}`}
                   >
@@ -116,9 +117,9 @@ export function Sidebar({
               {agents.map((agent) => (
                 <button
                   key={agent.id}
-                  onClick={() => onParticipantSelect?.(agent.id, 'AGENT')}
+                  onClick={() => onParticipantSelect?.(agent.id, ParticipantType.AGENT)}
                   className={`flex items-center px-2 py-1.5 rounded cursor-pointer w-full
-                    ${selectedParticipant === agent.id && selectedType === 'AGENT'
+                    ${selectedParticipant === agent.id && selectedType === ParticipantType.AGENT
                       ? 'bg-primary text-primary-foreground' 
                       : 'text-muted-foreground hover:bg-accent'}`}
                 >

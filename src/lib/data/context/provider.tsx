@@ -15,7 +15,7 @@ import { useAgentOperations } from './operations/agents';
 import type { Chat, ChatMessage, ParticipantType } from '../interface';
 
 // Mock responses for agents and team members
-const getMockResponse = (participantType: ParticipantType, message: string) => {
+const getMockResponse = (participantType: string, message: string) => {
   if (participantType === 'AGENT') {
     const responses = [
       "I understand your request. Let me help you with that.",
@@ -103,7 +103,7 @@ export function DataProvider({ children, adapter }: DataProviderProps) {
   }, []);
 
   // Chat operations
-  const initializeChat = useCallback(async (participantId: string, participantType: ParticipantType) => {
+  const initializeChat = useCallback(async (participantId: string, participantType: string) => {
     // Find existing active chat
     const existingChat = chats.find(c => 
       c.participantId === participantId && 
@@ -203,7 +203,7 @@ export function DataProvider({ children, adapter }: DataProviderProps) {
     ));
   }, []);
 
-  const sendChatMessage = useCallback(async (chatId: string, content: string, sender: ChatMessage['sender'], participantType?: ParticipantType) => {
+  const sendChatMessage = useCallback(async (chatId: string, content: string, sender: string, participantType?: string) => {
     const chat = chats.find(c => c.id === chatId);
     if (!chat) {
       throw new Error(`Chat not found: ${chatId}`);

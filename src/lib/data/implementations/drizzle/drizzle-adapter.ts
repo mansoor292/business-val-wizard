@@ -1,9 +1,7 @@
 import { and, eq, ilike, or, sql } from 'drizzle-orm';
-import * as schema from './schema/base';
+import * as schema from './schema';
 import { 
   BaseEntity,
-  Chat,
-  ChatFilters,
   Comment,
   CommentFilters,
   DataAdapter,
@@ -11,8 +9,6 @@ import {
   DocumentFilters,
   Initiative,
   InitiativeFilters,
-  Message,
-  MessageFilters,
   Metric,
   MetricFilters,
   Project,
@@ -23,7 +19,7 @@ import {
   TeamMemberFilters,
   ValueProposition,
   ValuePropositionFilters
-} from './types';
+} from 'src/lib/data/interface';
 
 export class DrizzleAdapter implements DataAdapter {
   constructor(private db: any) {}
@@ -482,116 +478,4 @@ export class DrizzleAdapter implements DataAdapter {
     return result[0];
   }
 
-  // Chat Operations
-  async getChat(id: string) {
-    const result = await this.db.select().from(schema.chats)
-      .where(eq(schema.chats.id, id))
-      .limit(1);
-    return result[0];
-  }
-
-  async listChats(filters?: ChatFilters): Promise<Chat[]> {
-    const conditions = [];
-    if (filters) {
-      if (filters.participantType) {
-        conditions.push(eq(schema.chats.participantType, filters.participantType));
-      }
-      if (filters.participantId) {
-        conditions.push(eq(schema.chats.participantId, filters.participantId));
-      }
-      if (filters.status) {
-        conditions.push(eq(schema.chats.status, filters.status));
-      }
-      if (filters.searchTerm) {
-        conditions.push(
-          ilike(schema.chats.participantId, `%${filters.searchTerm}%`)
-        );
-      }
-    }
-
-    const query = this.db.select({
-      id: schema.chats.id,
-      participantId: schema.chats.participantId,
-      participantType: schema.chats.participantType,
-      lastMessageAt: schema.chats.lastMessageAt,
-      status: schema.chats.status,
-      createdAt: schema.chats.createdAt,
-      updatedAt: schema.chats.updatedAt
-    })
-    .from(schema.chats)
-    .where(conditions.length > 0 ? and(...conditions) : undefined);
-    
-    return await query;
-  }
-
-  async createChat(data: Omit<Chat, keyof BaseEntity>) {
-    const result = await this.db.insert(schema.chats)
-      .values(data)
-      .returning();
-    return result[0];
-  }
-
-  async updateChat(id: string, data: Partial<Chat>) {
-    const result = await this.db.update(schema.chats)
-      .set({ ...data, updatedAt: new Date() })
-      .where(eq(schema.chats.id, id))
-      .returning();
-    return result[0];
-  }
-
-  // Message Operations
-  async getMessage(id: string) {
-    const result = await this.db.select().from(schema.messages)
-      .where(eq(schema.messages.id, id))
-      .limit(1);
-    return result[0];
-  }
-
-  async listMessages(filters?: MessageFilters): Promise<Message[]> {
-    const conditions = [];
-    if (filters) {
-      if (filters.chatId) {
-        conditions.push(eq(schema.messages.chatId, filters.chatId));
-      }
-      if (filters.sender) {
-        conditions.push(eq(schema.messages.sender, filters.sender));
-      }
-      if (filters.dateRange) {
-        conditions.push(
-          sql`CAST(${schema.messages.timestamp} AS timestamp) >= ${filters.dateRange.start}`,
-          sql`CAST(${schema.messages.timestamp} AS timestamp) <= ${filters.dateRange.end}`
-        );
-      }
-    }
-
-    const query = this.db.select({
-      id: schema.messages.id,
-      chatId: schema.messages.chatId,
-      content: schema.messages.content,
-      sender: schema.messages.sender,
-      timestamp: schema.messages.timestamp,
-      metadata: schema.messages.metadata,
-      createdAt: schema.messages.createdAt,
-      updatedAt: schema.messages.updatedAt
-    })
-    .from(schema.messages)
-    .where(conditions.length > 0 ? and(...conditions) : undefined);
-    
-    return await query;
-  }
-
-  async createMessage(data: Omit<Message, keyof BaseEntity>) {
-    const result = await this.db.insert(schema.messages)
-      .values(data)
-      .returning();
-    return result[0];
-  }
-
-  async updateMessage(id: string, data: Partial<Message>) {
-    const result = await this.db.update(schema.messages)
-      .set({ ...data, updatedAt: new Date() })
-      .where(eq(schema.messages.id, id))
-      .returning();
-    return result[0];
-  }
 }

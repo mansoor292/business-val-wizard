@@ -4,14 +4,15 @@ import { useState, useEffect } from "react";
 import { Sidebar } from "src/components/layout/sidebar";
 import { ChirpView } from "src/components/chat/chirp-view";
 import { useData } from "src/lib/data/context";
+import { ParticipantType } from "src/lib/data";
 
 export function ChirpContainer() {
   const [selectedParticipant, setSelectedParticipant] = useState('sales');
-  const [selectedType, setSelectedType] = useState<'AGENT' | 'TEAM_MEMBER'>('AGENT');
+  const [selectedType, setSelectedType] = useState<ParticipantType>(ParticipantType.AGENT);
 
   const { initializeChat } = useData();
 
-  const handleParticipantSelect = async (id: string, type: 'AGENT' | 'TEAM_MEMBER') => {
+  const handleParticipantSelect = async (id: string, type: ParticipantType) => {
     setSelectedParticipant(id);
     setSelectedType(type);
     await initializeChat(id, type);

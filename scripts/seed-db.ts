@@ -1,108 +1,155 @@
-import { db } from '../src/lib/db';
-import * as schema from '../src/lib/db/schema/base';
+import { db } from '../src/lib/data/implementations/drizzle/db';
+import manufacturingData from '../src/lib/data/implementations/drizzle/seed/manufacturing.json';
+import * as schema from '../src/lib/data/implementations/drizzle/schema/schema';
+import { eq } from 'drizzle-orm';
 
-async function seed() {
+export async function seedManufacturing() {
   try {
-    console.log('Seeding database...');
+    console.log('Seeding manufacturing data...');
 
-    // Create team members
-    const [ceo, cto, productManager, developer] = await Promise.all([
-      db.insert(schema.teamMembers).values({
-        name: 'John Smith',
-        role: 'CEO',
-        email: 'john@example.com',
-        department: 'Executive',
-      }).returning(),
-      db.insert(schema.teamMembers).values({
-        name: 'Sarah Johnson',
-        role: 'CTO',
-        email: 'sarah@example.com',
-        department: 'Engineering',
-      }).returning(),
-      db.insert(schema.teamMembers).values({
-        name: 'Mike Brown',
-        role: 'Product Manager',
-        email: 'mike@example.com',
-        department: 'Product',
-      }).returning(),
-      db.insert(schema.teamMembers).values({
-        name: 'Emily Davis',
-        role: 'Software Engineer',
-        email: 'emily@example.com',
-        department: 'Engineering',
-      }).returning(),
-    ]);
+    // Create team members first since they're referenced by other entities
+    const teamMembers = await Promise.all(
+      manufacturingData.teamMembers.map(member =>
+        db.insert(schema.teamMembers)
+          .values({
+            name: member.name,
+            role: member.role,
+            email: member.email,
+            avatar: member.avatar || null,
+            skills: member.skills || [],
+            department: member.department,
+          })
+          .returning()
+      )
+    );
 
-    // Create a project
-    const [project] = await db.insert(schema.projects).values({
-      name: 'Business Value Dashboard',
-      description: 'A dashboard to track and visualize business value metrics',
-      status: 'ACTIVE',
-      startDate: new Date(),
-      teamIds: [ceo[0].id.toString(), cto[0].id.toString(), productManager[0].id.toString(), developer[0].id.toString()],
-    }).returning();
+    // Update reporting relationships
+    for (let i = 0; i < manufacturingData.teamMembers.length; i++) {
+      const member = manufacturingData.teamMembers[i];
+      if (member.reportsTo) {
+        await db
+          .update(schema.teamMembers)
+          .set({ reportsTo: teamMembers[parseInt(member.reportsTo) - 1][0].id })
+          .where(eq(schema.teamMembers.id, teamMembers[i][0].id));
+      }
+    }
 
     // Create value propositions
-    const [valueProposition] = await db.insert(schema.valuePropositions).values({
-      title: 'Automated Value Tracking',
-      description: 'Automatically track and measure business value metrics',
-      impact: 'HIGH',
-      effort: 'MEDIUM',
-      confidence: 'HIGH',
-    }).returning();
+    const valuePropositions = await Promise.all(
+      manufacturingData.valuePropositions.map(vp =>
+        db.insert(schema.valuePropositions)
+          .values({
+            title: vp.title,
+            description: vp.description,
+            impact: vp.impact,
+            effort: vp.effort,
+            confidence: vp.confidence,
+          })
+          .returning()
+      )
+    );
 
-    // Create an initiative
-    const [initiative] = await db.insert(schema.initiatives).values({
-      title: 'Implement Value Tracking System',
-      description: 'Build and deploy automated value tracking system',
-      status: 'IN_PROGRESS', // This is correct for initiatives
-      valuePropositionIds: [valueProposition.id],
-      startDate: new Date(),
-    }).returning();
+    // Create initiatives
+    const initiatives = await Promise.all(
+      manufacturingData.initiatives.map(initiative =>
+        db.insert(schema.initiatives)
+          .values({
+            title: initiative.title,
+            description: initiative.description,
+            status: initiative.status,
+            startDate: new Date(initiative.startDate),
+            endDate: initiative.endDate ? new Date(initiative.endDate) : null,
+            valuePropositionIds: initiative.valuePropositionIds.map(
+              id => valuePropositions[parseInt(id) - 1][0].id
+            ),
+          })
+          .returning()
+      )
+    );
 
     // Create metrics
-    await db.insert(schema.metrics).values({
-      name: 'User Engagement',
-      description: 'Monthly active users',
-      target: 10000,
-      current: 5000,
-      unit: 'users',
-      trend: 'UP',
-      initiativeId: initiative.id,
-    });
+    await Promise.all(
+      manufacturingData.metrics.map(metric =>
+        db.insert(schema.metrics)
+          .values({
+            name: metric.name,
+            description: metric.description,
+            target: metric.target,
+            current: metric.current,
+            unit: metric.unit,
+            initiativeId: initiatives[parseInt(metric.initiativeId) - 1][0].id,
+            trend: metric.trend,
+          })
+          .returning()
+      )
+    );
+
+    // Create projects
+    const projects = await Promise.all(
+      manufacturingData.projects.map(project =>
+        db.insert(schema.projects)
+          .values({
+            name: project.name,
+            description: project.description,
+            status: project.status,
+            startDate: new Date(project.startDate),
+            endDate: project.endDate ? new Date(project.endDate) : null,
+            teamIds: project.teamIds.map(id => teamMembers[parseInt(id) - 1][0].id.toString()),
+          })
+          .returning()
+      )
+    );
 
     // Create tasks
-    const [task] = await db.insert(schema.tasks).values({
-      title: 'Design Value Dashboard',
-      description: 'Create initial designs for the value tracking dashboard',
-      status: 'IN_PROGRESS',
-      priority: 'HIGH',
-      projectId: project.id,
-      assigneeId: developer[0].id,
-    }).returning();
+    const tasks = await Promise.all(
+      manufacturingData.tasks.map(task =>
+        db.insert(schema.tasks)
+          .values({
+            title: task.title,
+            description: task.description,
+            status: task.status,
+            assigneeId: teamMembers[parseInt(task.assigneeId) - 1][0].id,
+            dueDate: task.dueDate ? new Date(task.dueDate) : null,
+            priority: task.priority,
+            projectId: projects[parseInt(task.projectId) - 1][0].id,
+          })
+          .returning()
+      )
+    );
 
     // Create documents
-    const [document] = await db.insert(schema.documents).values({
-      title: 'Dashboard Requirements',
-      content: 'Detailed requirements for the value tracking dashboard',
-      type: 'DOCUMENTATION',
-      projectId: project.id,
-    }).returning();
+    const documents = await Promise.all(
+      manufacturingData.documents.map(doc =>
+        db.insert(schema.documents)
+          .values({
+            title: doc.title,
+            content: doc.content,
+            type: doc.type,
+            projectId: projects[parseInt(doc.projectId) - 1][0].id,
+          })
+          .returning()
+      )
+    );
 
     // Create comments
-    await db.insert(schema.comments).values({
-      content: 'Looking good! Let\'s review this in our next meeting.',
-      projectId: project.id,
-      taskId: task.id,
-      documentId: document.id,
-      authorId: productManager[0].id,
-    });
+    await Promise.all(
+      manufacturingData.comments.map(comment => {
+        const commentData = {
+          content: comment.content,
+          authorId: teamMembers[parseInt(comment.authorId) - 1][0].id,
+          projectId: projects[parseInt(comment.projectId) - 1][0].id,
+          taskId: comment.taskId ? tasks[parseInt(comment.taskId) - 1][0].id : undefined,
+        };
 
-    console.log('Database seeded successfully!');
+        return db.insert(schema.comments)
+          .values(commentData)
+          .returning();
+      })
+    );
+
+    console.log('Manufacturing data seeded successfully!');
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error('Error seeding manufacturing data:', error);
     throw error;
   }
 }
-
-export { seed };

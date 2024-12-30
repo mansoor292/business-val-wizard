@@ -1,7 +1,6 @@
 import { PGlite } from "@electric-sql/pglite";
 import { drizzle } from "drizzle-orm/pglite";
-import { migrate } from "drizzle-orm/pglite/migrator";
-import * as schema from './schema/base';
+import * as schema from './schema/schema';
 import { DrizzleAdapter } from './drizzle-adapter';
 
 // Initialize PGLite with file persistence

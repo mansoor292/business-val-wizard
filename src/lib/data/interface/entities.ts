@@ -1,28 +1,60 @@
 import { z } from "zod";
 import { BaseEntity } from "./base";
 
+// Enums for type safety in code
+export const enum Impact {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH'
+}
+
+export const enum Effort {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH'
+}
+
+export const enum Confidence {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH'
+}
+
 // Value Proposition Schema
 export const valuePropositionSchema = z.object({
   title: z.string(),
   description: z.string(),
-  impact: z.enum(['LOW', 'MEDIUM', 'HIGH']),
-  effort: z.enum(['LOW', 'MEDIUM', 'HIGH']),
-  confidence: z.enum(['LOW', 'MEDIUM', 'HIGH']),
+  impact: z.string(),
+  effort: z.string(),
+  confidence: z.string(),
 });
 
 export type ValueProposition = z.infer<typeof valuePropositionSchema> & BaseEntity;
+
+export const enum InitiativeStatus {
+  DRAFT = 'DRAFT',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED'
+}
 
 // Initiative Schema
 export const initiativeSchema = z.object({
   title: z.string(),
   description: z.string(),
-  status: z.enum(['DRAFT', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']),
+  status: z.string(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   valuePropositionIds: z.array(z.string()),
 });
 
 export type Initiative = z.infer<typeof initiativeSchema> & BaseEntity;
+
+export const enum Trend {
+  UP = 'UP',
+  DOWN = 'DOWN',
+  FLAT = 'FLAT'
+}
 
 // Metric Schema
 export const metricSchema = z.object({
@@ -32,29 +64,49 @@ export const metricSchema = z.object({
   current: z.number(),
   unit: z.string(),
   initiativeId: z.string(),
-  trend: z.enum(['UP', 'DOWN', 'FLAT']).optional(),
+  trend: z.string().optional(),
 });
 
 export type Metric = z.infer<typeof metricSchema> & BaseEntity;
+
+export const enum TaskStatus {
+  TODO = 'TODO',
+  IN_PROGRESS = 'IN_PROGRESS',
+  REVIEW = 'REVIEW',
+  DONE = 'DONE'
+}
+
+export const enum Priority {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH'
+}
 
 // Task Schema
 export const taskSchema = z.object({
   title: z.string(),
   description: z.string(),
-  status: z.enum(['TODO', 'IN_PROGRESS', 'REVIEW', 'DONE']),
+  status: z.string(),
   assigneeId: z.string().optional(),
   dueDate: z.date().optional(),
-  priority: z.enum(['LOW', 'MEDIUM', 'HIGH']),
+  priority: z.string(),
   projectId: z.string(),
 });
 
 export type Task = z.infer<typeof taskSchema> & BaseEntity;
 
+export const enum DocumentType {
+  SPECIFICATION = 'SPECIFICATION',
+  DESIGN = 'DESIGN',
+  DOCUMENTATION = 'DOCUMENTATION',
+  OTHER = 'OTHER'
+}
+
 // Document Schema
 export const documentSchema = z.object({
   title: z.string(),
   content: z.string(),
-  type: z.enum(['SPECIFICATION', 'DESIGN', 'DOCUMENTATION', 'OTHER']),
+  type: z.string(),
   projectId: z.string(),
 });
 
@@ -84,11 +136,18 @@ export const teamMemberSchema = z.object({
 
 export type TeamMember = z.infer<typeof teamMemberSchema> & BaseEntity;
 
+export const enum ProjectStatus {
+  ACTIVE = 'ACTIVE',
+  ON_HOLD = 'ON_HOLD',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED'
+}
+
 // Project Schema
 export const projectSchema = z.object({
   name: z.string(),
   description: z.string(),
-  status: z.enum(['ACTIVE', 'ON_HOLD', 'COMPLETED', 'CANCELLED']),
+  status: z.string(),
   startDate: z.date(),
   endDate: z.date().optional(),
   teamIds: z.array(z.string()),
@@ -96,21 +155,28 @@ export const projectSchema = z.object({
 
 export type Project = z.infer<typeof projectSchema> & BaseEntity;
 
+export const enum AgentStatus {
+  ACTIVE = 'active',
+  IDLE = 'idle'
+}
+
 // Agent Schema
 export const agentSchema = z.object({
   id: z.string(),
   name: z.string(),
   handle: z.string(),
-  status: z.enum(['active', 'idle']),
+  status: z.string(),
 });
 
 export type Agent = z.infer<typeof agentSchema>;
+
+
 
 // Message Schema
 export const messageSchema = z.object({
   id: z.string(),
   content: z.string(),
-  sender: z.enum(['user', 'agent']),
+  sender: z.string(),
   timestamp: z.string(),
   agentId: z.string(),
 });

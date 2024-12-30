@@ -1,15 +1,15 @@
-import { client, db, initializeDb } from '../src/lib/db';
-import { seed } from './seed-db';
+import { initializeDb } from '../src/lib/data/implementations/drizzle/db';
+import { seedManufacturing } from './seed-db';
 
 async function main() {
   try {
     console.log('Initializing database...');
-    await initializeDb();
+    const adapter = await initializeDb();
     console.log('Database initialized successfully!');
     
-    console.log('Seeding database...');
-    await seed();
-    console.log('Database seeded successfully!');
+    console.log('Seeding manufacturing data...');
+    await seedManufacturing();
+    console.log('Manufacturing data seeded successfully!');
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);
