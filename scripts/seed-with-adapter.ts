@@ -1,5 +1,5 @@
 import { DrizzleAdapter } from '../src/lib/data/implementations/drizzle/drizzle-adapter';
-import { db } from '../src/lib/data/implementations/drizzle/db';
+import { initializeDb, getDatabase } from '../src/lib/data/implementations/drizzle/db';
 import { seedManufacturing } from '../src/lib/data/implementations/drizzle/seed/seed-db';
 import * as schema from '../src/lib/data/implementations/drizzle/schema';
 
@@ -17,12 +17,12 @@ async function clearDatabase(db: any) {
 }
 
 async function main() {
-  const adapter = new DrizzleAdapter(db);
+  const adapter = await initializeDb();
   const shouldClear = process.argv.includes('--clear');
   
   try {
     if (shouldClear) {
-      await clearDatabase(db);
+      await clearDatabase(getDatabase());
     }
     await seedManufacturing(adapter);
   } catch (error) {

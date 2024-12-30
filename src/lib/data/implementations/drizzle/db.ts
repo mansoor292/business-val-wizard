@@ -3,19 +3,37 @@ import { drizzle } from "drizzle-orm/pglite";
 import * as schema from './schema/schema';
 import { DrizzleAdapter } from './drizzle-adapter';
 
-// Initialize PGLite with file persistence
-export const client = new PGlite("./datadb");
+class Database {
+  private static instance: Database;
+  private client: PGlite;
+  private db: ReturnType<typeof drizzle>;
 
-// Create drizzle database instance
-export const db = drizzle(client, { schema, logger: true });
+  private constructor() {
+    // Initialize PGLite with file persistence
+    this.client = new PGlite("./datadb");
+    // Create drizzle database instance
+    this.db = drizzle(this.client, { schema, logger: true });
+  }
 
-// Initialize database and run migrations
+  public static getInstance(): Database {
+    if (!Database.instance) {
+      Database.instance = new Database();
+    }
+    return Database.instance;
+  }
+
+  public getDb() {
+    return this.db;
+  }
+
+  public getClient() {
+    return this.client;
+  }
+}
+
+export const getDatabase = () => Database.getInstance().getDb();
+
+
 export async function initializeDb() {
-  // Enable UUID extension
-  // await client.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
-  
-  // Run migrations
-  // await migrate(db, { migrationsFolder: "./drizzle" });
-  
-  return new DrizzleAdapter(db);
+  return new DrizzleAdapter(getDatabase());
 }
