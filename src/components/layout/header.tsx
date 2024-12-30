@@ -5,6 +5,7 @@ import { useAuth } from "src/lib/auth/auth-context"
 import { Button } from "src/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar"
 import { useTheme } from "next-themes"
+import { TeamMember } from "src/lib/data/interface/entities"
 import { 
   Home,
   MessageCircle,
@@ -195,9 +196,9 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center space-x-2 p-1 rounded-md hover:bg-slate-700 cursor-pointer">
                   <Avatar>
-                    <AvatarImage src={user?.avatar} alt={user?.name} />
+                    <AvatarImage src={(user as unknown as TeamMember)?.avatar || ''} alt={(user as unknown as TeamMember)?.name || ''} />
                     <AvatarFallback className="text-white bg-purple-500">
-                      {user?.name?.split(' ').map((n: string) => n[0]).join('') || '?'}
+                      {(user as unknown as TeamMember)?.name?.split(' ').map((n: string) => n[0]).join('') || '?'}
                     </AvatarFallback>
                   </Avatar>
                 </div>
@@ -215,7 +216,7 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
                       <DialogTitle>Profile</DialogTitle>
                     </DialogHeader>
                     <div className="p-4">
-                      {user && <UserProfileCard member={user} />}
+                      {user && <UserProfileCard member={user as unknown as TeamMember} />}
                     </div>
                   </DialogContent>
                 </Dialog>

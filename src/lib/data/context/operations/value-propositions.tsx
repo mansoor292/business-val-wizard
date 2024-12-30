@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, ValueProposition, ValuePropositionFilters, BaseEntity } from '../../types';
+import { DataAdapter, ValueProposition, ValuePropositionFilters, BaseEntity } from '../../interface';
 
 export function useValuePropositionOperations(adapter: DataAdapter) {
   const [valuePropositions, setValuePropositions] = useState<ValueProposition[]>([]);

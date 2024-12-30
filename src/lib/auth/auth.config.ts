@@ -5,12 +5,18 @@ import { AuthUser, AuthCredentials } from "./types";
 
 // Initialize mock users from team members
 const mockUsers: AuthUser[] = generateMockTeamMembers().map(member => ({
-  ...member,
   id: crypto.randomUUID(),
   createdAt: new Date(),
   updatedAt: new Date(),
   emailVerified: new Date(),
-  passwordHash: 'mock-hash' // In a real app, we'd have proper password hashing
+  passwordHash: 'mock-hash', // In a real app, we'd have proper password hashing
+  name: member.name,
+  role: member.role,
+  email: member.email,
+  department: member.department,
+  reportsTo: member.reportsTo,
+  avatar: member.avatar,
+  skills: member.skills
 }));
 
 // This configuration is used by App Router

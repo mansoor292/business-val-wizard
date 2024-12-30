@@ -11,7 +11,7 @@ import {
 } from "src/components/ui/dialog";
 import { Input } from "src/components/ui/input";
 import { Label } from "src/components/ui/label";
-import { TeamMember } from "src/lib/data/types";
+import { TeamMember } from "src/lib/data";
 
 interface AddTeamMemberDialogProps {
   open: boolean;

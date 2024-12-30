@@ -1,4 +1,4 @@
-import { 
+import type { 
   ValueProposition, 
   Initiative, 
   Metric, 
@@ -18,16 +18,13 @@ import {
   CommentFilters,
   TeamMemberFilters,
   DataAdapter,
-  BaseEntity
-} from '../types';
-
-import {
+  BaseEntity,
   Chat,
-  Message,
+  ChatMessage,
   ParticipantType,
   ChatFilters,
-  MessageFilters
-} from '../types/chat';
+  ChatMessageFilters
+} from '../interface';
 
 export interface DataProviderProps {
   children: React.ReactNode;
@@ -105,12 +102,12 @@ export interface DataContextType {
 
   // Chat operations
   chats: Chat[];
-  chatMessages: Message[];
+  chatMessages: ChatMessage[];
   activeChat: string | null;
   initializeChat: (participantId: string, participantType: ParticipantType) => Promise<Chat>;
   listChats: (filters?: ChatFilters) => Promise<Chat[]>;
   getChat: (id: string) => Promise<Chat | undefined>;
-  listChatMessages: (filters?: MessageFilters) => Promise<Message[]>;
-  sendChatMessage: (chatId: string, content: string, sender: Message['sender'], participantType?: ParticipantType) => Promise<Message>;
+  listChatMessages: (filters?: ChatMessageFilters) => Promise<ChatMessage[]>;
+  sendChatMessage: (chatId: string, content: string, sender: ChatMessage['sender'], participantType?: ParticipantType) => Promise<ChatMessage>;
   archiveChat: (chatId: string) => Promise<void>;
 }

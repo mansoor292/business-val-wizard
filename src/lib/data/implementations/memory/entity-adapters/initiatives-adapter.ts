@@ -1,5 +1,5 @@
-import { BaseMemoryAdapter } from '../base-memory-adapter';
-import { Initiative, InitiativeFilters } from '../types';
+import { BaseMemoryAdapter } from '../base';
+import type { Initiative, InitiativeFilters } from '../../../interface';
 
 export class InitiativesAdapter extends BaseMemoryAdapter<Initiative> {
   async list(filters?: InitiativeFilters): Promise<Initiative[]> {

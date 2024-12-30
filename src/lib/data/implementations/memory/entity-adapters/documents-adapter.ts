@@ -1,5 +1,5 @@
-import { BaseMemoryAdapter } from '../base-memory-adapter';
-import { Document, DocumentFilters, BaseEntity } from '../types';
+import { BaseMemoryAdapter } from '../base';
+import type { Document, DocumentFilters, BaseEntity } from '../../../interface';
 
 export class DocumentsAdapter extends BaseMemoryAdapter<Document> {
   constructor(private projectIds: string[]) {
@@ -9,13 +9,9 @@ export class DocumentsAdapter extends BaseMemoryAdapter<Document> {
   async list(filters?: DocumentFilters): Promise<Document[]> {
     let filtered = [...this.items];
     if (filters) {
-      if (filters.type !== undefined) {
-        filtered = filtered.filter(d => d.type === filters.type);
-      }
-      if (filters.projectId !== undefined) {
-        filtered = filtered.filter(d => d.projectId === filters.projectId);
-      }
-      if (filters.searchTerm !== undefined) {
+      if (filters.projectId) filtered = filtered.filter(d => d.projectId === filters.projectId);
+      if (filters.type) filtered = filtered.filter(d => d.type === filters.type);
+      if (filters.searchTerm) {
         const term = filters.searchTerm.toLowerCase();
         filtered = filtered.filter(d => 
           d.title.toLowerCase().includes(term) || 
@@ -35,11 +31,9 @@ export class DocumentsAdapter extends BaseMemoryAdapter<Document> {
   }
 
   async update(id: string, data: Partial<Omit<Document, keyof BaseEntity>>): Promise<Document> {
-    if (data.projectId !== undefined) {
-      // Validate project ID if provided
-      if (!this.projectIds.includes(data.projectId)) {
-        throw new Error(`Invalid project ID: ${data.projectId}`);
-      }
+    // Validate project ID if provided
+    if (data.projectId && !this.projectIds.includes(data.projectId)) {
+      throw new Error(`Invalid project ID: ${data.projectId}`);
     }
     return super.update(id, data);
   }

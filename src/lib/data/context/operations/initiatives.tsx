@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, Initiative, InitiativeFilters, BaseEntity } from '../../types';
+import { DataAdapter, Initiative, InitiativeFilters, BaseEntity } from '../../interface';
 
 export function useInitiativeOperations(adapter: DataAdapter) {
   const [initiatives, setInitiatives] = useState<Initiative[]>([]);

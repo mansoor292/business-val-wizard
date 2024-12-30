@@ -1,5 +1,5 @@
-import { BaseMemoryAdapter } from '../base-memory-adapter';
-import { Metric, MetricFilters } from '../types';
+import { BaseMemoryAdapter } from '../base';
+import type { Metric, MetricFilters } from '../../../interface';
 
 export class MetricsAdapter extends BaseMemoryAdapter<Metric> {
   async list(filters?: MetricFilters): Promise<Metric[]> {

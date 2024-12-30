@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, Metric, MetricFilters, BaseEntity } from '../../types';
+import { DataAdapter, Metric, MetricFilters, BaseEntity } from '../../interface';
 
 export function useMetricOperations(adapter: DataAdapter) {
   const [metrics, setMetrics] = useState<Metric[]>([]);

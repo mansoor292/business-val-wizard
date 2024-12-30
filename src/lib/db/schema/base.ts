@@ -111,11 +111,21 @@ export const agents = pgTable('agents', {
   status: text('status', { enum: ['active', 'idle'] }).notNull()
 });
 
+// Chat Table
+export const chats = pgTable('chats', {
+  ...baseColumns,
+  participantId: text('participant_id').notNull(),
+  participantType: text('participant_type', { enum: ['AGENT', 'TEAM_MEMBER'] }).notNull(),
+  lastMessageAt: timestamp('last_message_at').notNull(),
+  status: text('status', { enum: ['ACTIVE', 'ARCHIVED'] }).notNull()
+});
+
 // Message Table
 export const messages = pgTable('messages', {
-  id: uuid('id').primaryKey().defaultRandom(),
+  ...baseColumns,
+  chatId: uuid('chat_id').references(() => chats.id).notNull(),
   content: text('content').notNull(),
-  sender: text('sender', { enum: ['user', 'agent'] }).notNull(),
+  sender: text('sender', { enum: ['USER', 'PARTICIPANT'] }).notNull(),
   timestamp: text('timestamp').notNull(),
-  agentId: uuid('agent_id').references(() => agents.id).notNull()
+  metadata: text('metadata') // Optional JSON metadata stored as text
 });

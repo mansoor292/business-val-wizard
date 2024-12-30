@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { ValueProposition, Project, Task, Document, TeamMember } from '../data/types';
+import { ValueProposition, Project, Task, Document, TeamMember } from '../data/interface';
 
 export function generateMockValuePropositions(count: number = 5): Omit<ValueProposition, 'id' | 'createdAt' | 'updatedAt'>[] {
   return Array.from({ length: count }, () => ({

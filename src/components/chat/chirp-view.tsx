@@ -6,8 +6,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn } from "src/lib/utils";
 import { useData } from "src/lib/data/context";
-import { ParticipantType } from "src/lib/data/types/chat";
-import { Agent, TeamMember } from "src/lib/data/types";
+import { ParticipantType, Agent, TeamMember } from "src/lib/data";
 
 interface ChirpViewProps {
   participantId: string;

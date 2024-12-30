@@ -1,4 +1,4 @@
-import { TeamMember } from '../data/types';
+import { TeamMember } from '../data/interface';
 import 'next-auth';
 
 // Extend TeamMember for auth user

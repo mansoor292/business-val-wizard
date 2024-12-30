@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, TeamMember, TeamMemberFilters, BaseEntity } from '../../types';
+import { DataAdapter, TeamMember, TeamMemberFilters, BaseEntity } from '../../interface';
 
 export function useTeamMemberOperations(adapter: DataAdapter) {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);

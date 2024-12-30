@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { generateMockProjects, generateMockTasks, generateMockDocuments, generateMockTeamMembers, generateMockValuePropositions } from '../mock/business-data';
+import { generateMockProjects, generateMockTasks, generateMockDocuments, generateMockTeamMembers, generateMockValuePropositions } from '../../../mock/business-data';
 import type {
-  DataAdapter,
   ValueProposition,
   Initiative,
   Metric,
@@ -10,6 +9,10 @@ import type {
   Document,
   Comment,
   TeamMember,
+} from '../../interface/entities';
+import type { BaseEntity } from '../../interface/base';
+import type { DataAdapter } from '../../interface/data-adapter';
+import type {
   ValuePropositionFilters,
   InitiativeFilters,
   MetricFilters,
@@ -18,17 +21,18 @@ import type {
   DocumentFilters,
   CommentFilters,
   TeamMemberFilters,
-  BaseEntity
-} from './types';
+} from '../../interface/filters';
 
-import { ValuePropositionsAdapter } from './adapters/value-propositions-adapter';
-import { InitiativesAdapter } from './adapters/initiatives-adapter';
-import { MetricsAdapter } from './adapters/metrics-adapter';
-import { ProjectsAdapter } from './adapters/projects-adapter';
-import { TasksAdapter } from './adapters/tasks-adapter';
-import { DocumentsAdapter } from './adapters/documents-adapter';
-import { CommentsAdapter } from './adapters/comments-adapter';
-import { TeamMembersAdapter } from './adapters/team-members-adapter';
+import {
+  ValuePropositionsAdapter,
+  InitiativesAdapter,
+  MetricsAdapter,
+  ProjectsAdapter,
+  TasksAdapter,
+  DocumentsAdapter,
+  CommentsAdapter,
+  TeamMembersAdapter,
+} from './entity-adapters';
 
 export class MemoryAdapter implements DataAdapter {
   private valuePropositions: ValuePropositionsAdapter;
@@ -81,12 +85,9 @@ export class MemoryAdapter implements DataAdapter {
       this.comments = new CommentsAdapter([], [], [], teamMemberIds);
 
       // Initialize projects with real team member IDs
-      const mockProjects = generateMockProjects(5).map(p => ({
-        ...p,
-        teamIds: faker.helpers.arrayElements(
-          teamMemberIds,
-          faker.number.int({ min: 2, max: 5 })
-        ),
+      const mockProjects = generateMockProjects(5).map(project => ({
+        ...project,
+        teamIds: faker.helpers.arrayElements(teamMemberIds, { min: 2, max: 5 }),
       }));
       
       for (const project of mockProjects) {
@@ -104,8 +105,8 @@ export class MemoryAdapter implements DataAdapter {
         const projectTeamIds = (await this.projects.get(projectId)).teamIds;
 
         // Create tasks
-        const mockTasks = generateMockTasks(projectId, 8).map(t => ({
-          ...t,
+        const mockTasks = generateMockTasks(projectId, 8).map(task => ({
+          ...task,
           assigneeId: faker.helpers.arrayElement(projectTeamIds),
         }));
         for (const task of mockTasks) {

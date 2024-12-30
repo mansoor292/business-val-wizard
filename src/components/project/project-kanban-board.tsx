@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Task } from 'src/lib/data/types';
+import { Task } from 'src/lib/data';
 import { Card } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';

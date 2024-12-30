@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "src/components/ui/card";
 import { Badge } from "src/components/ui/badge";
-import { TeamMember } from "src/lib/data/types";
+import { TeamMember } from "src/lib/data";
 
 interface UserProfileCardProps {
   member: TeamMember;

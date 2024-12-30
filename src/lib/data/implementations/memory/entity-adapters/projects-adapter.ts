@@ -1,5 +1,5 @@
-import { BaseMemoryAdapter } from '../base-memory-adapter';
-import { Project, ProjectFilters, BaseEntity } from '../types';
+import { BaseMemoryAdapter } from '../base';
+import type { Project, ProjectFilters, BaseEntity } from '../../../interface';
 
 export class ProjectsAdapter extends BaseMemoryAdapter<Project> {
   constructor(private teamIds: string[]) {

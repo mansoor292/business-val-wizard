@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BaseEntity } from "../types";
+import { BaseEntity } from "./base";
 
 // Participant can be either an Agent or a TeamMember
 export const participantTypeSchema = z.enum(['AGENT', 'TEAM_MEMBER']);
@@ -16,7 +16,7 @@ export const chatSchema = z.object({
 export type Chat = z.infer<typeof chatSchema> & BaseEntity;
 
 // Message Schema (unified for both agent and team member chats)
-export const messageSchema = z.object({
+export const chatMessageSchema = z.object({
   chatId: z.string(),
   content: z.string(),
   sender: z.enum(['USER', 'PARTICIPANT']),
@@ -24,7 +24,7 @@ export const messageSchema = z.object({
   metadata: z.record(z.any()).optional(), // For any additional data specific to agent or team member messages
 });
 
-export type Message = z.infer<typeof messageSchema> & BaseEntity;
+export type ChatMessage = z.infer<typeof chatMessageSchema> & BaseEntity;
 
 // Chat Filters
 export interface ChatFilters {
@@ -35,8 +35,8 @@ export interface ChatFilters {
 }
 
 // Message Filters
-export interface MessageFilters {
+export interface ChatMessageFilters {
   chatId?: string;
-  sender?: Message['sender'];
+  sender?: ChatMessage['sender'];
   dateRange?: { start: Date; end: Date };
 }

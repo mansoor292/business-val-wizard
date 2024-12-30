@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, Project, ProjectFilters, BaseEntity } from '../../types';
+import { DataAdapter, Project, ProjectFilters, BaseEntity } from '../../interface';
 import { useTaskOperations } from './tasks';
 import { useDocumentOperations } from './documents';
 import { useCommentOperations } from './comments';

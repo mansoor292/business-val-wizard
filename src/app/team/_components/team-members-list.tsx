@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useData } from "src/lib/data/context";
-import { TeamMember } from "src/lib/data/types";
+import { TeamMember } from "src/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "src/components/ui/tabs";
 import { Button } from "src/components/ui/button";
 import { Plus } from "lucide-react";

@@ -1,4 +1,4 @@
-import { Agent, Message } from '../data/types';
+import { Agent, Message } from '../data/interface';
 
 export const messages: Message[] = [
   {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, Document, DocumentFilters, BaseEntity } from '../../types';
+import { DataAdapter, Document, DocumentFilters, BaseEntity } from '../../interface';
 
 export function useDocumentOperations(adapter: DataAdapter) {
   // Initialize with empty array to prevent undefined

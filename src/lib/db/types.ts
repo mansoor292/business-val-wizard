@@ -15,8 +15,35 @@ export type Task = InferModel<typeof schema.tasks>;
 export type Document = InferModel<typeof schema.documents>;
 export type Comment = InferModel<typeof schema.comments>;
 export type TeamMember = InferModel<typeof schema.teamMembers>;
+export type Chat = InferModel<typeof schema.chats>;
+export type Message = InferModel<typeof schema.messages>;
+
+export interface ChatFilters {
+  participantType?: 'AGENT' | 'TEAM_MEMBER';
+  participantId?: string;
+  status?: 'ACTIVE' | 'ARCHIVED';
+  searchTerm?: string;
+}
+
+export interface MessageFilters {
+  chatId?: string;
+  sender?: 'USER' | 'PARTICIPANT';
+  dateRange?: { start: Date; end: Date };
+}
 
 export interface DataAdapter {
+  // Chat Operations
+  getChat(id: string): Promise<Chat>;
+  listChats(filters?: ChatFilters): Promise<Chat[]>;
+  createChat(data: Omit<Chat, keyof BaseEntity>): Promise<Chat>;
+  updateChat(id: string, data: Partial<Chat>): Promise<Chat>;
+
+  // Message Operations
+  getMessage(id: string): Promise<Message>;
+  listMessages(filters?: MessageFilters): Promise<Message[]>;
+  createMessage(data: Omit<Message, keyof BaseEntity>): Promise<Message>;
+  updateMessage(id: string, data: Partial<Message>): Promise<Message>;
+
   initialize(): Promise<void>;
   
   getValueProposition(id: string): Promise<ValueProposition>;

@@ -1,5 +1,5 @@
-import { BaseMemoryAdapter } from '../base-memory-adapter';
-import { ValueProposition, ValuePropositionFilters } from '../types';
+import { BaseMemoryAdapter } from '../base';
+import type { ValueProposition, ValuePropositionFilters, BaseEntity } from '../../../interface';
 
 export class ValuePropositionsAdapter extends BaseMemoryAdapter<ValueProposition> {
   async list(filters?: ValuePropositionFilters): Promise<ValueProposition[]> {

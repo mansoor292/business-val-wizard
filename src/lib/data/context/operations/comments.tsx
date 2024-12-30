@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, Comment, CommentFilters, BaseEntity } from '../../types';
+import { DataAdapter, Comment, CommentFilters, BaseEntity } from '../../interface';
 
 export function useCommentOperations(adapter: DataAdapter) {
   const [comments, setComments] = useState<Comment[]>([]);

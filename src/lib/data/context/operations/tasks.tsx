@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { DataAdapter, Task, TaskFilters, BaseEntity } from '../../types';
+import { DataAdapter, Task, TaskFilters, BaseEntity } from '../../interface';
 
 export function useTaskOperations(adapter: DataAdapter) {
   // Initialize with empty array to prevent undefined

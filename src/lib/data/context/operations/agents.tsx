@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from 'react';
-import { Agent, Message } from "../../types";
+import { Agent, Message } from "../../interface";
 import { agents as mockAgents, messages as mockMessages } from "src/lib/mock/agent-data";
 
 export function useAgentOperations() {

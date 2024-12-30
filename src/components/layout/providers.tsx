@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "src/lib/auth/auth-context";
 import { ThemeProvider } from "next-themes";
 import { DataProvider } from "src/lib/data/context";
-import { MemoryAdapter } from "src/lib/data/memory-adapter";
+import { MemoryAdapter } from "src/lib/data";
 
 // Create a single instance of the adapter for the entire app
 const dataAdapter = new MemoryAdapter();

@@ -12,7 +12,7 @@ import { useDocumentOperations } from './operations/documents';
 import { useCommentOperations } from './operations/comments';
 import { useTeamMemberOperations } from './operations/team-members';
 import { useAgentOperations } from './operations/agents';
-import { Chat, Message, ParticipantType } from '../types/chat';
+import type { Chat, ChatMessage, ParticipantType } from '../interface';
 
 // Mock responses for agents and team members
 const getMockResponse = (participantType: ParticipantType, message: string) => {
@@ -42,7 +42,7 @@ export function DataProvider({ children, adapter }: DataProviderProps) {
   
   // Initialize state
   const [chats, setChats] = useState<Chat[]>([]);
-  const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
   
   const valuePropositionOps = useValuePropositionOperations(adapter);
@@ -136,7 +136,7 @@ export function DataProvider({ children, adapter }: DataProviderProps) {
       ? "Hello! I'm your AI assistant. How can I help you today?"
       : "Hi there! Feel free to leave me a message and I'll get back to you.";
 
-    const initialMessage: Message = {
+    const initialMessage: ChatMessage = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       chatId: newChat.id,
       content: welcomeMessage,
@@ -194,7 +194,7 @@ export function DataProvider({ children, adapter }: DataProviderProps) {
   }, [chatMessages]);
 
   // Helper function for atomic state updates
-  const updateChatAndMessages = useCallback((chatId: string, newMessage: Message) => {
+  const updateChatAndMessages = useCallback((chatId: string, newMessage: ChatMessage) => {
     setChatMessages(prev => [...prev, newMessage]);
     setChats(prev => prev.map(c => 
       c.id === chatId 
@@ -203,13 +203,13 @@ export function DataProvider({ children, adapter }: DataProviderProps) {
     ));
   }, []);
 
-  const sendChatMessage = useCallback(async (chatId: string, content: string, sender: Message['sender'], participantType?: ParticipantType) => {
+  const sendChatMessage = useCallback(async (chatId: string, content: string, sender: ChatMessage['sender'], participantType?: ParticipantType) => {
     const chat = chats.find(c => c.id === chatId);
     if (!chat) {
       throw new Error(`Chat not found: ${chatId}`);
     }
 
-    const newMessage: Message = {
+    const newMessage: ChatMessage = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       chatId,
       content,
@@ -224,7 +224,7 @@ export function DataProvider({ children, adapter }: DataProviderProps) {
 
     // Generate mock response if this was a user message
     if (sender === 'USER') {
-      const responseMessage: Message = {
+      const responseMessage: ChatMessage = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
         chatId,
         content: getMockResponse(chat.participantType, content),

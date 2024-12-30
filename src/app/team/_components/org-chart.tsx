@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
-import { TeamMember, TeamMember as BaseTeamMember } from "src/lib/data/types";
+import { TeamMember } from "src/lib/data";
 import { Button } from "src/components/ui/button";
 import { MessageCircle, Plus } from "lucide-react";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
@@ -10,12 +10,12 @@ import { TeamMemberCard } from "./team-member-card";
 import { ChirpView } from "src/components/chat/chirp-view";
 
 interface OrgChartProps {
-  teamMembers: BaseTeamMember[];
+  teamMembers: TeamMember[];
   onAddMember?: (member: Omit<TeamMember, "id" | "createdAt" | "updatedAt">) => void;
 }
 
 // Extend TeamMember type to include reports for hierarchy
-interface TeamMemberNode extends BaseTeamMember {
+interface TeamMemberNode extends TeamMember {
   reports?: TeamMemberNode[];
 }
 
@@ -27,13 +27,13 @@ interface OrgChartNodeProps {
 }
 
 // Build the reporting hierarchy using a top-down approach
-function buildHierarchy(members: BaseTeamMember[]): TeamMemberNode | null {
+function buildHierarchy(members: TeamMember[]): TeamMemberNode | null {
   // Find the root member (no reportsTo)
   const rootMember = members.find(m => !m.reportsTo);
   if (!rootMember) return null;
 
   // Helper function to recursively build the hierarchy
-  function buildNode(member: BaseTeamMember, availableMembers: BaseTeamMember[]): TeamMemberNode {
+  function buildNode(member: TeamMember, availableMembers: TeamMember[]): TeamMemberNode {
     // Create node with reports array
     const node: TeamMemberNode = {
       ...member,

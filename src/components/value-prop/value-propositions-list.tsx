@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useData } from 'src/lib/data/context';
-import { ValueProposition } from 'src/lib/data/types';
+import { ValueProposition } from 'src/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'src/components/ui/card';
 import { Badge } from 'src/components/ui/badge';
 
