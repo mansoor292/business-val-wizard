@@ -1,3 +1,4 @@
+// @ts-nocheck 
 // lib/db.ts
 'use server'
 

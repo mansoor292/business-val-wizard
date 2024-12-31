@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useData } from 'src/lib/data/context';
+import { getProjects } from 'src/app/actions/projects';
+import type { Project } from 'src/lib/graphql/generated/graphql';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { CreateProjectDialog } from './create-project-dialog';
@@ -9,16 +10,23 @@ import { format } from 'date-fns';
 
 export function ProjectList() {
   const [isLoading, setIsLoading] = useState(true);
-  const { projects, loadProject, loadAllProjects, selectedProjectId } = useData();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+
+  const loadProjects = async () => {
+    setIsLoading(true);
+    const data = await getProjects();
+    setProjects(data);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    const loadProjects = async () => {
-      setIsLoading(true);
-      await loadAllProjects();
-      setIsLoading(false);
-    };
     loadProjects();
-  }, [loadAllProjects]);
+  }, []);
+
+  const handleProjectSelect = async (projectId: string) => {
+    setSelectedProjectId(projectId);
+  };
 
   if (isLoading) {
     return (
@@ -45,7 +53,7 @@ export function ProjectList() {
             <p className="text-muted-foreground">
               Get started by creating your first project to manage tasks and documents.
             </p>
-            <CreateProjectDialog />
+            <CreateProjectDialog onSuccess={loadProjects} />
           </div>
         </Card>
       </div>
@@ -75,7 +83,7 @@ export function ProjectList() {
           className={`p-4 cursor-pointer hover:shadow-md transition-shadow ${
             project.id === selectedProjectId ? 'border-2 border-primary' : ''
           }`}
-          onClick={() => loadProject(project.id)}
+          onClick={() => handleProjectSelect(project.id)}
         >
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">

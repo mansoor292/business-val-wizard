@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from "src/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollArea } from "src/components/ui/scroll-area";
 import { 
   Plus, 
@@ -10,8 +10,15 @@ import {
   Bot,
   User
 } from "lucide-react";
-import { useData } from "src/lib/data/context";
-import { ParticipantType } from "src/lib/data";
+import { getAgents } from "src/app/actions/agents";
+import { getTeamMembers } from "src/app/actions/team-members";
+import { getChats } from "src/app/actions/chats";
+import type { Agent, TeamMember, Chat } from "src/lib/graphql/generated/graphql";
+
+enum ParticipantType {
+  AGENT = 'AGENT',
+  TEAM_MEMBER = 'TEAM_MEMBER'
+}
 import { AddTeamChatDropdown } from "src/components/chat/add-team-chat-dropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 
@@ -27,14 +34,26 @@ export function Sidebar({
   selectedType = ParticipantType.AGENT,
   onParticipantSelect 
 }: SidebarProps) {
-  const { agents, teamMembers, chats, listChats } = useData();
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [chats, setChats] = useState<Chat[]>([]);
 
   useEffect(() => {
-    listChats();
-  }, [listChats]);
+    const loadData = async () => {
+      const [agentsData, teamMembersData, chatsData] = await Promise.all([
+        getAgents(),
+        getTeamMembers(),
+        getChats()
+      ]);
+      setAgents(agentsData || []);
+      setTeamMembers(teamMembersData || []);
+      setChats(chatsData || []);
+    };
+    loadData();
+  }, []);
 
   // Filter chats to get only team member chats
-  const teamChats = chats?.filter(chat => chat.participantType === ParticipantType.TEAM_MEMBER) || [];
+  const teamChats = chats?.filter((chat: Chat) => chat.participantType === ParticipantType.TEAM_MEMBER) || [];
 
   return (
     <div className="w-64 flex flex-col bg-background border-r border-border">
@@ -75,8 +94,8 @@ export function Sidebar({
             
             {/* Team Members List */}
             <div className="space-y-1 mb-6">
-              {teamChats.map((chat) => {
-                const member = teamMembers?.find(m => m.id === chat.participantId);
+              {teamChats.map((chat: Chat) => {
+                const member = teamMembers?.find((m: TeamMember) => m.id === chat.participantId);
                 if (!member) return null;
                 
                 return (
@@ -89,7 +108,7 @@ export function Sidebar({
                         : 'text-muted-foreground hover:bg-accent'}`}
                   >
                     <Avatar className="h-6 w-6 mr-2">
-                      <AvatarImage src={member.avatar} />
+                      <AvatarImage src={member.avatar || ''} />
                       <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <span className="text-sm">{member.name}</span>
@@ -114,7 +133,7 @@ export function Sidebar({
             
             {/* Agent List */}
             <div className="space-y-1">
-              {agents.map((agent) => (
+              {agents.map((agent: Agent) => (
                 <button
                   key={agent.id}
                   onClick={() => onParticipantSelect?.(agent.id, ParticipantType.AGENT)}

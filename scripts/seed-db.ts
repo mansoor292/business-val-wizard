@@ -1,3 +1,4 @@
+//@ts-ignore
 import { db } from '../src/lib/data/implementations/drizzle/db';
 import manufacturingData from '../src/lib/data/implementations/drizzle/seed/manufacturing.json';
 import * as schema from '../src/lib/data/implementations/drizzle/schema/schema';

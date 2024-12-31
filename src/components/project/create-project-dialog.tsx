@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useToast } from 'src/hooks/use-toast';
-import { useData } from 'src/lib/data/context';
+import { createProject } from 'src/app/actions/projects';
+import type { CreateProjectInput } from 'src/lib/graphql/generated/graphql';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
@@ -22,8 +23,11 @@ import {
   PopoverTrigger,
 } from '../ui/popover';
 
-export function CreateProjectDialog() {
-  const { createProject, loadProject } = useData();
+interface CreateProjectDialogProps {
+  onSuccess?: () => void;
+}
+
+export function CreateProjectDialog({ onSuccess }: CreateProjectDialogProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,17 +43,19 @@ export function CreateProjectDialog() {
 
     setIsSubmitting(true);
     try {
-      const projectData = {
-        name: formData.name,
-        description: formData.description,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        status: 'ACTIVE' as const,
-        teamIds: [],
+      const projectData: CreateProjectInput = {
+        project: {
+          name: formData.name,
+          description: formData.description,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          status: 'ACTIVE',
+          teamIds: []
+        }
       };
       
-      const newProject = await createProject(projectData);
-      await loadProject(newProject.id);
+      await createProject(projectData);
+      onSuccess?.();
       toast({
         title: "Project created",
         description: `Successfully created project "${formData.name}"`,

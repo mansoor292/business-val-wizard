@@ -1,18 +1,18 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useData } from 'src/lib/data/context';
-import { ValueProposition } from 'src/lib/data';
+import { getValuePropositions } from 'src/app/actions/value-propositions';
+import type { ValueProposition } from 'src/lib/graphql/generated/graphql';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'src/components/ui/card';
 import { Badge } from 'src/components/ui/badge';
 
 
 export function ValuePropositionsList() {
-  const { valuePropositions, listValuePropositions } = useData();
+  const [valuePropositions, setValuePropositions] = useState<ValueProposition[]>([]);
 
   useEffect(() => {
-    listValuePropositions();
-  }, [listValuePropositions]);
+    getValuePropositions().then(setValuePropositions);
+  }, []);
 
   function getImpactColor(impact: ValueProposition['impact']) {
     switch (impact) {

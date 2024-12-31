@@ -1,26 +1,32 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useData } from 'src/lib/data/context';
+import { getProjects, getProject } from 'src/app/actions/projects';
+import type { Project } from 'src/lib/graphql/generated/graphql';
 import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
 import { Loader2 } from 'lucide-react';
 import { CreateProjectDialog } from './create-project-dialog';
 
-export function ProjectSidebar() {
-  const { projects, selectedProjectId, loadProject, loadAllProjects } = useData();
-  const [loadingProjectId, setLoadingProjectId] = useState<string | null>(null);
+interface ProjectSidebarProps {
+  projects: Project[];
+  selectedProjectId: string | null;
+  onProjectSelect: (projectId: string) => void;
+  onRefresh: () => void;
+}
 
-  useEffect(() => {
-    loadAllProjects();
-  }, [loadAllProjects]);
+export function ProjectSidebar({ projects, selectedProjectId, onProjectSelect, onRefresh }: ProjectSidebarProps) {
+  const [loadingProjectId, setLoadingProjectId] = useState<string | null>(null);
 
   const handleProjectClick = async (projectId: string) => {
     if (loadingProjectId || projectId === selectedProjectId) return;
     
     setLoadingProjectId(projectId);
     try {
-      await loadProject(projectId);
+      const project = await getProject(projectId);
+      if (project) {
+        onProjectSelect(projectId);
+      }
     } catch (error) {
       console.error('Error loading project:', error);
     } finally {
@@ -35,7 +41,7 @@ export function ProjectSidebar() {
         <div className="flex items-center">
           <span className="font-semibold">Projects</span>
         </div>
-        <CreateProjectDialog />
+        <CreateProjectDialog onSuccess={onRefresh} />
       </div>
 
       {/* Projects List */}

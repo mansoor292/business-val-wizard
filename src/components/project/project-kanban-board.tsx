@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Task, TaskStatus } from 'src/lib/data';
+import type { Task } from 'src/lib/graphql/generated/graphql';
 import { Card } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 interface KanbanColumnProps {
   title: string;
   tasks: Task[];
-  onTaskDrop: (taskId: string, newStatus: Task['status']) => Promise<void>;
+  onTaskDrop: (taskId: string, newStatus: string) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -19,7 +19,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, tasks, onTaskDrop, i
     e.preventDefault();
   };
 
-  const handleDrop = async (e: React.DragEvent, status: Task['status']) => {
+  const handleDrop = async (e: React.DragEvent, status: string) => {
     e.preventDefault();
     const taskId = e.dataTransfer.getData('taskId');
     await onTaskDrop(taskId, status);
@@ -29,7 +29,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, tasks, onTaskDrop, i
     <div 
       className={`flex flex-col gap-4 min-w-[300px] bg-secondary/20 p-4 rounded-lg ${isLoading ? 'opacity-50' : ''}`}
       onDragOver={handleDragOver}
-      onDrop={(e) => handleDrop(e, title as Task['status'])}
+      onDrop={(e) => handleDrop(e, title)}
     >
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-lg">{title}</h3>
@@ -94,7 +94,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, disabled }) => {
 interface ProjectKanbanBoardProps {
   projectId: string;
   tasks: Task[];
-  onTaskStatusChange: (taskId: string, newStatus: Task['status']) => Promise<void>;
+  onTaskStatusChange: (taskId: string, newStatus: string) => Promise<void>;
 }
 
 const ProjectKanbanBoard: React.FC<ProjectKanbanBoardProps> = ({
@@ -102,18 +102,13 @@ const ProjectKanbanBoard: React.FC<ProjectKanbanBoardProps> = ({
   onTaskStatusChange,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const columns: TaskStatus[] = [
-    TaskStatus.TODO,
-    TaskStatus.IN_PROGRESS,
-    TaskStatus.REVIEW,
-    TaskStatus.DONE
-  ];
+  const columns = ['TODO', 'IN_PROGRESS', 'REVIEW', 'DONE'] as const;
 
-  const getTasksByStatus = (status: Task['status']) => {
+  const getTasksByStatus = (status: string) => {
     return tasks.filter((task) => task.status === status);
   };
 
-  const handleTaskDrop = async (taskId: string, newStatus: Task['status']) => {
+  const handleTaskDrop = async (taskId: string, newStatus: string) => {
     setIsLoading(true);
     try {
       await onTaskStatusChange(taskId, newStatus);

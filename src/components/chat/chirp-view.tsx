@@ -5,8 +5,16 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { cn } from "src/lib/utils";
-import { useData } from "src/lib/data/context";
-import { ParticipantType, Agent, TeamMember } from "src/lib/data";
+import { createChatMessage, getChats, getChatMessages } from "src/app/actions/chats";
+import { getAgents } from "src/app/actions/agents";
+import { getTeamMembers } from "src/app/actions/team-members";
+import type { Chat, ChatMessage, Agent, TeamMember } from "src/lib/graphql/generated/graphql";
+
+export enum ParticipantType {
+  AGENT = 'AGENT',
+  TEAM_MEMBER = 'TEAM_MEMBER'
+}
+
 
 interface ChirpViewProps {
   participantId: string;
@@ -14,43 +22,76 @@ interface ChirpViewProps {
 }
 
 export function ChirpView({ participantId, participantType }: ChirpViewProps) {
-  const { 
-    activeChat,
-    chatMessages: contextMessages,
-    sendChatMessage,
-    agents,
-    teamMembers 
-  } = useData();
-  
   const [messageInput, setMessageInput] = useState("");
+  const [activeChat, setActiveChat] = useState<string | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Load agents and team members
+  useEffect(() => {
+    const loadParticipants = async () => {
+      const [agentsData, teamMembersData] = await Promise.all([
+        getAgents(),
+        getTeamMembers()
+      ]);
+      setAgents(agentsData || []);
+      setTeamMembers(teamMembersData || []);
+    };
+    loadParticipants();
+  }, []);
+
+  useEffect(() => {
+    const loadChat = async () => {
+      const chats = await getChats();
+      const chat = chats.find(c => 
+        c.participantId === participantId && 
+        c.participantType === participantType
+      );
+      if (chat) {
+        setActiveChat(chat.id);
+        const chatMessages = await getChatMessages();
+        setMessages(chatMessages.filter(m => m.chatId === chat.id));
+      }
+    };
+    loadChat();
+  }, [participantId, participantType]);
 
   // Get participant details
   const participant = participantType === 'AGENT' 
     ? agents?.find(a => a.id === participantId)
     : teamMembers?.find(t => t.id === participantId);
 
-  // Get current chat messages
-  const currentMessages = activeChat 
-    ? contextMessages.filter(m => m.chatId === activeChat)
-    : [];
-
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [currentMessages]);
+  }, [messages]);
 
   const handleSendMessage = async () => {
     if (!messageInput.trim() || !activeChat) return;
 
-    // Send message and let context handle the response
-    await sendChatMessage(activeChat, messageInput, 'USER', participantType);
+    const result = await createChatMessage({
+      chatMessage: {
+        chatId: activeChat,
+        content: messageInput,
+        sender: 'USER',
+        timestamp: new Date(),
+      }
+    });
+
+    if (result) {
+      setMessages(prev => [...prev, {
+        ...result,
+        chatId: activeChat
+      }]);
+    }
     setMessageInput("");
   };
 
   if (!participant) return null;
 
-  const showWelcomeScreen = currentMessages.length === 0;
+  const showWelcomeScreen = messages.length === 0;
 
   return (
     <div className="flex-1 flex flex-col bg-background relative">
@@ -110,7 +151,7 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
               </p>
             </div>
           ) : (
-            currentMessages.map((message) => (
+            messages.map((message) => (
               <div
                 key={message.id}
                 className={cn(

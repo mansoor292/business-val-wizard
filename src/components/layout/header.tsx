@@ -5,7 +5,7 @@ import { useAuth } from "src/lib/auth/auth-context"
 import { Button } from "src/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar"
 import { useTheme } from "next-themes"
-import { TeamMember } from "src/lib/data/interface/entities"
+import type { TeamMember } from "src/lib/graphql/generated/graphql"
 import { 
   Home,
   MessageCircle,

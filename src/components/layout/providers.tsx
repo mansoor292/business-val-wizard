@@ -3,12 +3,6 @@
 import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "src/lib/auth/auth-context";
 import { ThemeProvider } from "next-themes";
-import { DataProvider } from "src/lib/data/context";
-import { DrizzleClientAdapter } from "src/lib/data/implementations/drizzle/client-adapter";
-
-// Create a single instance of the client adapter
-const dataAdapter = new DrizzleClientAdapter();
-
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider 
@@ -24,9 +18,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           enableSystem
           disableTransitionOnChange
         >
-          <DataProvider adapter={dataAdapter}>
-            {children}
-          </DataProvider> 
+          {children}
         </ThemeProvider>
       </AuthProvider>
     </SessionProvider>

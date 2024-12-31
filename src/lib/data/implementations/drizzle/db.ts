@@ -1,7 +1,6 @@
 import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import * as schema from './schema/schema';
-import { DrizzleAdapter } from './drizzle-adapter';
 
 class Database {
   private static instance: Database;
@@ -34,5 +33,5 @@ class Database {
 export const getDatabase = () => Database.getInstance().getDb();
 
 export async function initializeDb() {
-  return new DrizzleAdapter(getDatabase());
+  return getDatabase();
 }

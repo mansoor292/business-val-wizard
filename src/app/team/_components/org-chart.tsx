@@ -2,12 +2,12 @@
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
-import { TeamMember, ParticipantType } from "src/lib/data";
+import type { TeamMember } from "src/lib/graphql/generated/graphql";
 import { Button } from "src/components/ui/button";
 import { MessageCircle, Plus } from "lucide-react";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
 import { TeamMemberCard } from "./team-member-card";
-import { ChirpView } from "src/components/chat/chirp-view";
+import { ChirpView, ParticipantType } from "src/components/chat/chirp-view";
 
 interface OrgChartProps {
   teamMembers: TeamMember[];
@@ -41,11 +41,11 @@ function buildHierarchy(members: TeamMember[]): TeamMemberNode | null {
     };
 
     // Find all direct reports
-    const directReports = availableMembers.filter(m => m.reportsTo === member.email);
+    const directReports = availableMembers.filter(m => m.reportsTo === member.id);
     
     // Remove these members from available pool and process them
     directReports.forEach(report => {
-      const reportIndex = availableMembers.findIndex(m => m.email === report.email);
+      const reportIndex = availableMembers.findIndex(m => m.id === report.id);
       if (reportIndex !== -1) {
         // Remove the member from available pool
         const [reportMember] = availableMembers.splice(reportIndex, 1);
@@ -319,7 +319,7 @@ export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
             overflow: 'auto'
           }}
         >
-          <ChirpView participantId={chatMember.id} participantType={ParticipantType.TEAM_MEMBER} />
+          <ChirpView participantId={chatMember.id} participantType={ParticipantType.TEAM_MEMBER}/>
         </div>
       )}
     </div>

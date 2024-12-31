@@ -2,7 +2,7 @@
 
 import { useAuth } from "src/lib/auth/auth-context";
 import { Button } from "src/components/ui/button";
-import { TeamMember } from "src/lib/data/interface/entities";
+import type { TeamMember } from "src/lib/graphql/generated/graphql";
 
 export default function ProtectedContent() {
   const { user, logout } = useAuth();

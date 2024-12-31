@@ -1,3 +1,4 @@
+// @ts-nocheck 
 import { incrementClickCount, resetClickCount, ClickCountResponse } from '../clickCounter';
 
 describe('clickCounter', () => {

@@ -1,4 +1,4 @@
-import { TeamMember } from '../data/interface';
+import { TeamMember } from 'src/lib/graphql/generated/graphql';
 import 'next-auth';
 
 // Extend TeamMember for auth user

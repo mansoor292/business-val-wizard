@@ -3,19 +3,28 @@
 import { useState, useEffect } from "react";
 import { Sidebar } from "src/components/layout/sidebar";
 import { ChirpView } from "src/components/chat/chirp-view";
-import { useData } from "src/lib/data/context";
-import { ParticipantType } from "src/lib/data";
+import { createChat } from "src/app/actions/chats";
+
+enum ParticipantType {
+  AGENT = 'AGENT',
+  TEAM_MEMBER = 'TEAM_MEMBER'
+}
 
 export function ChirpContainer() {
   const [selectedParticipant, setSelectedParticipant] = useState('sales');
   const [selectedType, setSelectedType] = useState<ParticipantType>(ParticipantType.AGENT);
 
-  const { initializeChat } = useData();
-
   const handleParticipantSelect = async (id: string, type: ParticipantType) => {
     setSelectedParticipant(id);
     setSelectedType(type);
-    await initializeChat(id, type);
+    await createChat({
+      chat: {
+        participantId: id,
+        participantType: type,
+        lastMessageAt: new Date(),
+        status: 'active'
+      }
+    });
   };
 
   return (

@@ -1,21 +1,26 @@
 'use client';
 
-import { useData } from "src/lib/data/context";
+import { getTeamMembers } from "src/app/actions/team-members";
+import type { TeamMember } from "src/lib/graphql/generated/graphql";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "src/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import { Plus } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface AddTeamChatDropdownProps {
   onSelect: (memberId: string) => void;
 }
 
 export function AddTeamChatDropdown({ onSelect }: AddTeamChatDropdownProps) {
-  const { teamMembers, listTeamMembers } = useData();
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   useEffect(() => {
-    listTeamMembers();
-  }, [listTeamMembers]);
+    const loadTeamMembers = async () => {
+      const members = await getTeamMembers();
+      setTeamMembers(members || []);
+    };
+    loadTeamMembers();
+  }, []);
 
   return (
     <DropdownMenu>
@@ -28,14 +33,14 @@ export function AddTeamChatDropdown({ onSelect }: AddTeamChatDropdownProps) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        {teamMembers?.map((member) => (
+        {teamMembers?.map((member: TeamMember) => (
           <DropdownMenuItem
             key={member.id}
             onClick={() => onSelect(member.id)}
             className="flex items-center gap-2 cursor-pointer"
           >
             <Avatar className="h-6 w-6">
-              <AvatarImage src={member.avatar} />
+              <AvatarImage src={member.avatar || ''} />
               <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <span>{member.name}</span>

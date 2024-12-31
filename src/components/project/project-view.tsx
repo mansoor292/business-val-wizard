@@ -5,14 +5,21 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
 import { Card } from '../ui/card';
 import ProjectKanbanBoard from './project-kanban-board';
-import { Project, Task, Document } from 'src/lib/data';
+import type { Project, Task } from 'src/lib/graphql/generated/graphql';
+
+interface Document {
+  id: string;
+  title: string;
+  type: string;
+  projectId: string;
+}
 
 interface ProjectViewProps {
   selectedProjectId: string | null;
   projects: Project[];
   tasks: Task[];
   documents: Document[];
-  onTaskStatusChange: (taskId: string, newStatus: Task['status']) => Promise<void>;
+  onTaskStatusChange: (taskId: string, newStatus: string) => Promise<void>;
 }
 
 export function ProjectView({ selectedProjectId, projects, tasks, documents, onTaskStatusChange }: ProjectViewProps) {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useData } from "src/lib/data/context";
-import { TeamMember } from "src/lib/data";
+import { getTeamMembers, createTeamMember } from "src/app/actions/team-members";
+import type { TeamMember, CreateTeamMemberInput } from "src/lib/graphql/generated/graphql";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "src/components/ui/tabs";
 import { Button } from "src/components/ui/button";
 import { Plus } from "lucide-react";
@@ -11,28 +11,46 @@ import { OrgChart } from "./org-chart";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
 
 export function TeamMembersList() {
-  const { teamMembers, listTeamMembers, createTeamMember } = useData();
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
+  const loadTeamMembers = async () => {
+    const data = await getTeamMembers();
+    setTeamMembers(data);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    if (!hasLoaded && (!teamMembers || teamMembers.length === 0)) {
-      listTeamMembers();
-      setHasLoaded(true);
-    }
-  }, [hasLoaded, teamMembers, listTeamMembers]);
+    loadTeamMembers();
+  }, []);
 
   const handleAddMember = async (member: Omit<TeamMember, "id" | "createdAt" | "updatedAt">) => {
     try {
-      await createTeamMember(member);
-      await listTeamMembers(); // Refresh the list
+      const input: CreateTeamMemberInput = {
+        teamMember: {
+          name: member.name,
+          role: member.role,
+          email: member.email,
+          department: member.department,
+          reportsTo: member.reportsTo,
+          avatar: member.avatar,
+          skills: member.skills
+        }
+      };
+      await createTeamMember(input);
+      await loadTeamMembers(); // Refresh the list
     } catch (error) {
       console.error('Failed to create team member:', error);
     }
   };
 
-  if (!teamMembers || teamMembers.length === 0) {
+  if (isLoading) {
     return <div>Loading team members...</div>;
+  }
+
+  if (teamMembers.length === 0) {
+    return <div>No team members found.</div>;
   }
 
   return (

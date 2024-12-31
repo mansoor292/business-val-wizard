@@ -1,0 +1,138 @@
+/* eslint-disable */
+import * as types from './graphql';
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+
+/**
+ * Map of all GraphQL operations in the project.
+ *
+ * This map has several performance disadvantages:
+ * 1. It is not tree-shakeable, so it will include all operations in the project.
+ * 2. It is not minifiable, so the string of a GraphQL query will be multiple times inside the bundle.
+ * 3. It does not support dead code elimination, so it will add unused operations.
+ *
+ * Therefore it is highly recommended to use the babel or swc plugin for production.
+ * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
+ */
+const documents = {
+    "\n  query GetAgents {\n    agents {\n      id\n      name\n      handle\n      status\n    }\n  }\n": types.GetAgentsDocument,
+    "\n  query GetAgent($id: UUID!) {\n    agent(id: $id) {\n      id\n      name\n      handle\n      status\n    }\n  }\n": types.GetAgentDocument,
+    "\n  mutation CreateAgent($input: CreateAgentInput!) {\n    createAgent(input: $input) {\n      agent {\n        id\n        name\n        handle\n        status\n      }\n    }\n  }\n": types.CreateAgentDocument,
+    "\n  mutation UpdateAgentStatus($input: UpdateAgentInput!) {\n    updateAgent(input: $input) {\n      agent {\n        id\n        status\n      }\n    }\n  }\n": types.UpdateAgentStatusDocument,
+    "\n  query GetChats {\n    chats {\n      id\n      participantId\n      participantType\n      lastMessageAt\n      status\n    }\n  }\n": types.GetChatsDocument,
+    "\n  query GetChatMessages {\n    chatMessages {\n      id\n      chatId\n      content\n      sender\n      timestamp\n      metadata\n    }\n  }\n": types.GetChatMessagesDocument,
+    "\n  mutation CreateChat($input: CreateChatInput!) {\n    createChat(input: $input) {\n      chat {\n        id\n        participantId\n        participantType\n        lastMessageAt\n        status\n      }\n    }\n  }\n": types.CreateChatDocument,
+    "\n  mutation CreateChatMessage($input: CreateChatMessageInput!) {\n    createChatMessage(input: $input) {\n      chatMessage {\n        id\n        content\n        sender\n        timestamp\n        metadata\n      }\n    }\n  }\n": types.CreateChatMessageDocument,
+    "\n  query GetDocuments {\n    documents {\n      id\n      title\n      type\n      projectId\n    }\n  }\n": types.GetDocumentsDocument,
+    "\n  query GetProjects {\n    projects {\n      id\n      name\n      description\n      status\n      startDate\n      endDate\n      teamIds\n    }\n  }\n": types.GetProjectsDocument,
+    "\n  query GetProject($id: UUID!) {\n    project(id: $id) {\n      id\n      name\n      description\n      status\n      startDate\n      endDate\n      teamIds\n    }\n  }\n": types.GetProjectDocument,
+    "\n  mutation CreateProject($input: CreateProjectInput!) {\n    createProject(input: $input) {\n      project {\n        id\n        name\n        description\n        status\n        startDate\n        endDate\n        teamIds\n      }\n    }\n  }\n": types.CreateProjectDocument,
+    "\n  query GetProjectTasks {\n    tasks {\n      id\n      title\n      description\n      status\n      assigneeId\n      dueDate\n      priority\n      projectId\n    }\n  }\n": types.GetProjectTasksDocument,
+    "\n  query GetTask($id: UUID!) {\n    task(id: $id) {\n      id\n      title\n      description\n      status\n      assigneeId\n      dueDate\n      priority\n      projectId\n    }\n  }\n": types.GetTaskDocument,
+    "\n  mutation CreateTask($input: CreateTaskInput!) {\n    createTask(input: $input) {\n      task {\n        id\n        title\n        description\n        status\n        assigneeId\n        dueDate\n        priority\n        projectId\n      }\n    }\n  }\n": types.CreateTaskDocument,
+    "\n  mutation UpdateTask($input: UpdateTaskInput!) {\n    updateTask(input: $input) {\n      task {\n        id\n        title\n        description\n        status\n        assigneeId\n        dueDate\n        priority\n        projectId\n      }\n    }\n  }\n": types.UpdateTaskDocument,
+    "\n  query GetTeamMembers {\n    teamMembers {\n      id\n      name\n      role\n      email\n      avatar\n      skills\n      department\n      reportsTo\n    }\n  }\n": types.GetTeamMembersDocument,
+    "\n  query GetTeamMember($id: UUID!) {\n    teamMember(id: $id) {\n      id\n      name\n      role\n      email\n      avatar\n      skills\n      department\n      reportsTo\n    }\n  }\n": types.GetTeamMemberDocument,
+    "\n  mutation CreateTeamMember($input: CreateTeamMemberInput!) {\n    createTeamMember(input: $input) {\n      teamMember {\n        id\n        name\n        role\n        email\n        avatar\n        skills\n        department\n        reportsTo\n      }\n    }\n  }\n": types.CreateTeamMemberDocument,
+    "\n  query GetValuePropositions {\n    valuePropositions {\n      id\n      title\n      description\n      impact\n      effort\n      confidence\n    }\n  }\n": types.GetValuePropositionsDocument,
+};
+
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ *
+ *
+ * @example
+ * ```ts
+ * const query = gql(`query GetUser($id: ID!) { user(id: $id) { name } }`);
+ * ```
+ *
+ * The query argument is unknown!
+ * Please regenerate the types.
+ */
+export function gql(source: string): unknown;
+
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetAgents {\n    agents {\n      id\n      name\n      handle\n      status\n    }\n  }\n"): (typeof documents)["\n  query GetAgents {\n    agents {\n      id\n      name\n      handle\n      status\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetAgent($id: UUID!) {\n    agent(id: $id) {\n      id\n      name\n      handle\n      status\n    }\n  }\n"): (typeof documents)["\n  query GetAgent($id: UUID!) {\n    agent(id: $id) {\n      id\n      name\n      handle\n      status\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateAgent($input: CreateAgentInput!) {\n    createAgent(input: $input) {\n      agent {\n        id\n        name\n        handle\n        status\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateAgent($input: CreateAgentInput!) {\n    createAgent(input: $input) {\n      agent {\n        id\n        name\n        handle\n        status\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateAgentStatus($input: UpdateAgentInput!) {\n    updateAgent(input: $input) {\n      agent {\n        id\n        status\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateAgentStatus($input: UpdateAgentInput!) {\n    updateAgent(input: $input) {\n      agent {\n        id\n        status\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetChats {\n    chats {\n      id\n      participantId\n      participantType\n      lastMessageAt\n      status\n    }\n  }\n"): (typeof documents)["\n  query GetChats {\n    chats {\n      id\n      participantId\n      participantType\n      lastMessageAt\n      status\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetChatMessages {\n    chatMessages {\n      id\n      chatId\n      content\n      sender\n      timestamp\n      metadata\n    }\n  }\n"): (typeof documents)["\n  query GetChatMessages {\n    chatMessages {\n      id\n      chatId\n      content\n      sender\n      timestamp\n      metadata\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateChat($input: CreateChatInput!) {\n    createChat(input: $input) {\n      chat {\n        id\n        participantId\n        participantType\n        lastMessageAt\n        status\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateChat($input: CreateChatInput!) {\n    createChat(input: $input) {\n      chat {\n        id\n        participantId\n        participantType\n        lastMessageAt\n        status\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateChatMessage($input: CreateChatMessageInput!) {\n    createChatMessage(input: $input) {\n      chatMessage {\n        id\n        content\n        sender\n        timestamp\n        metadata\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateChatMessage($input: CreateChatMessageInput!) {\n    createChatMessage(input: $input) {\n      chatMessage {\n        id\n        content\n        sender\n        timestamp\n        metadata\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetDocuments {\n    documents {\n      id\n      title\n      type\n      projectId\n    }\n  }\n"): (typeof documents)["\n  query GetDocuments {\n    documents {\n      id\n      title\n      type\n      projectId\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetProjects {\n    projects {\n      id\n      name\n      description\n      status\n      startDate\n      endDate\n      teamIds\n    }\n  }\n"): (typeof documents)["\n  query GetProjects {\n    projects {\n      id\n      name\n      description\n      status\n      startDate\n      endDate\n      teamIds\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetProject($id: UUID!) {\n    project(id: $id) {\n      id\n      name\n      description\n      status\n      startDate\n      endDate\n      teamIds\n    }\n  }\n"): (typeof documents)["\n  query GetProject($id: UUID!) {\n    project(id: $id) {\n      id\n      name\n      description\n      status\n      startDate\n      endDate\n      teamIds\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateProject($input: CreateProjectInput!) {\n    createProject(input: $input) {\n      project {\n        id\n        name\n        description\n        status\n        startDate\n        endDate\n        teamIds\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateProject($input: CreateProjectInput!) {\n    createProject(input: $input) {\n      project {\n        id\n        name\n        description\n        status\n        startDate\n        endDate\n        teamIds\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetProjectTasks {\n    tasks {\n      id\n      title\n      description\n      status\n      assigneeId\n      dueDate\n      priority\n      projectId\n    }\n  }\n"): (typeof documents)["\n  query GetProjectTasks {\n    tasks {\n      id\n      title\n      description\n      status\n      assigneeId\n      dueDate\n      priority\n      projectId\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetTask($id: UUID!) {\n    task(id: $id) {\n      id\n      title\n      description\n      status\n      assigneeId\n      dueDate\n      priority\n      projectId\n    }\n  }\n"): (typeof documents)["\n  query GetTask($id: UUID!) {\n    task(id: $id) {\n      id\n      title\n      description\n      status\n      assigneeId\n      dueDate\n      priority\n      projectId\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateTask($input: CreateTaskInput!) {\n    createTask(input: $input) {\n      task {\n        id\n        title\n        description\n        status\n        assigneeId\n        dueDate\n        priority\n        projectId\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateTask($input: CreateTaskInput!) {\n    createTask(input: $input) {\n      task {\n        id\n        title\n        description\n        status\n        assigneeId\n        dueDate\n        priority\n        projectId\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateTask($input: UpdateTaskInput!) {\n    updateTask(input: $input) {\n      task {\n        id\n        title\n        description\n        status\n        assigneeId\n        dueDate\n        priority\n        projectId\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateTask($input: UpdateTaskInput!) {\n    updateTask(input: $input) {\n      task {\n        id\n        title\n        description\n        status\n        assigneeId\n        dueDate\n        priority\n        projectId\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetTeamMembers {\n    teamMembers {\n      id\n      name\n      role\n      email\n      avatar\n      skills\n      department\n      reportsTo\n    }\n  }\n"): (typeof documents)["\n  query GetTeamMembers {\n    teamMembers {\n      id\n      name\n      role\n      email\n      avatar\n      skills\n      department\n      reportsTo\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetTeamMember($id: UUID!) {\n    teamMember(id: $id) {\n      id\n      name\n      role\n      email\n      avatar\n      skills\n      department\n      reportsTo\n    }\n  }\n"): (typeof documents)["\n  query GetTeamMember($id: UUID!) {\n    teamMember(id: $id) {\n      id\n      name\n      role\n      email\n      avatar\n      skills\n      department\n      reportsTo\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateTeamMember($input: CreateTeamMemberInput!) {\n    createTeamMember(input: $input) {\n      teamMember {\n        id\n        name\n        role\n        email\n        avatar\n        skills\n        department\n        reportsTo\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateTeamMember($input: CreateTeamMemberInput!) {\n    createTeamMember(input: $input) {\n      teamMember {\n        id\n        name\n        role\n        email\n        avatar\n        skills\n        department\n        reportsTo\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetValuePropositions {\n    valuePropositions {\n      id\n      title\n      description\n      impact\n      effort\n      confidence\n    }\n  }\n"): (typeof documents)["\n  query GetValuePropositions {\n    valuePropositions {\n      id\n      title\n      description\n      impact\n      effort\n      confidence\n    }\n  }\n"];
+
+export function gql(source: string) {
+  return (documents as any)[source] ?? {};
+}
+
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;

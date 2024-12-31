@@ -1,23 +1,9 @@
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { generateMockTeamMembers } from "../mock/business-data";
+import { GET_TEAM_MEMBERS } from "../graphql/queries/team-members";
 import { AuthUser, AuthCredentials } from "./types";
-
-// Initialize mock users from team members
-const mockUsers: AuthUser[] = generateMockTeamMembers().map(member => ({
-  id: crypto.randomUUID(),
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  emailVerified: new Date(),
-  passwordHash: 'mock-hash', // In a real app, we'd have proper password hashing
-  name: member.name,
-  role: member.role,
-  email: member.email,
-  department: member.department,
-  reportsTo: member.reportsTo,
-  avatar: member.avatar,
-  skills: member.skills
-}));
+import { executeGraphQL } from "../graphql/actions";
+import type { GetTeamMembersQuery, GetTeamMembersQueryVariables, TeamMember } from "../graphql/generated/graphql";
 
 // This configuration is used by App Router
 export const authConfig: NextAuthConfig = {
@@ -35,14 +21,34 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
 
-        // Find user by email
-        const user = mockUsers.find(u => u.email.toLowerCase() === creds.email.toLowerCase());
-        if (!user) {
-          throw new Error('No user found with this email');
-        }
+        try {
+          // Get all team members
+          const data = await executeGraphQL<GetTeamMembersQuery, GetTeamMembersQueryVariables>({
+            query: GET_TEAM_MEMBERS
+          });
 
-        // In a real app, we'd verify the password hash
-        return user;
+          // Find user by email
+          const teamMember = data.teamMembers?.find(
+            (member: TeamMember) => member.email.toLowerCase() === creds.email.toLowerCase()
+          );
+
+          if (!teamMember) {
+            throw new Error('No user found with this email');
+          }
+
+          // Convert TeamMember to AuthUser
+          const user: AuthUser = {
+            ...teamMember,
+            emailVerified: new Date(),
+            passwordHash: 'mock-hash', // In a real app, we'd have proper password handling
+          };
+
+          // In a real app, we'd verify the password hash
+          return user;
+        } catch (error) {
+          console.error('Error during authentication:', error);
+          return null;
+        }
       }
     })
   ],

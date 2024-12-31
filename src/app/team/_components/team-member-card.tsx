@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "src/components/ui/card";
 import { Badge } from "src/components/ui/badge";
-import { TeamMember } from "src/lib/data";
+import type { TeamMember } from "src/lib/graphql/generated/graphql";
 
 interface TeamMemberCardProps {
   member: TeamMember;
@@ -20,7 +20,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar>
-          <AvatarImage src={member.avatar} alt={member.name} />
+          <AvatarImage src={member.avatar || ''} alt={member.name} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div>
@@ -42,7 +42,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             <div>
               <p className="text-sm font-medium mb-1">Skills</p>
               <div className="flex flex-wrap gap-1">
-                {member.skills.map((skill: string) => (
+                {member.skills?.filter(Boolean).map((skill) => (
                   <Badge key={`${member.id}-${skill}`} variant="secondary">
                     {skill}
                   </Badge>
