@@ -4,14 +4,19 @@ import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "src/lib/auth/auth-context";
 import { ThemeProvider } from "next-themes";
 import { DataProvider } from "src/lib/data/context";
-import { MemoryAdapter } from "src/lib/data";
+import { DrizzleClientAdapter } from "src/lib/data/implementations/drizzle/client-adapter";
 
-// Create a single instance of the adapter for the entire app
-const dataAdapter = new MemoryAdapter();
+// Create a single instance of the client adapter
+const dataAdapter = new DrizzleClientAdapter();
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <SessionProvider>
+    <SessionProvider 
+      // Optimize session handling to reduce unnecessary checks
+      refetchInterval={0} // Disable periodic refetching
+      refetchOnWindowFocus={false} // Disable refetch on window focus
+      refetchWhenOffline={false} // Disable refetch when coming online
+    >
       <AuthProvider>
         <ThemeProvider
           attribute="class"
@@ -21,7 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         >
           <DataProvider adapter={dataAdapter}>
             {children}
-          </DataProvider>
+          </DataProvider> 
         </ThemeProvider>
       </AuthProvider>
     </SessionProvider>

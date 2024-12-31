@@ -1,16 +1,16 @@
-import { PGlite } from "@electric-sql/pglite";
-import { drizzle } from "drizzle-orm/pglite";
+import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/postgres-js';
 import * as schema from './schema/schema';
 import { DrizzleAdapter } from './drizzle-adapter';
 
 class Database {
   private static instance: Database;
-  private client: PGlite;
+  private client: postgres.Sql;
   private db: ReturnType<typeof drizzle>;
 
   private constructor() {
-    // Initialize PGLite with file persistence
-    this.client = new PGlite("./datadb");
+    // Initialize postgres client with remote database
+    this.client = postgres('postgres://drizzle:drizzle123@devdb.catalogshub.com:5432/business_val_wizard');
     // Create drizzle database instance
     this.db = drizzle(this.client, { schema, logger: true });
   }
@@ -32,7 +32,6 @@ class Database {
 }
 
 export const getDatabase = () => Database.getInstance().getDb();
-
 
 export async function initializeDb() {
   return new DrizzleAdapter(getDatabase());
