@@ -1,6 +1,6 @@
 
 import { cookies } from 'next/headers';
-import { TypedDocumentNode } from '@graphql-typed-document-node/core';
+import { DocumentNode, print } from 'graphql';
 
 const GRAPHQL_URL = process.env.GRAPHQL_URL || "http://localhost:4000/graphql";
 
@@ -10,7 +10,7 @@ export async function executeGraphQL<TResult, TVariables>({
   cache = 'force-cache',
   headers = {},
 }: {
-  query: string | TypedDocumentNode<TResult, TVariables>;
+  query: string | DocumentNode;
   variables?: TVariables;
   cache?: RequestCache;
   headers?: HeadersInit;
@@ -26,14 +26,29 @@ export async function executeGraphQL<TResult, TVariables>({
       ...headers,
     },
     body: JSON.stringify({
-      query: typeof query === 'string' ? query : query.toString(),
+      query: typeof query === 'string' ? query : print(query),
       variables,
     }),
     cache,
   });
 
   if (!res.ok) {
-    throw new Error(`GraphQL request failed: ${res.statusText}`);
+    const errorText = await res.text();
+    console.error('GraphQL request details:', {
+      url: GRAPHQL_URL,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(authToken && { Authorization: `Bearer ${authToken}` }),
+        ...headers,
+      },
+      body: JSON.stringify({
+        query: typeof query === 'string' ? query : print(query),
+        variables,
+      }),
+    });
+    console.error('GraphQL response:', errorText);
+    throw new Error(`GraphQL request failed: ${res.statusText} - ${errorText}`);
   }
 
   const json = await res.json();
