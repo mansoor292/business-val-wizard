@@ -5,11 +5,11 @@ export default {
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
-    host: 'devdb.catalogshub.com',
+    host: 'mansoor.co0srbxoe3rr.us-east-1.rds.amazonaws.com',
     port: 5432,
-    user: 'drizzle',
-    password: 'drizzle123',
-    database: 'business_val_wizard',
+    user: 'postgres',
+    password: 'mansoor123',
+    database: 'production',
     ssl: {
       rejectUnauthorized: false
     }
