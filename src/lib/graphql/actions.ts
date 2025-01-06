@@ -1,4 +1,3 @@
-
 import { cookies } from 'next/headers';
 import { DocumentNode, print } from 'graphql';
 
@@ -7,7 +6,7 @@ const GRAPHQL_URL = process.env.GRAPHQL_URL || "http://localhost:4000/graphql";
 export async function executeGraphQL<TResult, TVariables>({
   query,
   variables,
-  cache = 'force-cache',
+  cache = 'no-store', // Changed default to no-store for data freshness
   headers = {},
 }: {
   query: string | DocumentNode;
