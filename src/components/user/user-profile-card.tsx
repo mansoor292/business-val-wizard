@@ -3,14 +3,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "src/components/ui/card";
 import { Badge } from "src/components/ui/badge";
-import type { TeamMember } from "src/lib/graphql/generated/graphql";
+import type { User } from "src/lib/graphql/generated/graphql";
 
 interface UserProfileCardProps {
-  member: TeamMember;
+  member: User;
 }
 
 export function UserProfileCard({ member }: UserProfileCardProps) {
-  const initials = member.name
+  const initials = (member.name || "A")
     .split(" ")
     .map((n: string) => n[0])
     .join("")
@@ -20,7 +20,7 @@ export function UserProfileCard({ member }: UserProfileCardProps) {
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar>
-          <AvatarImage src={member.avatar || ''} alt={member.name} />
+          <AvatarImage src={member.avatar || ''} alt={member.name || "a"} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div>

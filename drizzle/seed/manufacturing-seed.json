@@ -1,0 +1,408 @@
+{
+  "industry": [
+    {
+      "industryId": "ind_manufacturing_01",
+      "industryName": "Manufacturing",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "organization": [
+    {
+      "orgId": "org_manufacturing_01",
+      "orgName": "TechManufacturing Inc.",
+      "address": "123 Production Way",
+      "city": "Detroit",
+      "email": "info@manufacturing.com",
+      "phoneNumber": "1-555-123-4567",
+      "mission": "To revolutionize manufacturing through innovation and excellence",
+      "vision": "Leading the future of smart manufacturing globally",
+      "values": "Quality, Innovation, Sustainability",
+      "industryId": "ind_manufacturing_01",
+      "isStartup": false,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "department": [
+    {
+      "depId": "dep_executive_01",
+      "deptName": "Executive",
+      "orgId": "org_manufacturing_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "depId": "dep_operations_01",
+      "deptName": "Operations",
+      "orgId": "org_manufacturing_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "depId": "dep_production_01",
+      "deptName": "Production",
+      "orgId": "org_manufacturing_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "role": [
+    {
+      "rId": "role_ceo_01",
+      "roleName": "CEO",
+      "leval": "L1",
+      "depId": "dep_executive_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "rId": "role_coo_01",
+      "roleName": "COO",
+      "leval": "L2",
+      "depId": "dep_operations_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "rId": "role_prod_mgr_01",
+      "roleName": "Production Manager",
+      "leval": "L3",
+      "depId": "dep_production_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "users": [
+    {
+      "uId": "user_ceo_01",
+      "name": "Sarah",
+      "lname": "Chen",
+      "email": "sarah.chen@manufacturing.com",
+      "rId": "role_ceo_01",
+      "depId": "dep_executive_01",
+      "phoneNumber": "1-555-111-0001",
+      "skills": ["Strategic Planning", "Leadership", "Industry 4.0"],
+      "avatar": "https://i.pravatar.cc/150?img=1",
+      "managerUserId": null,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uId": "user_cfo_01",
+      "name": "Robert",
+      "lname": "Thompson",
+      "email": "robert.thompson@manufacturing.com",
+      "rId": "role_ceo_01",
+      "depId": "dep_executive_01",
+      "phoneNumber": "1-555-111-0006",
+      "skills": ["Financial Planning", "Risk Management", "Strategic Finance"],
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "managerUserId": "user_ceo_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uId": "user_coo_01",
+      "name": "Michael",
+      "lname": "Rodriguez",
+      "email": "michael.rodriguez@manufacturing.com",
+      "rId": "role_coo_01",
+      "depId": "dep_operations_01",
+      "phoneNumber": "1-555-111-0002",
+      "skills": ["Operations Management", "Process Optimization", "Supply Chain"],
+      "avatar": "https://i.pravatar.cc/150?img=3",
+      "managerUserId": "user_ceo_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uId": "user_prod_mgr_01",
+      "name": "David",
+      "lname": "Kim",
+      "email": "david.kim@manufacturing.com",
+      "rId": "role_prod_mgr_01",
+      "depId": "dep_production_01",
+      "phoneNumber": "1-555-111-0003",
+      "skills": ["Production Planning", "Quality Control", "Lean Manufacturing"],
+      "avatar": "https://i.pravatar.cc/150?img=4",
+      "managerUserId": "user_coo_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uId": "user_prod_sup_01",
+      "name": "Emily",
+      "lname": "Johnson",
+      "email": "emily.johnson@manufacturing.com",
+      "rId": "role_prod_mgr_01",
+      "depId": "dep_production_01",
+      "phoneNumber": "1-555-111-0004",
+      "skills": ["Production Supervision", "Team Leadership", "Quality Assurance"],
+      "avatar": "https://i.pravatar.cc/150?img=5",
+      "managerUserId": "user_prod_mgr_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uId": "user_prod_eng_01",
+      "name": "James",
+      "lname": "Wilson",
+      "email": "james.wilson@manufacturing.com",
+      "rId": "role_prod_mgr_01",
+      "depId": "dep_production_01",
+      "phoneNumber": "1-555-111-0005",
+      "skills": ["Process Engineering", "Automation", "Six Sigma"],
+      "avatar": "https://i.pravatar.cc/150?img=6",
+      "managerUserId": "user_prod_mgr_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uId": "user_qa_lead_01",
+      "name": "Lisa",
+      "lname": "Martinez",
+      "email": "lisa.martinez@manufacturing.com",
+      "rId": "role_prod_mgr_01",
+      "depId": "dep_production_01",
+      "phoneNumber": "1-555-111-0007",
+      "skills": ["Quality Systems", "Regulatory Compliance", "Team Management"],
+      "avatar": "https://i.pravatar.cc/150?img=7",
+      "managerUserId": "user_prod_mgr_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uId": "user_maint_lead_01",
+      "name": "Thomas",
+      "lname": "Anderson",
+      "email": "thomas.anderson@manufacturing.com",
+      "rId": "role_prod_mgr_01",
+      "depId": "dep_production_01",
+      "phoneNumber": "1-555-111-0008",
+      "skills": ["Maintenance Planning", "Equipment Reliability", "Preventive Maintenance"],
+      "avatar": "https://i.pravatar.cc/150?img=8",
+      "managerUserId": "user_prod_mgr_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "name": "Production Line Automation",
+      "description": "Implement automated assembly line systems to increase efficiency",
+      "status": "IN_PROGRESS",
+      "startDate": "2024-01-15T00:00:00Z",
+      "endDate": "2024-06-15T00:00:00Z",
+      "teamIds": ["dep_production_01"],
+      "orgId": "org_manufacturing_01",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "22222222-2222-2222-2222-222222222222",
+      "title": "Equipment Assessment",
+      "description": "Evaluate current production line equipment and identify automation opportunities",
+      "status": "IN_PROGRESS",
+      "assigneeId": "user_prod_mgr_01",
+      "dueDate": "2024-02-15T00:00:00Z",
+      "priority": "HIGH",
+      "projectId": "11111111-1111-1111-1111-111111111111",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "chats": [
+    {
+      "id": "33333333-3333-3333-3333-333333333333",
+      "participantId": "user_ceo_01",
+      "participantType": "USER",
+      "lastMessageAt": "2024-01-01T12:00:00Z",
+      "status": "ACTIVE",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "chatMessages": [
+    {
+      "id": "44444444-4444-4444-4444-444444444444",
+      "chatId": "33333333-3333-3333-3333-333333333333",
+      "content": "Project kickoff meeting scheduled for next week",
+      "sender": "user_ceo_01",
+      "timestamp": "2024-01-01T12:00:00Z",
+      "createdAt": "2024-01-01T12:00:00Z",
+      "updatedAt": "2024-01-01T12:00:00Z"
+    }
+  ],
+  "standardKpi": [
+    {
+      "standardKpiId": "kpi_std_01",
+      "unit": "Units/Hour",
+      "objective": "Increase Production Output",
+      "target": "100",
+      "reportingFrequency": "DAILY",
+      "industry": "Manufacturing",
+      "isCorporateKpi": true,
+      "level": 1,
+      "kpiType": "PRODUCTION",
+      "performanceDirection": "INCREASE",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "standardKpiId": "kpi_std_02",
+      "unit": "Percent",
+      "objective": "Improve Quality Control Pass Rate",
+      "target": "99.9",
+      "reportingFrequency": "DAILY",
+      "industry": "Manufacturing",
+      "isCorporateKpi": true,
+      "level": 2,
+      "kpiType": "QUALITY",
+      "performanceDirection": "INCREASE",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "standardKpiId": "kpi_std_03",
+      "unit": "Minutes",
+      "objective": "Reduce Machine Setup Time",
+      "target": "15",
+      "reportingFrequency": "DAILY",
+      "industry": "Manufacturing",
+      "isCorporateKpi": false,
+      "level": 3,
+      "kpiType": "EFFICIENCY",
+      "performanceDirection": "DECREASE",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "kpi": [
+    {
+      "kpiId": "kpi_prod_01",
+      "unit": "Units/Hour",
+      "objective": "Production Line Output",
+      "charpStatus": "C",
+      "uId": "user_ceo_01",
+      "isCorporateKpi": true,
+      "performanceDirection": "INCREASE",
+      "standardKpiId": "kpi_std_01",
+      "kpiType": "PRODUCTION",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "kpiId": "kpi_qual_01",
+      "unit": "Percent",
+      "objective": "Quality Control Pass Rate",
+      "charpStatus": "C",
+      "uId": "user_coo_01",
+      "isCorporateKpi": true,
+      "performanceDirection": "INCREASE",
+      "standardKpiId": "kpi_std_02",
+      "kpiType": "QUALITY",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "kpiId": "kpi_eff_01",
+      "unit": "Minutes",
+      "objective": "Machine Setup Time",
+      "charpStatus": "C",
+      "uId": "user_prod_mgr_01",
+      "isCorporateKpi": false,
+      "performanceDirection": "DECREASE",
+      "standardKpiId": "kpi_std_03",
+      "kpiType": "EFFICIENCY",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "kpiHistory": [
+    {
+      "kpiHistoryId": "kpi_hist_01",
+      "kpiId": "kpi_prod_01",
+      "metricType": "ACTUAL",
+      "amount": 95.5,
+      "frequency": "DAILY",
+      "reportDate": "2024-01-01T00:00:00Z",
+      "actualAmount": 95.5,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "kpiHistoryId": "kpi_hist_02",
+      "kpiId": "kpi_qual_01",
+      "metricType": "ACTUAL",
+      "amount": 99.7,
+      "frequency": "DAILY",
+      "reportDate": "2024-01-01T00:00:00Z",
+      "actualAmount": 99.7,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "kpiHistoryId": "kpi_hist_03",
+      "kpiId": "kpi_eff_01",
+      "metricType": "ACTUAL",
+      "amount": 18.5,
+      "frequency": "DAILY",
+      "reportDate": "2024-01-01T00:00:00Z",
+      "actualAmount": 18.5,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "meeting": [
+    {
+      "meetingId": "meet_prod_01",
+      "meetingName": "Production Daily Standup",
+      "meetingFrequency": "DAILY",
+      "uId": "user_prod_mgr_01",
+      "meetingDate": "2024-01-02T09:00:00Z",
+      "meetingInterval": "30",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "meetingId": "meet_exec_01",
+      "meetingName": "Executive Strategy Review",
+      "meetingFrequency": "WEEKLY",
+      "uId": "user_ceo_01",
+      "meetingDate": "2024-01-08T14:00:00Z",
+      "meetingInterval": "60",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "meetingUser": [
+    {
+      "meetingUserId": "meet_user_01",
+      "meetingId": "meet_prod_01",
+      "uId": "user_prod_mgr_01",
+      "userRole": "ORGANIZER",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "meetingUserId": "meet_user_02",
+      "meetingId": "meet_prod_01",
+      "uId": "user_prod_sup_01",
+      "userRole": "ATTENDEE",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "meetingUserId": "meet_user_03",
+      "meetingId": "meet_prod_01",
+      "uId": "user_prod_eng_01",
+      "userRole": "ATTENDEE",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ]
+}

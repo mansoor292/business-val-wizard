@@ -1,36 +1,36 @@
 'use server'
 
 import { executeGraphQL } from 'src/lib/graphql/actions';
-import { GET_TEAM_MEMBERS, GET_TEAM_MEMBER, CREATE_TEAM_MEMBER } from 'src/lib/graphql/queries/team-members';
+import { GET_USERS, GET_USER, CREATE_USER } from 'src/lib/graphql/queries/users';
 import type { 
-  GetTeamMembersQuery, 
-  GetTeamMembersQueryVariables,
-  GetTeamMemberQuery,
-  GetTeamMemberQueryVariables,
-  CreateTeamMemberInput,
-  CreateTeamMemberMutation,
-  CreateTeamMemberMutationVariables
+  GetUsersQuery, 
+  GetUsersQueryVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
+  CreateUserInput,
+  CreateUserMutation,
+  CreateUserMutationVariables
 } from 'src/lib/graphql/generated/graphql';
 
 export async function getTeamMembers() {
-  const result = await executeGraphQL<GetTeamMembersQuery, GetTeamMembersQueryVariables>({
-    query: GET_TEAM_MEMBERS
+  const result = await executeGraphQL<GetUsersQuery, GetUsersQueryVariables>({
+    query: GET_USERS
   });
-  return result.teamMembers || [];
+  return result.users || [];
 }
 
 export async function getTeamMember(id: string) {
-  const result = await executeGraphQL<GetTeamMemberQuery, GetTeamMemberQueryVariables>({
-    query: GET_TEAM_MEMBER,
+  const result = await executeGraphQL<GetUserQuery, GetUserQueryVariables>({
+    query: GET_USER,
     variables: { id }
   });
-  return result.teamMember;
+  return result.user;
 }
 
-export async function createTeamMember(input: CreateTeamMemberInput) {
-  const result = await executeGraphQL<CreateTeamMemberMutation, CreateTeamMemberMutationVariables>({
-    query: CREATE_TEAM_MEMBER,
+export async function createTeamMember(input: CreateUserInput) {
+  const result = await executeGraphQL<CreateUserMutation, CreateUserMutationVariables>({
+    query: CREATE_USER,
     variables: { input }
   });
-  return result.createTeamMember?.teamMember;
+  return result.createUser?.user;
 }

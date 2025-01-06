@@ -1,8 +1,8 @@
 "use client";
 
-import { MetricsChart } from "src/components/dashboard/metrics-chart";
+import { KPIChart } from "src/components/dashboard/kpi-chart";
 import { Card } from "src/components/ui/card";
-import { ValuePropositionsList } from "src/components/value-prop/value-propositions-list";
+import { KPIList } from "src/components/dashboard/kpi-list";
 
 export function DashboardView() {
   return (
@@ -46,15 +46,15 @@ export function DashboardView() {
       </div>
       <div className="grid gap-4 grid-cols-1">
         <Card className="p-4">
-          <h3 className="text-lg font-medium mb-4">Value Propositions</h3>
-          <ValuePropositionsList />
+          <h3 className="text-lg font-medium mb-4">Key Performance Indicators</h3>
+          <KPIList />
         </Card>
       </div>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         <Card className="p-4">
-          <h3 className="text-lg font-medium mb-4">Project Metrics</h3>
+          <h3 className="text-lg font-medium mb-4">Project KPIs</h3>
           <div className="h-[300px]">
-            <MetricsChart />
+            <KPIChart />
           </div>
         </Card>
         <Card className="p-4">

@@ -5,7 +5,7 @@ import { useAuth } from "src/lib/auth/auth-context"
 import { Button } from "src/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar"
 import { useTheme } from "next-themes"
-import type { TeamMember } from "src/lib/graphql/generated/graphql"
+import type { User } from "src/lib/graphql/generated/graphql"
 import { 
   Home,
   MessageCircle,
@@ -13,7 +13,7 @@ import {
   BookOpen,
   BarChart2,
   Settings,
-  User,
+  User as ComponentUser,
   LogOut,
   Bell,
   Clock,
@@ -196,9 +196,9 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center space-x-2 p-1 rounded-md hover:bg-slate-700 cursor-pointer">
                   <Avatar>
-                    <AvatarImage src={(user as unknown as TeamMember)?.avatar || ''} alt={(user as unknown as TeamMember)?.name || ''} />
+                    <AvatarImage src={(user as unknown as User)?.avatar || ''} alt={(user as unknown as User)?.name || ''} />
                     <AvatarFallback className="text-white bg-purple-500">
-                      {(user as unknown as TeamMember)?.name?.split(' ').map((n: string) => n[0]).join('') || '?'}
+                      {(user as unknown as User)?.name?.split(' ').map((n: string) => n[0]).join('') || '?'}
                     </AvatarFallback>
                   </Avatar>
                 </div>
@@ -207,7 +207,7 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
                 <Dialog>
                   <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                      <User className="mr-2 h-4 w-4" />
+                      <ComponentUser className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </DropdownMenuItem>
                   </DialogTrigger>
@@ -216,7 +216,7 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
                       <DialogTitle>Profile</DialogTitle>
                     </DialogHeader>
                     <div className="p-4">
-                      {user && <UserProfileCard member={user as unknown as TeamMember} />}
+                      {user && <UserProfileCard member={user as unknown as User} />}
                     </div>
                   </DialogContent>
                 </Dialog>

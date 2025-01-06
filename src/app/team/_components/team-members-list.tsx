@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { getTeamMembers, createTeamMember } from "src/app/actions/team-members";
-import type { TeamMember, CreateTeamMemberInput } from "src/lib/graphql/generated/graphql";
+import type { User, CreateUserInput } from "src/lib/graphql/generated/graphql";
+type PartialUser = Pick<User, 'uId' | 'name' | 'email' | 'info' | 'managerUserId'>;
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "src/components/ui/tabs";
 import { Button } from "src/components/ui/button";
 import { Plus } from "lucide-react";
@@ -11,7 +12,7 @@ import { OrgChart } from "./org-chart";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
 
 export function TeamMembersList() {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamMembers, setTeamMembers] = useState<PartialUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
@@ -25,19 +26,26 @@ export function TeamMembersList() {
     loadTeamMembers();
   }, []);
 
-  const handleAddMember = async (member: Omit<TeamMember, "id" | "createdAt" | "updatedAt">) => {
+  const handleAddMember = async (member: Partial<PartialUser>) => {
     try {
-      const input: CreateTeamMemberInput = {
-        teamMember: {
-          name: member.name,
-          role: member.role,
-          email: member.email,
-          department: member.department,
-          reportsTo: member.reportsTo,
-          avatar: member.avatar,
-          skills: member.skills
+      const input = {
+        user: {
+          name: member.name || '',
+          email: member.email || '',
+          managerUserId: member.managerUserId,
+          info: member.info,
+          textNotifications: false,
+          rId: null,
+          lname: '',
+          statement: '',
+          roleAdmin: null,
+          coachUserId: null,
+          isCoach: false,
+          phoneNumber: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         }
-      };
+      } as CreateUserInput;
       await createTeamMember(input);
       await loadTeamMembers(); // Refresh the list
     } catch (error) {
@@ -75,8 +83,8 @@ export function TeamMembersList() {
             onAdd={handleAddMember}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {teamMembers.map((member: TeamMember) => (
-              <TeamMemberCard key={member.id} member={member} />
+            {teamMembers.map((member: PartialUser) => (
+              <TeamMemberCard key={member.uId} member={member} />
             ))}
           </div>
         </div>

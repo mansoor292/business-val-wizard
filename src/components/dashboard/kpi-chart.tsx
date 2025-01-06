@@ -16,14 +16,14 @@ const data = [
 const chartConfig = {
   value: {
     color: "hsl(var(--primary))",
-    label: "Monthly Revenue"
+    label: "Monthly KPI Progress"
   }
 }
 
-export function MetricsChart() {
+export function KPIChart() {
   return (
     <div className="w-full max-w-2xl">
-      <h2 className="mb-4 text-lg font-semibold">Monthly Revenue</h2>
+      <h2 className="mb-4 text-lg font-semibold">Monthly KPI Progress</h2>
       <ChartContainer config={chartConfig}>
         <LineChart data={data}>
           <XAxis 
@@ -38,7 +38,7 @@ export function MetricsChart() {
             fontSize={12}
             tickLine={false}
             axisLine={false}
-            tickFormatter={(value) => `$${value}`}
+            tickFormatter={(value) => `${value}%`}
           />
           <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
           <ChartTooltip />

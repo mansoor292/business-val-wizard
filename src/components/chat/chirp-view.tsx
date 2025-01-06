@@ -1,6 +1,6 @@
 "use client";
 
-import { Bot, Info, Settings, Plus, Send, User } from "lucide-react";
+import { Bot, Info, Settings, Plus, Send, User as UserIcon } from "lucide-react";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -8,7 +8,7 @@ import { cn } from "src/lib/utils";
 import { createChatMessage, getChats, getChatMessages } from "src/app/actions/chats";
 import { getAgents } from "src/app/actions/agents";
 import { getTeamMembers } from "src/app/actions/team-members";
-import type { Chat, ChatMessage, Agent, TeamMember } from "src/lib/graphql/generated/graphql";
+import type { Chat, ChatMessage, Agent, User } from "src/lib/graphql/generated/graphql";
 
 export enum ParticipantType {
   AGENT = 'AGENT',
@@ -26,7 +26,7 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [agents, setAgents] = useState<Agent[]>([]);
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamMembers, setTeamMembers] = useState<User[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Load agents and team members
@@ -61,7 +61,7 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
   // Get participant details
   const participant = participantType === 'AGENT' 
     ? agents?.find(a => a.id === participantId)
-    : teamMembers?.find(t => t.id === participantId);
+    : teamMembers?.find(t => t.uId === participantId);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -102,14 +102,14 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
             <Bot className="w-5 h-5 mr-2" />
           ) : (
             <Avatar className="h-8 w-8 mr-2">
-              <AvatarImage src={(participant as TeamMember).avatar || ''} />
-              <AvatarFallback>{(participant as TeamMember).name.charAt(0)}</AvatarFallback>
+              <AvatarImage src={(participant as User).info?.avatar || ''} />
+              <AvatarFallback>{(participant as User).name?.charAt(0)}</AvatarFallback>
             </Avatar>
           )}
           <span className="font-semibold">
             {participantType === 'AGENT' 
               ? (participant as Agent).name
-              : (participant as TeamMember).name
+              : (participant as User).name
             }
           </span>
         </div>
@@ -138,7 +138,7 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
                 {participantType === 'AGENT' ? (
                   <Bot className="w-8 h-8 text-muted-foreground" />
                 ) : (
-                  <User className="w-8 h-8 text-muted-foreground" />
+                  <UserIcon className="w-8 h-8 text-muted-foreground" />
                 )}
               </div>
               <h2 className="text-2xl font-bold mb-2">
@@ -167,8 +167,8 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
                     </Avatar>
                   ) : (
                     <Avatar className="w-8 h-8">
-                      <AvatarImage src={(participant as TeamMember).avatar || ''} />
-                      <AvatarFallback>{(participant as TeamMember).name.charAt(0)}</AvatarFallback>
+                      <AvatarImage src={(participant as User).info?.avatar || ''} />
+                      <AvatarFallback>{(participant as User).name?.charAt(0)}</AvatarFallback>
                     </Avatar>
                   )
                 )}
@@ -184,7 +184,7 @@ export function ChirpView({ participantId, participantType }: ChirpViewProps) {
                 </div>
                 {message.sender === 'USER' && (
                   <Avatar className="w-8 h-8">
-                    <User className="w-5 h-5" />
+                    <UserIcon className="w-5 h-5" />
                   </Avatar>
                 )}
               </div>

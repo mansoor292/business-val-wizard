@@ -1,5 +1,5 @@
 {
-  "id": "72293862-ff5e-4323-8fe8-ef1600b8191e",
+  "id": "c3863832-fce6-4b33-bf1c-f37f6f82a811",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -98,7 +98,23 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "idx_chat_messages_chatid": {
+          "name": "idx_chat_messages_chatid",
+          "columns": [
+            {
+              "expression": "chat_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "chat_messages_chat_id_chats_id_fk": {
           "name": "chat_messages_chat_id_chats_id_fk",
@@ -211,7 +227,7 @@
         },
         "author_id": {
           "name": "author_id",
-          "type": "uuid",
+          "type": "char(36)",
           "primaryKey": false,
           "notNull": true
         },
@@ -234,8 +250,111 @@
           "notNull": false
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
+      "indexes": {
+        "idx_comments_authorid": {
+          "name": "idx_comments_authorid",
+          "columns": [
+            {
+              "expression": "author_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "comments_author_id_users_uid_fk": {
+          "name": "comments_author_id_users_uid_fk",
+          "tableFrom": "comments",
+          "tableTo": "users",
+          "columnsFrom": [
+            "author_id"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.department": {
+      "name": "department",
+      "schema": "",
+      "columns": {
+        "depId": {
+          "name": "depId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "deptName": {
+          "name": "deptName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "orgId": {
+          "name": "orgId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_department_orgid": {
+          "name": "idx_department_orgid",
+          "columns": [
+            {
+              "expression": "orgId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "department_orgID_fkey": {
+          "name": "department_orgID_fkey",
+          "tableFrom": "department",
+          "tableTo": "organization",
+          "columnsFrom": [
+            "orgId"
+          ],
+          "columnsTo": [
+            "orgId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -300,64 +419,67 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.initiatives": {
-      "name": "initiatives",
+    "public.ExternalApp": {
+      "name": "ExternalApp",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
+        "ExternalAppID": {
+          "name": "ExternalAppID",
+          "type": "char(36)",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
+        "Name": {
+          "name": "Name",
+          "type": "varchar(36)",
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "text",
+        "AuthenticationURL": {
+          "name": "AuthenticationURL",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true
         },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "start_date": {
-          "name": "start_date",
-          "type": "timestamp",
+        "LogoPath": {
+          "name": "LogoPath",
+          "type": "varchar(128)",
           "primaryKey": false,
           "notNull": false
         },
-        "end_date": {
-          "name": "end_date",
-          "type": "timestamp",
+        "AuthorizationHeader": {
+          "name": "AuthorizationHeader",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
         },
-        "value_proposition_ids": {
-          "name": "value_proposition_ids",
-          "type": "text[]",
+        "Redirect_URI": {
+          "name": "Redirect_URI",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Scope": {
+          "name": "Scope",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
         }
@@ -370,76 +492,1527 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.metrics": {
-      "name": "metrics",
+    "public.ExternalAppEndpoint": {
+      "name": "ExternalAppEndpoint",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
+        "ExternalAppEndpointId": {
+          "name": "ExternalAppEndpointId",
+          "type": "char(36)",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
+        "ExternalAppID": {
+          "name": "ExternalAppID",
+          "type": "char(36)",
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "text",
+        "EndpointName": {
+          "name": "EndpointName",
+          "type": "varchar(32)",
           "primaryKey": false,
           "notNull": true
         },
-        "target": {
-          "name": "target",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "current": {
-          "name": "current",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "unit": {
-          "name": "unit",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "initiative_id": {
-          "name": "initiative_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "trend": {
-          "name": "trend",
-          "type": "text",
+        "EndpointPath": {
+          "name": "EndpointPath",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "EndpointStatus": {
+          "name": "EndpointStatus",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_externalappendpoint_externalappid": {
+          "name": "idx_externalappendpoint_externalappid",
+          "columns": [
+            {
+              "expression": "ExternalAppID",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ExternalAppEndpoint_fkey_ExternalAppId": {
+          "name": "ExternalAppEndpoint_fkey_ExternalAppId",
+          "tableFrom": "ExternalAppEndpoint",
+          "tableTo": "ExternalApp",
+          "columnsFrom": [
+            "ExternalAppID"
+          ],
+          "columnsTo": [
+            "ExternalAppID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ExternalAuthentication": {
+      "name": "ExternalAuthentication",
+      "schema": "",
+      "columns": {
+        "ExternalAuthenticationID": {
+          "name": "ExternalAuthenticationID",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "uId": {
+          "name": "uId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Configuration": {
+          "name": "Configuration",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ExternalAppID": {
+          "name": "ExternalAppID",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ExternalAuthenticationTypeID": {
+          "name": "ExternalAuthenticationTypeID",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_ExternalAuthentication_BusinessKey": {
+          "name": "idx_ExternalAuthentication_BusinessKey",
+          "columns": [
+            {
+              "expression": "uId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops"
+            },
+            {
+              "expression": "ExternalAppID",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_externalauthentication_externalappid": {
+          "name": "idx_externalauthentication_externalappid",
+          "columns": [
+            {
+              "expression": "ExternalAppID",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_externalauthentication_externalauthenticationtypeid": {
+          "name": "idx_externalauthentication_externalauthenticationtypeid",
+          "columns": [
+            {
+              "expression": "ExternalAuthenticationTypeID",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_ExternalApp": {
+          "name": "fk_ExternalApp",
+          "tableFrom": "ExternalAuthentication",
+          "tableTo": "ExternalApp",
+          "columnsFrom": [
+            "ExternalAppID"
+          ],
+          "columnsTo": [
+            "ExternalAppID"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_ExternalAuthenticationType": {
+          "name": "fk_ExternalAuthenticationType",
+          "tableFrom": "ExternalAuthentication",
+          "tableTo": "ExternalAuthenticationType",
+          "columnsFrom": [
+            "ExternalAuthenticationTypeID"
+          ],
+          "columnsTo": [
+            "ExternalAuthenticationTypeID"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ExternalAuthenticationKpi": {
+      "name": "ExternalAuthenticationKpi",
+      "schema": "",
+      "columns": {
+        "ExternalAuthenticationKpiID": {
+          "name": "ExternalAuthenticationKpiID",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "ExternalAuthenticationID": {
+          "name": "ExternalAuthenticationID",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kpiId": {
+          "name": "kpiId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "DataEndpoint": {
+          "name": "DataEndpoint",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DataLogic": {
+          "name": "DataLogic",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ExternalAppEndpointId": {
+          "name": "ExternalAppEndpointId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_externalauthenticationkpi_externalauthenticationid": {
+          "name": "idx_externalauthenticationkpi_externalauthenticationid",
+          "columns": [
+            {
+              "expression": "ExternalAuthenticationID",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_externalauthenticationkpi_kpiid": {
+          "name": "idx_externalauthenticationkpi_kpiid",
+          "columns": [
+            {
+              "expression": "kpiId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_externalauthenticationkpi_externalauthentication": {
+          "name": "fk_externalauthenticationkpi_externalauthentication",
+          "tableFrom": "ExternalAuthenticationKpi",
+          "tableTo": "ExternalAuthentication",
+          "columnsFrom": [
+            "ExternalAuthenticationID"
+          ],
+          "columnsTo": [
+            "ExternalAuthenticationID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fk_externalauthenticationkpi_kpi": {
+          "name": "fk_externalauthenticationkpi_kpi",
+          "tableFrom": "ExternalAuthenticationKpi",
+          "tableTo": "kpi",
+          "columnsFrom": [
+            "kpiId"
+          ],
+          "columnsTo": [
+            "kpiId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ExternalAuthenticationType": {
+      "name": "ExternalAuthenticationType",
+      "schema": "",
+      "columns": {
+        "ExternalAuthenticationTypeID": {
+          "name": "ExternalAuthenticationTypeID",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "AuthenticationType": {
+          "name": "AuthenticationType",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Industry": {
+      "name": "Industry",
+      "schema": "",
+      "columns": {
+        "IndustryID": {
+          "name": "IndustryID",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "IndustryName": {
+          "name": "IndustryName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kpi": {
+      "name": "kpi",
+      "schema": "",
+      "columns": {
+        "kpiId": {
+          "name": "kpiId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "qty": {
+          "name": "qty",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unit": {
+          "name": "unit",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "objective": {
+          "name": "objective",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dependFlag": {
+          "name": "dependFlag",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "charpStatus": {
+          "name": "charpStatus",
+          "type": "enum_kpi_charpStatus",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dueData": {
+          "name": "dueData",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "driverId": {
+          "name": "driverId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "uId": {
+          "name": "uId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "achieveQty": {
+          "name": "achieveQty",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "isCorporateKpi": {
+          "name": "isCorporateKpi",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "PerformanceDirection": {
+          "name": "PerformanceDirection",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "StandardKpiId": {
+          "name": "StandardKpiId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kpiType": {
+          "name": "kpiType",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reportingFrequency": {
+          "name": "reportingFrequency",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ParentKpiID": {
+          "name": "ParentKpiID",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_kpi_uid": {
+          "name": "idx_kpi_uid",
+          "columns": [
+            {
+              "expression": "uId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "kpi_uID_fkey": {
+          "name": "kpi_uID_fkey",
+          "tableFrom": "kpi",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uId"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kpiDelegate": {
+      "name": "kpiDelegate",
+      "schema": "",
+      "columns": {
+        "kpiDelegateId": {
+          "name": "kpiDelegateId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "uId": {
+          "name": "uId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kpiId": {
+          "name": "kpiId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "delegateStatus": {
+          "name": "delegateStatus",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "deactivationDate": {
+          "name": "deactivationDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_kpidelegate_kpiid": {
+          "name": "idx_kpidelegate_kpiid",
+          "columns": [
+            {
+              "expression": "kpiId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_kpidelegate_uid": {
+          "name": "idx_kpidelegate_uid",
+          "columns": [
+            {
+              "expression": "uId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "kpiDelegate_kpiID_fkey": {
+          "name": "kpiDelegate_kpiID_fkey",
+          "tableFrom": "kpiDelegate",
+          "tableTo": "kpi",
+          "columnsFrom": [
+            "kpiId"
+          ],
+          "columnsTo": [
+            "kpiId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "kpiDelegate_uID_fkey": {
+          "name": "kpiDelegate_uID_fkey",
+          "tableFrom": "kpiDelegate",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uId"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kpiHistory": {
+      "name": "kpiHistory",
+      "schema": "",
+      "columns": {
+        "kpiHistoryId": {
+          "name": "kpiHistoryId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kpiId": {
+          "name": "kpiId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "metricType": {
+          "name": "metricType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "amount": {
+          "name": "amount",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "frequency": {
+          "name": "frequency",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reportDate": {
+          "name": "reportDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "budgetAmount": {
+          "name": "budgetAmount",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "actualAmount": {
+          "name": "actualAmount",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_kpihistory_kpiid": {
+          "name": "idx_kpihistory_kpiid",
+          "columns": [
+            {
+              "expression": "kpiId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "kpiHistory_kpiID_fkey": {
+          "name": "kpiHistory_kpiID_fkey",
+          "tableFrom": "kpiHistory",
+          "tableTo": "kpi",
+          "columnsFrom": [
+            "kpiId"
+          ],
+          "columnsTo": [
+            "kpiId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.meeting": {
+      "name": "meeting",
+      "schema": "",
+      "columns": {
+        "meetingId": {
+          "name": "meetingId",
+          "type": "varchar(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meetingName": {
+          "name": "meetingName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meetingFrequency": {
+          "name": "meetingFrequency",
+          "type": "varchar(25)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uId": {
+          "name": "uId",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meetingDate": {
+          "name": "meetingDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meetingInterval": {
+          "name": "meetingInterval",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "timerData": {
+          "name": "timerData",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deactivationDate": {
+          "name": "deactivationDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "StandardMeetingId": {
+          "name": "StandardMeetingId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "frequencyInterval": {
+          "name": "frequencyInterval",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_meeting_uid": {
+          "name": "idx_meeting_uid",
+          "columns": [
+            {
+              "expression": "uId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "meeting_uID_fkey": {
+          "name": "meeting_uID_fkey",
+          "tableFrom": "meeting",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uId"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.meetingHistory": {
+      "name": "meetingHistory",
+      "schema": "",
+      "columns": {
+        "meetingHistoryId": {
+          "name": "meetingHistoryId",
+          "type": "varchar(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meetingId": {
+          "name": "meetingId",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "meetingName": {
+          "name": "meetingName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uId": {
+          "name": "uId",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meetingDate": {
+          "name": "meetingDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timerData": {
+          "name": "timerData",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "meetingScore": {
+          "name": "meetingScore",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scoreNotes": {
+          "name": "scoreNotes",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "meetingNotes": {
+          "name": "meetingNotes",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deactivationDate": {
+          "name": "deactivationDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_meetinghistory_meetingid": {
+          "name": "idx_meetinghistory_meetingid",
+          "columns": [
+            {
+              "expression": "meetingId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_meetinghistory_uid": {
+          "name": "idx_meetinghistory_uid",
+          "columns": [
+            {
+              "expression": "uId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "meetingHistory_meetingId_fkey": {
+          "name": "meetingHistory_meetingId_fkey",
+          "tableFrom": "meetingHistory",
+          "tableTo": "meeting",
+          "columnsFrom": [
+            "meetingId"
+          ],
+          "columnsTo": [
+            "meetingId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        },
+        "meetingHistory_uID_fkey": {
+          "name": "meetingHistory_uID_fkey",
+          "tableFrom": "meetingHistory",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uId"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.MeetingKpi": {
+      "name": "MeetingKpi",
+      "schema": "",
+      "columns": {
+        "MeetingKpiId": {
+          "name": "MeetingKpiId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meetingId": {
+          "name": "meetingId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kpiId": {
+          "name": "kpiId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_meetingkpi_meetingid": {
+          "name": "idx_meetingkpi_meetingid",
+          "columns": [
+            {
+              "expression": "meetingId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_meetingkpi_kpiid": {
+          "name": "idx_meetingkpi_kpiid",
+          "columns": [
+            {
+              "expression": "kpiId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "MeetingKpi_fkey_MeetingId": {
+          "name": "MeetingKpi_fkey_MeetingId",
+          "tableFrom": "MeetingKpi",
+          "tableTo": "meeting",
+          "columnsFrom": [
+            "meetingId"
+          ],
+          "columnsTo": [
+            "meetingId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "MeetingKpi_fkey_kpiID": {
+          "name": "MeetingKpi_fkey_kpiID",
+          "tableFrom": "MeetingKpi",
+          "tableTo": "kpi",
+          "columnsFrom": [
+            "kpiId"
+          ],
+          "columnsTo": [
+            "kpiId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.meetingUser": {
+      "name": "meetingUser",
+      "schema": "",
+      "columns": {
+        "meetingUserId": {
+          "name": "meetingUserId",
+          "type": "varchar(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meetingId": {
+          "name": "meetingId",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uId": {
+          "name": "uId",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userRole": {
+          "name": "userRole",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DataDisplay": {
+          "name": "DataDisplay",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_meetinguser_uid": {
+          "name": "idx_meetinguser_uid",
+          "columns": [
+            {
+              "expression": "uId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "meetingUser_uID_fkey": {
+          "name": "meetingUser_uID_fkey",
+          "tableFrom": "meetingUser",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uId"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.meetingUserHistory": {
+      "name": "meetingUserHistory",
+      "schema": "",
+      "columns": {
+        "meetingUserHistoryId": {
+          "name": "meetingUserHistoryId",
+          "type": "varchar(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meetingHistoryId": {
+          "name": "meetingHistoryId",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uId": {
+          "name": "uId",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userStatus": {
+          "name": "userStatus",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userRole": {
+          "name": "userRole",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_meetinguserhistory_uid": {
+          "name": "idx_meetinguserhistory_uid",
+          "columns": [
+            {
+              "expression": "uId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "meetingUserHistory_uID_fkey": {
+          "name": "meetingUserHistory_uID_fkey",
+          "tableFrom": "meetingUserHistory",
+          "tableTo": "users",
+          "columnsFrom": [
+            "uId"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.organization": {
+      "name": "organization",
+      "schema": "",
+      "columns": {
+        "orgId": {
+          "name": "orgId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "orgName": {
+          "name": "orgName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "name": "address",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "city": {
+          "name": "city",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "logoUrl": {
+          "name": "logoUrl",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "secretCode": {
+          "name": "secretCode",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isActive": {
+          "name": "isActive",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "startDate": {
+          "name": "startDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "endDate": {
+          "name": "endDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'255'"
+        },
+        "phoneNumber": {
+          "name": "phoneNumber",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mission": {
+          "name": "mission",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vision": {
+          "name": "vision",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "values": {
+          "name": "values",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "outcomeStatement": {
+          "name": "outcomeStatement",
+          "type": "varchar(10000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "features": {
+          "name": "features",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "IndustryID": {
+          "name": "IndustryID",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "IsStartup": {
+          "name": "IsStartup",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_organization_industryid": {
+          "name": "idx_organization_industryid",
+          "columns": [
+            {
+              "expression": "IndustryID",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "constraint_fk_organization_industryid": {
+          "name": "constraint_fk_organization_industryid",
+          "tableFrom": "organization",
+          "tableTo": "Industry",
+          "columnsFrom": [
+            "IndustryID"
+          ],
+          "columnsTo": [
+            "IndustryID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -506,10 +2079,326 @@
           "type": "text[]",
           "primaryKey": false,
           "notNull": true
+        },
+        "orgId": {
+          "name": "orgId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "idx_projects_orgid": {
+          "name": "idx_projects_orgid",
+          "columns": [
+            {
+              "expression": "orgId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "projects_org_id_organization_orgid_fk": {
+          "name": "projects_org_id_organization_orgid_fk",
+          "tableFrom": "projects",
+          "tableTo": "organization",
+          "columnsFrom": [
+            "orgId"
+          ],
+          "columnsTo": [
+            "orgId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.role": {
+      "name": "role",
+      "schema": "",
+      "columns": {
+        "rId": {
+          "name": "rId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "roleName": {
+          "name": "roleName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "leval": {
+          "name": "leval",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "depId": {
+          "name": "depId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_role_depid": {
+          "name": "idx_role_depid",
+          "columns": [
+            {
+              "expression": "depId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "role_depID_fkey": {
+          "name": "role_depID_fkey",
+          "tableFrom": "role",
+          "tableTo": "department",
+          "columnsFrom": [
+            "depId"
+          ],
+          "columnsTo": [
+            "depId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.StandardKpi": {
+      "name": "StandardKpi",
+      "schema": "",
+      "columns": {
+        "StandardKpiId": {
+          "name": "StandardKpiId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "unit": {
+          "name": "unit",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "objective": {
+          "name": "objective",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "target": {
+          "name": "target",
+          "type": "numeric(18, 5)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reportingFrequency": {
+          "name": "reportingFrequency",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "industry": {
+          "name": "industry",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "appliesToStartup": {
+          "name": "appliesToStartup",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isCorporateKpi": {
+          "name": "isCorporateKpi",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "driverId": {
+          "name": "driverId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "level": {
+          "name": "level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kpiType": {
+          "name": "kpiType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "PerformanceDirection": {
+          "name": "PerformanceDirection",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.StandardMilestone": {
+      "name": "StandardMilestone",
+      "schema": "",
+      "columns": {
+        "StandardMilestoneId": {
+          "name": "StandardMilestoneId",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "AchieveText": {
+          "name": "AchieveText",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DueDateIncrement": {
+          "name": "DueDateIncrement",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "MilestoneNote": {
+          "name": "MilestoneNote",
+          "type": "varchar(1000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "StandardKpiId": {
+          "name": "StandardKpiId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DeletedAt": {
+          "name": "DeletedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "idx_standardmilestone_standardkpiid": {
+          "name": "idx_standardmilestone_standardkpiid",
+          "columns": [
+            {
+              "expression": "StandardKpiId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "StandardMilestone_StandardKpiId_fkey": {
+          "name": "StandardMilestone_StandardKpiId_fkey",
+          "tableFrom": "StandardMilestone",
+          "tableTo": "StandardKpi",
+          "columnsFrom": [
+            "StandardKpiId"
+          ],
+          "columnsTo": [
+            "StandardKpiId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -561,7 +2450,7 @@
         },
         "assignee_id": {
           "name": "assignee_id",
-          "type": "uuid",
+          "type": "char(36)",
           "primaryKey": false,
           "notNull": false
         },
@@ -584,60 +2473,163 @@
           "notNull": true
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
+      "indexes": {
+        "idx_tasks_assigneeid": {
+          "name": "idx_tasks_assigneeid",
+          "columns": [
+            {
+              "expression": "assignee_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "tasks_assignee_id_users_uid_fk": {
+          "name": "tasks_assignee_id_users_uid_fk",
+          "tableFrom": "tasks",
+          "tableTo": "users",
+          "columnsFrom": [
+            "assignee_id"
+          ],
+          "columnsTo": [
+            "uId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.team_members": {
-      "name": "team_members",
+    "public.users": {
+      "name": "users",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
+        "uId": {
+          "name": "uId",
+          "type": "char(36)",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
+          "notNull": true
         },
         "name": {
           "name": "name",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
-        },
-        "role": {
-          "name": "role",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "email": {
           "name": "email",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rId": {
+          "name": "rId",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lname": {
+          "name": "lname",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "statement": {
+          "name": "statement",
+          "type": "varchar(10485760)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "roleAdmin": {
+          "name": "roleAdmin",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "resetCode": {
+          "name": "resetCode",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "info": {
+          "name": "info",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "coachUserId": {
+          "name": "coachUserId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isCoach": {
+          "name": "isCoach",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "managerUserId": {
+          "name": "managerUserId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deactivationDate": {
+          "name": "deactivationDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phoneNumber": {
+          "name": "phoneNumber",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "InvitedAt": {
+          "name": "InvitedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "TextNotifications": {
+          "name": "TextNotifications",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "avatar": {
           "name": "avatar",
-          "type": "text",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "depId": {
+          "name": "depId",
+          "type": "char(36)",
           "primaryKey": false,
           "notNull": false
         },
@@ -647,25 +2639,83 @@
           "primaryKey": false,
           "notNull": false
         },
-        "department": {
-          "name": "department",
-          "type": "text",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
         },
-        "reports_to": {
-          "name": "reports_to",
-          "type": "uuid",
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
+      "indexes": {
+        "idx_users_rid": {
+          "name": "idx_users_rid",
+          "columns": [
+            {
+              "expression": "rId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_users_depid": {
+          "name": "idx_users_depid",
+          "columns": [
+            {
+              "expression": "depId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "users_rID_fkey": {
+          "name": "users_rID_fkey",
+          "tableFrom": "users",
+          "tableTo": "role",
+          "columnsFrom": [
+            "rId"
+          ],
+          "columnsTo": [
+            "rId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        },
+        "users_depID_fkey": {
+          "name": "users_depID_fkey",
+          "tableFrom": "users",
+          "tableTo": "department",
+          "columnsFrom": [
+            "depId"
+          ],
+          "columnsTo": [
+            "depId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "cascade"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "team_members_email_unique": {
-          "name": "team_members_email_unique",
+        "users_email_key": {
+          "name": "users_email_key",
           "nullsNotDistinct": false,
           "columns": [
             "email"
@@ -675,73 +2725,45 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
-    },
-    "public.value_propositions": {
-      "name": "value_propositions",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "impact": {
-          "name": "impact",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "effort": {
-          "name": "effort",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "confidence": {
-          "name": "confidence",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.enum_charpLog_charpStatus": {
+      "name": "enum_charpLog_charpStatus",
+      "schema": "public",
+      "values": [
+        "C",
+        "H",
+        "A",
+        "R",
+        "P",
+        "D"
+      ]
+    },
+    "public.enum_kpi_charpStatus": {
+      "name": "enum_kpi_charpStatus",
+      "schema": "public",
+      "values": [
+        "C",
+        "H",
+        "A",
+        "R",
+        "P"
+      ]
+    },
+    "public.enum_milestones_charpStatus": {
+      "name": "enum_milestones_charpStatus",
+      "schema": "public",
+      "values": [
+        "C",
+        "H",
+        "A",
+        "R",
+        "P",
+        "D"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

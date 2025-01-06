@@ -1,5 +1,5 @@
 // @ts-nocheck 
-import { initializeDb, getDatabase } from '../src/lib/data/implementations/drizzle/db';
+import { initializeDb, getDatabase } from '../drizzle/db';
 import { seedManufacturing } from '../src/lib/data/implementations/drizzle/seed/seed-db';
 import * as schema from '../src/lib/data/implementations/drizzle/schema';
 

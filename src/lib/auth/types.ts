@@ -1,8 +1,9 @@
-import { TeamMember } from 'src/lib/graphql/generated/graphql';
+import { User } from 'src/lib/graphql/generated/graphql';
 import 'next-auth';
 
 // Extend TeamMember for auth user
-export interface AuthUser extends TeamMember {
+export interface AuthUser extends User {
+  id: string; // Required by NextAuth AdapterUser
   emailVerified: Date | null;
   passwordHash?: string; // In a real app, we'd have proper password handling
 }

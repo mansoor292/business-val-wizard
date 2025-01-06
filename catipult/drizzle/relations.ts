@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { relations } from "drizzle-orm/relations";
 import { standardKpi, standardMilestone, organization, department, role, invites, users, deviceregister, kpi, kpiHistory, milestones, issue, resetLog, charpLog, featureRequest, kpiDelegate, meetingUserHistory, meeting, onboardingstatus, meetingUser, kpilog, notification, portfolioGroup, quartersplit, quarterkpiassign, drivers, questions, questiontype, pagecontent, section, userAssignment, userInvite, sectioncompleted, userActivity, todo, useranswer, option, useroutcome, userPersonalityProfile, rfp, meetingHistory, portfolioGroupUser, industry, userDataAccess, meetingIssue, meetingKpi, externalApp, externalAuthentication, externalAuthenticationType, externalAppEndpoint, externalAuthenticationKpi, userChat } from "./schema";
 

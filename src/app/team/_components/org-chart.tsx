@@ -2,7 +2,8 @@
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
-import type { TeamMember } from "src/lib/graphql/generated/graphql";
+import type { User } from "src/lib/graphql/generated/graphql";
+type PartialUser = Pick<User, 'uId' | 'name' | 'email' | 'info' | 'managerUserId'>;
 import { Button } from "src/components/ui/button";
 import { MessageCircle, Plus } from "lucide-react";
 import { AddTeamMemberDialog } from "./add-team-member-dialog";
@@ -10,42 +11,42 @@ import { TeamMemberCard } from "./team-member-card";
 import { ChirpView, ParticipantType } from "src/components/chat/chirp-view";
 
 interface OrgChartProps {
-  teamMembers: TeamMember[];
-  onAddMember?: (member: Omit<TeamMember, "id" | "createdAt" | "updatedAt">) => void;
+  teamMembers: PartialUser[];
+  onAddMember?: (member: Partial<PartialUser>) => void;
 }
 
-// Extend TeamMember type to include reports for hierarchy
-interface TeamMemberNode extends TeamMember {
-  reports?: TeamMemberNode[];
+// Extend PartialUser type to include reports for hierarchy
+interface UserNode extends PartialUser {
+  reports?: UserNode[];
 }
 
 interface OrgChartNodeProps {
-  member: TeamMemberNode;
-  onMemberClick: (member: TeamMemberNode, event: React.MouseEvent) => void;
-  onAddClick: (parentMember: TeamMemberNode) => void;
-  onChatClick: (member: TeamMemberNode, event: React.MouseEvent) => void;
+  member: UserNode;
+  onMemberClick: (member: UserNode, event: React.MouseEvent) => void;
+  onAddClick: (parentMember: UserNode) => void;
+  onChatClick: (member: UserNode, event: React.MouseEvent) => void;
 }
 
 // Build the reporting hierarchy using a top-down approach
-function buildHierarchy(members: TeamMember[]): TeamMemberNode | null {
+function buildHierarchy(members: PartialUser[]): UserNode | null {
   // Find the root member (no reportsTo)
-  const rootMember = members.find(m => !m.reportsTo);
+  const rootMember = members.find(m => !m.managerUserId);
   if (!rootMember) return null;
 
   // Helper function to recursively build the hierarchy
-  function buildNode(member: TeamMember, availableMembers: TeamMember[]): TeamMemberNode {
+  function buildNode(member: PartialUser, availableMembers: PartialUser[]): UserNode {
     // Create node with reports array
-    const node: TeamMemberNode = {
+    const node: UserNode = {
       ...member,
       reports: []
     };
 
     // Find all direct reports
-    const directReports = availableMembers.filter(m => m.reportsTo === member.id);
+    const directReports = availableMembers.filter(m => m.managerUserId === member.uId);
     
     // Remove these members from available pool and process them
     directReports.forEach(report => {
-      const reportIndex = availableMembers.findIndex(m => m.id === report.id);
+      const reportIndex = availableMembers.findIndex(m => m.uId === report.uId);
       if (reportIndex !== -1) {
         // Remove the member from available pool
         const [reportMember] = availableMembers.splice(reportIndex, 1);
@@ -58,7 +59,7 @@ function buildHierarchy(members: TeamMember[]): TeamMemberNode | null {
   }
 
   // Start with all members except root
-  const availableMembers = members.filter(m => m.email !== rootMember.email);
+  const availableMembers = members.filter(m => m.uId !== rootMember.uId);
   
   // Build the hierarchy starting from root
   return buildNode(rootMember, availableMembers);
@@ -74,7 +75,7 @@ const LoadingSpinner = () => (
 );
 
 const OrgChartNode: React.FC<OrgChartNodeProps> = ({ member, onMemberClick, onAddClick, onChatClick }) => {
-  const displayName = member.name || member.email.split('@')[0];
+  const displayName = member.name || (member.email ? member.email.split('@')[0] : 'Unknown');
   return (
     <div className="flex flex-col items-center">
       <div 
@@ -83,7 +84,7 @@ const OrgChartNode: React.FC<OrgChartNodeProps> = ({ member, onMemberClick, onAd
       >
         <div className="relative">
           <Avatar className="w-20 h-20 mb-2 border-2 border-orange-400">
-            <AvatarImage src={member.avatar || ''} alt={displayName} />
+            <AvatarImage src={member.info?.avatar || ''} alt={displayName} />
             <AvatarFallback>{displayName.charAt(0)}</AvatarFallback>
           </Avatar>
           <Button
@@ -100,7 +101,7 @@ const OrgChartNode: React.FC<OrgChartNodeProps> = ({ member, onMemberClick, onAd
         </div>
         <div className="text-center">
           <h3 className="font-medium text-lg">{displayName}</h3>
-          <p className="text-sm text-gray-500">{member.role || 'Team Member'}</p>
+          <p className="text-sm text-gray-500">{member.info?.role || 'Team Member'}</p>
         </div>
       </div>
       
@@ -127,7 +128,7 @@ const OrgChartNode: React.FC<OrgChartNodeProps> = ({ member, onMemberClick, onAd
           />
           <div className="flex gap-x-16 relative pt-4">
             {member.reports.map((report) => (
-              <div key={report.id} className="flex flex-col items-center">
+              <div key={report.uId} className="flex flex-col items-center">
                   <OrgChartNode 
                     member={report} 
                     onMemberClick={onMemberClick}
@@ -144,11 +145,11 @@ const OrgChartNode: React.FC<OrgChartNodeProps> = ({ member, onMemberClick, onAd
 };
 
 export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
-  const [selectedMember, setSelectedMember] = useState<TeamMemberNode | null>(null);
+  const [selectedMember, setSelectedMember] = useState<UserNode | null>(null);
   const [cardPosition, setCardPosition] = useState<{ x: number; y: number } | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [selectedParent, setSelectedParent] = useState<TeamMemberNode | null>(null);
-  const [chatMember, setChatMember] = useState<TeamMemberNode | null>(null);
+  const [selectedParent, setSelectedParent] = useState<UserNode | null>(null);
+  const [chatMember, setChatMember] = useState<UserNode | null>(null);
   const [chatPosition, setChatPosition] = useState<{ x: number; y: number } | null>(null);
   const chartRef = useRef<HTMLDivElement>(null);
   
@@ -216,13 +217,13 @@ export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
     return position;
   };
 
-  const handleChatClick = (member: TeamMemberNode, event: React.MouseEvent) => {
+  const handleChatClick = (member: UserNode, event: React.MouseEvent) => {
     event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const chartRect = chartRef.current?.getBoundingClientRect();
     
     if (chartRect) {
-      if (chatMember?.id === member.id) {
+      if (chatMember?.uId === member.uId) {
         setChatMember(null);
         setChatPosition(null);
       } else {
@@ -233,13 +234,13 @@ export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
     }
   };
 
-  const handleMemberClick = (member: TeamMemberNode, event: React.MouseEvent) => {
+  const handleMemberClick = (member: UserNode, event: React.MouseEvent) => {
     event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const chartRect = chartRef.current?.getBoundingClientRect();
     
     if (chartRect) {
-      if (selectedMember?.id === member.id) {
+      if (selectedMember?.uId === member.uId) {
         setSelectedMember(null);
         setCardPosition(null);
       } else {
@@ -271,12 +272,12 @@ export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
     );
   }
 
-  const handleAddClick = (parentMember: TeamMemberNode) => {
+  const handleAddClick = (parentMember: UserNode) => {
     setSelectedParent(parentMember);
     setAddDialogOpen(true);
   };
 
-  const handleAddMember = (member: Omit<TeamMember, "id" | "createdAt" | "updatedAt">) => {
+  const handleAddMember = (member: Partial<PartialUser>) => {
     onAddMember?.(member);
   };
 
@@ -319,7 +320,7 @@ export function OrgChart({ teamMembers, onAddMember }: OrgChartProps) {
             overflow: 'auto'
           }}
         >
-          <ChirpView participantId={chatMember.id} participantType={ParticipantType.TEAM_MEMBER}/>
+          <ChirpView participantId={chatMember.uId} participantType={ParticipantType.TEAM_MEMBER}/>
         </div>
       )}
     </div>

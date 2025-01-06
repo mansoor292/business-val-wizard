@@ -1,9 +1,10 @@
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { GET_TEAM_MEMBERS } from "../graphql/queries/team-members";
+import { GET_USERS } from "../graphql/queries/users";
 import { AuthUser, AuthCredentials } from "./types";
-import { executeGraphQL } from "../graphql/actions";
-import type { GetTeamMembersQuery, GetTeamMembersQueryVariables, TeamMember } from "../graphql/generated/graphql";
+import { print } from 'graphql';
+
+const GRAPHQL_URL = process.env.GRAPHQL_URL || "http://localhost:4000/graphql";
 
 // This configuration is used by App Router
 export const authConfig: NextAuthConfig = {
@@ -22,26 +23,37 @@ export const authConfig: NextAuthConfig = {
         }
 
         try {
-          // Get all team members
-          const data = await executeGraphQL<GetTeamMembersQuery, GetTeamMembersQueryVariables>({
-            query: GET_TEAM_MEMBERS
+          // Direct GraphQL request without auth token
+          const res = await fetch(GRAPHQL_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: print(GET_USERS),
+            }),
           });
 
-          // Find user by email
-          const teamMember = data.teamMembers?.find(
-            (member: TeamMember) => member.email.toLowerCase() === creds.email.toLowerCase()
-          );
-
-          if (!teamMember) {
-            throw new Error('No user found with this email');
+          if (!res.ok) {
+            throw new Error('GraphQL request failed');
           }
 
-          // Convert TeamMember to AuthUser
-          const user: AuthUser = {
-            ...teamMember,
-            emailVerified: new Date(),
-            passwordHash: 'mock-hash', // In a real app, we'd have proper password handling
-          };
+          const json = await res.json();
+          
+          if (json.errors) {
+            throw new Error(
+              `GraphQL Error: ${json.errors.map((e: Error) => e.message).join(', ')}`
+            );
+          }
+
+          // Find user by email
+          const user = json.data.users?.find(
+            (member: any) => member.email?.toLowerCase() === creds.email.toLowerCase()
+          );
+
+          if (!user) {
+            throw new Error('No user found with this email');
+          }
 
           // In a real app, we'd verify the password hash
           return user;
@@ -66,7 +78,7 @@ export const authConfig: NextAuthConfig = {
     async session({ session, token }) {
       // Pass the full user data to the session
       if (token.user) {
-        session.user = token.user as AuthUser;
+        session.user = token.user;
       }
       return session;
     },

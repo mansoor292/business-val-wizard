@@ -7,13 +7,12 @@ import {
   Plus, 
   ChevronDown, 
   Search,
-  Bot,
-  User
+  Bot
 } from "lucide-react";
 import { getAgents } from "src/app/actions/agents";
 import { getTeamMembers } from "src/app/actions/team-members";
 import { getChats } from "src/app/actions/chats";
-import type { Agent, TeamMember, Chat } from "src/lib/graphql/generated/graphql";
+import type { Agent, User, Chat } from "src/lib/graphql/generated/graphql";
 
 enum ParticipantType {
   AGENT = 'AGENT',
@@ -35,7 +34,7 @@ export function Sidebar({
   onParticipantSelect 
 }: SidebarProps) {
   const [agents, setAgents] = useState<Agent[]>([]);
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamMembers, setTeamMembers] = useState<User[]>([]);
   const [chats, setChats] = useState<Chat[]>([]);
 
   useEffect(() => {
@@ -95,7 +94,7 @@ export function Sidebar({
             {/* Team Members List */}
             <div className="space-y-1 mb-6">
               {teamChats.map((chat: Chat) => {
-                const member = teamMembers?.find((m: TeamMember) => m.id === chat.participantId);
+                const member = teamMembers?.find((m: User) => m.uId === chat.participantId);
                 if (!member) return null;
                 
                 return (
@@ -109,7 +108,7 @@ export function Sidebar({
                   >
                     <Avatar className="h-6 w-6 mr-2">
                       <AvatarImage src={member.avatar || ''} />
-                      <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{member.name?.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <span className="text-sm">{member.name}</span>
                   </button>

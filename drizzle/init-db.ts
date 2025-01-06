@@ -1,5 +1,5 @@
-import { initializeDb } from '../src/lib/data/implementations/drizzle/db';
-import { seedManufacturing } from './seed-db';
+import { initializeDb } from './db';
+import { seedManufacturing } from '../scripts/seed-db';
 
 async function main() {
   try {
