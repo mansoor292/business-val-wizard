@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from "next-auth/react";
-import { usePathname, redirect } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function ProtectedContent({ children }: { children: React.ReactNode }) {
   const { status } = useSession();
@@ -11,12 +11,10 @@ export function ProtectedContent({ children }: { children: React.ReactNode }) {
     return null; // Or a loading spinner
   }
 
+  // Only show content if authenticated or on login page
   if (status === "unauthenticated" && pathname !== "/login") {
-    redirect("/login");
-  }
-
-  if (status === "authenticated" && pathname === "/login") {
-    redirect("/");
+    window.location.href = "/login";
+    return null;
   }
 
   return <>{children}</>;
