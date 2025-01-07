@@ -48,7 +48,7 @@ interface NavItem {
   onClick?: () => void;
 }
 
-export type ActiveView = 'dashboard' | 'agents' | 'projects' | 'team' | 'training' | 'analytics';
+export type ActiveView = 'dashboard' | 'agents' | 'projects' | 'team' | 'training' | 'analytics' | 'kpi';
 interface HeaderProps {
   activeView: ActiveView;
   onViewChange: (view: ActiveView) => void;
@@ -92,6 +92,12 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
       label: 'Analytics',
       active: activeView === 'analytics',
       onClick: () => onViewChange('analytics')
+    },
+    {
+      icon: <BarChart2 className="w-5 h-5" />,
+      label: 'KPIs',
+      active: activeView === 'kpi',
+      onClick: () => onViewChange('kpi')
     },
   ];
   const { isAuthenticated, user, logout } = useAuth()
