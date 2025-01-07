@@ -8,7 +8,7 @@ import { useAuth } from "src/lib/auth/auth-context";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function LoginPage() {
     try {
       const searchParams = new URLSearchParams(window.location.search);
       const callbackUrl = searchParams.get('callbackUrl') || '/';
-      await login(username, password);
+      await login(email, password);
       router.push(callbackUrl);
     } catch (error) {
       console.error("Login failed:", error);
@@ -35,10 +35,10 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="space-y-2">

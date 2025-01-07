@@ -1,4 +1,9 @@
 # Business Value Wizard
+Created and confirmed a test user with the following credentials:
+Username: testuser
+Email: test@example.com
+Password: TestUser123!
+Status: CONFIRMED
 
 A comprehensive project management and business value tracking application built with Next.js, TypeScript, and modern web technologies.
 
