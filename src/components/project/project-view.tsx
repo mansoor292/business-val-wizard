@@ -7,7 +7,7 @@ import { Card } from '../ui/card';
 import ProjectKanbanBoard from './project-kanban-board';
 import { Project, Task, Document } from 'src/lib/data/types';
 
-interface ProjectViewProps {
+interface ProjectBoardProps {
   selectedProjectId: string | null;
   projects: Project[];
   tasks: Task[];
@@ -15,7 +15,7 @@ interface ProjectViewProps {
   onTaskStatusChange: (taskId: string, newStatus: Task['status']) => Promise<void>;
 }
 
-export function ProjectView({ selectedProjectId, projects, tasks, documents, onTaskStatusChange }: ProjectViewProps) {
+export function ProjectBoard({ selectedProjectId, projects, tasks, documents, onTaskStatusChange }: ProjectBoardProps) {
   const project = projects.find(p => p.id === selectedProjectId);
   const projectTasks = tasks.filter(task => task.projectId === selectedProjectId);
   const projectDocuments = documents.filter(doc => doc.projectId === selectedProjectId);
@@ -106,4 +106,4 @@ export function ProjectView({ selectedProjectId, projects, tasks, documents, onT
   );
 };
 
-export default ProjectView;
+export default ProjectBoard;

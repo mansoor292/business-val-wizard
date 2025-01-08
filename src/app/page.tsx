@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Header, ActiveView } from "src/components/layout/header";
 import { Sidebar } from "src/components/layout/sidebar";
 import { AgentView } from "src/components/agent/agent-view";
-import DashboardPage from "src/app/dashboard/project";
+import ProjectView from "src/app/projects";
 import { DashboardView } from "src/components/dashboard/dashboard-view";
-import TeamPage from "src/app/team/page";
+import TeamView from "src/app/team";
 import { KPIView } from "src/components/kpi";
 
 export default function Home() {
@@ -28,9 +28,9 @@ export default function Home() {
           </>
         );
       case 'projects':
-        return <DashboardPage />;
+        return <ProjectView />;
       case 'team':
-        return <div className="container mx-auto p-6"><TeamPage /></div>;
+        return <div className="container mx-auto p-6"><TeamView /></div>;
       case 'kpi':
         return <div className="container mx-auto p-6"><KPIView /></div>;
       default:

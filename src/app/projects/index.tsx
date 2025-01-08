@@ -1,10 +1,10 @@
 'use client';
 
-import ProjectView from '../../components/project/project-view';
+import ProjectBoard from '../../components/project/project-view';
 import { ProjectSidebar } from '../../components/project/project-sidebar';
 import { useData } from '../../lib/data/context';
 
-export default function DashboardPage() {
+export default function ProjectView() {
   const { 
     projects, 
     tasks,
@@ -16,7 +16,7 @@ export default function DashboardPage() {
   return (
     <div className="flex-1 flex">
       <ProjectSidebar />
-      <ProjectView 
+      <ProjectBoard 
         selectedProjectId={selectedProjectId}
         projects={projects}
         tasks={tasks || []}
