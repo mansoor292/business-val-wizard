@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
-import { ChirpView } from '../../../../components/chat/chirp-view'
-import { getAgents } from '../../../../lib/actions/chat'
-import { getTeamMembers } from '../../../../lib/actions/team'
-import { ParticipantType } from '../../../../lib/data/interface'
+import { ChirpView } from 'src/components/chat/chirp-view'
+import { getAgents } from 'src/lib/actions/chat'
+import { getTeamMembers } from 'src/lib/actions/team'
+import { ParticipantType } from 'src/lib/data/interface'
 
 interface ChatPageProps {
   params: {

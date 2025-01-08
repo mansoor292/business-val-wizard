@@ -1,0 +1,2394 @@
+"""The root query type which gives access points into the data universe."""
+type Query {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """Reads and enables pagination through a set of `AdminActivityLog`."""
+  adminActivityLogsConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `AdminActivityLog`."""
+    orderBy: [AdminActivityLogsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdminActivityLogCondition
+  ): AdminActivityLogsConnection
+
+  """Reads a set of `AdminActivityLog`."""
+  adminActivityLogs(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `AdminActivityLog`."""
+    orderBy: [AdminActivityLogsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AdminActivityLogCondition
+  ): [AdminActivityLog!]
+
+  """Reads and enables pagination through a set of `AuditLog`."""
+  auditLogsConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `AuditLog`."""
+    orderBy: [AuditLogsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AuditLogCondition
+  ): AuditLogsConnection
+
+  """Reads a set of `AuditLog`."""
+  auditLogs(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `AuditLog`."""
+    orderBy: [AuditLogsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AuditLogCondition
+  ): [AuditLog!]
+
+  """Reads and enables pagination through a set of `BaseEntity`."""
+  baseEntitiesConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `BaseEntity`."""
+    orderBy: [BaseEntitiesOrderBy!] = [NATURAL]
+  ): BaseEntitiesConnection
+
+  """Reads a set of `BaseEntity`."""
+  baseEntities(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `BaseEntity`."""
+    orderBy: [BaseEntitiesOrderBy!]
+  ): [BaseEntity!]
+
+  """Reads and enables pagination through a set of `BaseObject`."""
+  baseObjectsConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `BaseObject`."""
+    orderBy: [BaseObjectsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BaseObjectCondition
+  ): BaseObjectsConnection
+
+  """Reads a set of `BaseObject`."""
+  baseObjects(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `BaseObject`."""
+    orderBy: [BaseObjectsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BaseObjectCondition
+  ): [BaseObject!]
+
+  """Reads and enables pagination through a set of `DomainAccess`."""
+  domainAccessesConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainAccessCondition
+  ): DomainAccessesConnection
+
+  """Reads a set of `DomainAccess`."""
+  domainAccesses(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainAccessCondition
+  ): [DomainAccess!]
+
+  """Reads and enables pagination through a set of `Domain`."""
+  domainsConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Domain`."""
+    orderBy: [DomainsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainCondition
+  ): DomainsConnection
+
+  """Reads a set of `Domain`."""
+  domains(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Domain`."""
+    orderBy: [DomainsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainCondition
+  ): [Domain!]
+
+  """Reads and enables pagination through a set of `TeamMember`."""
+  teamMembersConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `TeamMember`."""
+    orderBy: [TeamMembersOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TeamMemberCondition
+  ): TeamMembersConnection
+
+  """Reads a set of `TeamMember`."""
+  teamMembers(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `TeamMember`."""
+    orderBy: [TeamMembersOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TeamMemberCondition
+  ): [TeamMember!]
+
+  """Reads and enables pagination through a set of `User`."""
+  usersConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+  ): UsersConnection
+
+  """Reads a set of `User`."""
+  users(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+  ): [User!]
+  adminActivityLog(id: ShortId!): AdminActivityLog
+  auditLog(id: ShortId!): AuditLog
+  baseObject(id: ShortId!): BaseObject
+  domainAccess(userId: ShortId!, domainId: ShortId!): DomainAccess
+  domainById(id: ShortId!): Domain
+  domainByCode(code: String!): Domain
+  teamMemberById(id: ShortId!): TeamMember
+  teamMemberByUserId(userId: ShortId!): TeamMember
+  userById(id: ShortId!): User
+  userByCognitoId(cognitoId: UUID!): User
+  userByEmail(email: String!): User
+  currentUserId: ShortId
+
+  """Retrieves the audit history for a specific record"""
+  auditHistoryConnection(
+    pTableName: String
+    pRecordId: ShortId
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+  ): AuditLogsConnection
+
+  """Retrieves the audit history for a specific record"""
+  auditHistory(
+    pTableName: String
+    pRecordId: ShortId
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [AuditLog!]
+  shouldAudit: Boolean
+}
+
+"""A connection to a list of `AdminActivityLog` values."""
+type AdminActivityLogsConnection {
+  """A list of `AdminActivityLog` objects."""
+  nodes: [AdminActivityLog!]!
+
+  """
+  A list of edges which contains the `AdminActivityLog` and cursor to aid in pagination.
+  """
+  edges: [AdminActivityLogsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AdminActivityLog` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""Logs administrative activities like enabling/disabling auditing"""
+type AdminActivityLog {
+  id: ShortId!
+  operation: String!
+  description: String
+  performedBy: ShortId
+  performedAt: Datetime!
+}
+
+scalar ShortId
+
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+"""
+scalar Datetime
+
+"""A `AdminActivityLog` edge in the connection."""
+type AdminActivityLogsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AdminActivityLog` at the end of the edge."""
+  node: AdminActivityLog!
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""Methods to use when ordering `AdminActivityLog`."""
+enum AdminActivityLogsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `AdminActivityLog` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input AdminActivityLogCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: ShortId
+}
+
+"""A connection to a list of `AuditLog` values."""
+type AuditLogsConnection {
+  """A list of `AuditLog` objects."""
+  nodes: [AuditLog!]!
+
+  """
+  A list of edges which contains the `AuditLog` and cursor to aid in pagination.
+  """
+  edges: [AuditLogsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `AuditLog` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""Track all changes to audited tables"""
+type AuditLog {
+  """Unique identifier for the audit log entry"""
+  id: ShortId!
+
+  """ID of the record that was changed"""
+  recordId: ShortId!
+
+  """Name of the table where the change occurred"""
+  tableName: String!
+
+  """Type of operation performed (INSERT, UPDATE, DELETE)"""
+  operation: AuditOperation!
+
+  """Previous state of the record (for UPDATE and DELETE)"""
+  oldData: JSON
+
+  """New state of the record (for INSERT and UPDATE)"""
+  newData: JSON
+
+  """ID of the user who made the change"""
+  changedBy: ShortId
+
+  """Timestamp when the change occurred"""
+  changedAt: Datetime!
+}
+
+enum AuditOperation {
+  INSERT
+  UPDATE
+  DELETE
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""A `AuditLog` edge in the connection."""
+type AuditLogsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AuditLog` at the end of the edge."""
+  node: AuditLog!
+}
+
+"""Methods to use when ordering `AuditLog`."""
+enum AuditLogsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  TABLE_NAME_ASC
+  TABLE_NAME_DESC
+  CHANGED_AT_ASC
+  CHANGED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `AuditLog` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input AuditLogCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: ShortId
+
+  """Checks for equality with the object’s `tableName` field."""
+  tableName: String
+
+  """Checks for equality with the object’s `changedAt` field."""
+  changedAt: Datetime
+}
+
+"""A connection to a list of `BaseEntity` values."""
+type BaseEntitiesConnection {
+  """A list of `BaseEntity` objects."""
+  nodes: [BaseEntity!]!
+
+  """
+  A list of edges which contains the `BaseEntity` and cursor to aid in pagination.
+  """
+  edges: [BaseEntitiesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `BaseEntity` you could get from the connection."""
+  totalCount: Int!
+}
+
+type BaseEntity {
+  id: ShortId!
+  createdBy: ShortId
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String!
+}
+
+"""A `BaseEntity` edge in the connection."""
+type BaseEntitiesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `BaseEntity` at the end of the edge."""
+  node: BaseEntity!
+}
+
+"""Methods to use when ordering `BaseEntity`."""
+enum BaseEntitiesOrderBy {
+  NATURAL
+}
+
+"""A connection to a list of `BaseObject` values."""
+type BaseObjectsConnection {
+  """A list of `BaseObject` objects."""
+  nodes: [BaseObject!]!
+
+  """
+  A list of edges which contains the `BaseObject` and cursor to aid in pagination.
+  """
+  edges: [BaseObjectsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `BaseObject` you could get from the connection."""
+  totalCount: Int!
+}
+
+type BaseObject {
+  id: ShortId!
+  createdBy: ShortId
+  createdAt: Datetime!
+  updatedAt: Datetime!
+}
+
+"""A `BaseObject` edge in the connection."""
+type BaseObjectsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `BaseObject` at the end of the edge."""
+  node: BaseObject!
+}
+
+"""Methods to use when ordering `BaseObject`."""
+enum BaseObjectsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `BaseObject` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input BaseObjectCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: ShortId
+}
+
+"""A connection to a list of `DomainAccess` values."""
+type DomainAccessesConnection {
+  """A list of `DomainAccess` objects."""
+  nodes: [DomainAccess!]!
+
+  """
+  A list of edges which contains the `DomainAccess` and cursor to aid in pagination.
+  """
+  edges: [DomainAccessesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `DomainAccess` you could get from the connection."""
+  totalCount: Int!
+}
+
+type DomainAccess {
+  userId: ShortId!
+  domainId: ShortId!
+  isAdmin: Boolean
+  createdAt: Datetime!
+
+  """Reads a single `User` that is related to this `DomainAccess`."""
+  user: User
+
+  """Reads a single `Domain` that is related to this `DomainAccess`."""
+  domain: Domain
+}
+
+type User {
+  id: ShortId!
+  createdBy: ShortId
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String!
+  cognitoId: UUID!
+  email: String!
+
+  """Reads a single `Domain` that is related to this `User`."""
+  domain: Domain
+
+  """Reads a single `TeamMember` that is related to this `User`."""
+  teamMember: TeamMember
+
+  """Reads and enables pagination through a set of `DomainAccess`."""
+  domainAccessesConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainAccessCondition
+  ): DomainAccessesConnection!
+
+  """Reads and enables pagination through a set of `DomainAccess`."""
+  domainAccesses(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainAccessCondition
+  ): [DomainAccess!]!
+}
+
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
+type Domain {
+  id: ShortId!
+  createdBy: ShortId
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  code: String!
+
+  """Reads and enables pagination through a set of `User`."""
+  usersConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+  ): UsersConnection!
+
+  """Reads and enables pagination through a set of `User`."""
+  users(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+  ): [User!]!
+
+  """Reads and enables pagination through a set of `DomainAccess`."""
+  domainAccessesConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainAccessCondition
+  ): DomainAccessesConnection!
+
+  """Reads and enables pagination through a set of `DomainAccess`."""
+  domainAccesses(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DomainAccessCondition
+  ): [DomainAccess!]!
+}
+
+"""A connection to a list of `User` values."""
+type UsersConnection {
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """
+  A list of edges which contains the `User` and cursor to aid in pagination.
+  """
+  edges: [UsersEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection."""
+type UsersEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `User` at the end of the edge."""
+  node: User!
+}
+
+"""Methods to use when ordering `User`."""
+enum UsersOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  DOMAIN_ID_ASC
+  DOMAIN_ID_DESC
+  COGNITO_ID_ASC
+  COGNITO_ID_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+}
+
+"""
+A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input UserCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: ShortId
+
+  """Checks for equality with the object’s `domainId` field."""
+  domainId: ShortId
+
+  """Checks for equality with the object’s `cognitoId` field."""
+  cognitoId: UUID
+
+  """Checks for equality with the object’s `email` field."""
+  email: String
+}
+
+"""Methods to use when ordering `DomainAccess`."""
+enum DomainAccessesOrderBy {
+  NATURAL
+  USER_ID_ASC
+  USER_ID_DESC
+  DOMAIN_ID_ASC
+  DOMAIN_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `DomainAccess` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input DomainAccessCondition {
+  """Checks for equality with the object’s `userId` field."""
+  userId: ShortId
+
+  """Checks for equality with the object’s `domainId` field."""
+  domainId: ShortId
+}
+
+type TeamMember {
+  id: ShortId!
+  createdBy: ShortId
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String!
+  userId: ShortId
+  manager: ShortId
+  jobTitle: String
+  department: String
+  hireDate: Date
+  employmentStatus: String!
+  workEmail: String
+  workPhone: String
+  officeLocation: String
+  bio: String
+
+  """Reads a single `User` that is related to this `TeamMember`."""
+  user: User
+
+  """Reads a single `TeamMember` that is related to this `TeamMember`."""
+  teamMemberByManager: TeamMember
+
+  """Reads and enables pagination through a set of `TeamMember`."""
+  teamMembersByManagerConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `TeamMember`."""
+    orderBy: [TeamMembersOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TeamMemberCondition
+  ): TeamMembersConnection!
+
+  """Reads and enables pagination through a set of `TeamMember`."""
+  teamMembersByManager(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `TeamMember`."""
+    orderBy: [TeamMembersOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TeamMemberCondition
+  ): [TeamMember!]!
+
+  """        Get audit history for this entity"""
+  auditHistoryConnection(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+  ): AuditLogsConnection!
+
+  """        Get audit history for this entity"""
+  auditHistory(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+  ): [AuditLog!]
+}
+
+"""The day, does not include a time."""
+scalar Date
+
+"""A connection to a list of `TeamMember` values."""
+type TeamMembersConnection {
+  """A list of `TeamMember` objects."""
+  nodes: [TeamMember!]!
+
+  """
+  A list of edges which contains the `TeamMember` and cursor to aid in pagination.
+  """
+  edges: [TeamMembersEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `TeamMember` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `TeamMember` edge in the connection."""
+type TeamMembersEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `TeamMember` at the end of the edge."""
+  node: TeamMember!
+}
+
+"""Methods to use when ordering `TeamMember`."""
+enum TeamMembersOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  MANAGER_ASC
+  MANAGER_DESC
+}
+
+"""
+A condition to be used against `TeamMember` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TeamMemberCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: ShortId
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: ShortId
+
+  """Checks for equality with the object’s `manager` field."""
+  manager: ShortId
+}
+
+"""A `DomainAccess` edge in the connection."""
+type DomainAccessesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `DomainAccess` at the end of the edge."""
+  node: DomainAccess!
+}
+
+"""A connection to a list of `Domain` values."""
+type DomainsConnection {
+  """A list of `Domain` objects."""
+  nodes: [Domain!]!
+
+  """
+  A list of edges which contains the `Domain` and cursor to aid in pagination.
+  """
+  edges: [DomainsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Domain` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Domain` edge in the connection."""
+type DomainsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Domain` at the end of the edge."""
+  node: Domain!
+}
+
+"""Methods to use when ordering `Domain`."""
+enum DomainsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  CODE_ASC
+  CODE_DESC
+}
+
+"""
+A condition to be used against `Domain` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input DomainCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: ShortId
+
+  """Checks for equality with the object’s `code` field."""
+  code: String
+}
+
+"""
+The root mutation type which contains root level fields which mutate data.
+"""
+type Mutation {
+  """Creates a single `BaseEntity`."""
+  createBaseEntity(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateBaseEntityInput!
+  ): CreateBaseEntityPayload
+
+  """Creates a single `BaseObject`."""
+  createBaseObject(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateBaseObjectInput!
+  ): CreateBaseObjectPayload
+
+  """Creates a single `DomainAccess`."""
+  createDomainAccess(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateDomainAccessInput!
+  ): CreateDomainAccessPayload
+
+  """Creates a single `Domain`."""
+  createDomain(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateDomainInput!
+  ): CreateDomainPayload
+
+  """Creates a single `TeamMember`."""
+  createTeamMember(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateTeamMemberInput!
+  ): CreateTeamMemberPayload
+
+  """Creates a single `User`."""
+  createUser(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateUserInput!
+  ): CreateUserPayload
+
+  """Updates a single `BaseObject` using a unique key and a patch."""
+  updateBaseObject(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateBaseObjectInput!
+  ): UpdateBaseObjectPayload
+
+  """Updates a single `DomainAccess` using a unique key and a patch."""
+  updateDomainAccess(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDomainAccessInput!
+  ): UpdateDomainAccessPayload
+
+  """Updates a single `Domain` using a unique key and a patch."""
+  updateDomainById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDomainByIdInput!
+  ): UpdateDomainPayload
+
+  """Updates a single `Domain` using a unique key and a patch."""
+  updateDomainByCode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDomainByCodeInput!
+  ): UpdateDomainPayload
+
+  """Updates a single `TeamMember` using a unique key and a patch."""
+  updateTeamMemberById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTeamMemberByIdInput!
+  ): UpdateTeamMemberPayload
+
+  """Updates a single `TeamMember` using a unique key and a patch."""
+  updateTeamMemberByUserId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTeamMemberByUserIdInput!
+  ): UpdateTeamMemberPayload
+
+  """Updates a single `User` using a unique key and a patch."""
+  updateUserById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateUserByIdInput!
+  ): UpdateUserPayload
+
+  """Updates a single `User` using a unique key and a patch."""
+  updateUserByCognitoId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateUserByCognitoIdInput!
+  ): UpdateUserPayload
+
+  """Updates a single `User` using a unique key and a patch."""
+  updateUserByEmail(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateUserByEmailInput!
+  ): UpdateUserPayload
+
+  """Deletes a single `BaseObject` using a unique key."""
+  deleteBaseObject(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteBaseObjectInput!
+  ): DeleteBaseObjectPayload
+
+  """Deletes a single `DomainAccess` using a unique key."""
+  deleteDomainAccess(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDomainAccessInput!
+  ): DeleteDomainAccessPayload
+
+  """Deletes a single `Domain` using a unique key."""
+  deleteDomainById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDomainByIdInput!
+  ): DeleteDomainPayload
+
+  """Deletes a single `Domain` using a unique key."""
+  deleteDomainByCode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDomainByCodeInput!
+  ): DeleteDomainPayload
+
+  """Deletes a single `TeamMember` using a unique key."""
+  deleteTeamMemberById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTeamMemberByIdInput!
+  ): DeleteTeamMemberPayload
+
+  """Deletes a single `TeamMember` using a unique key."""
+  deleteTeamMemberByUserId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTeamMemberByUserIdInput!
+  ): DeleteTeamMemberPayload
+
+  """Deletes a single `User` using a unique key."""
+  deleteUserById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserByIdInput!
+  ): DeleteUserPayload
+
+  """Deletes a single `User` using a unique key."""
+  deleteUserByCognitoId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserByCognitoIdInput!
+  ): DeleteUserPayload
+
+  """Deletes a single `User` using a unique key."""
+  deleteUserByEmail(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserByEmailInput!
+  ): DeleteUserPayload
+
+  """
+  Temporarily disable audit logging for bulk operations.
+  Requires admin role.
+  """
+  disableAuditing(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DisableAuditingInput!
+  ): DisableAuditingPayload
+
+  """
+  Re-enable audit logging after it has been disabled.
+  Requires admin role.
+  """
+  enableAuditing(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: EnableAuditingInput!
+  ): EnableAuditingPayload
+  generateShortId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: GenerateShortIdInput!
+  ): GenerateShortIdPayload
+
+  """
+  Sets up auditing for the specified table. 
+  The table must have id and updated_at columns.
+  Creates:
+  - Audit trigger
+  - Audit history function
+  - Updates RLS policies
+  """
+  setupTableAuditing(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SetupTableAuditingInput!
+  ): SetupTableAuditingPayload
+
+  """
+  Executes the given SQL operation with auditing temporarily disabled.
+  Requires admin role. All audit disabling/enabling is logged.
+  """
+  executeWithoutAuditing(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ExecuteWithoutAuditingInput!
+  ): ExecuteWithoutAuditingPayload
+}
+
+"""The output of our create `BaseEntity` mutation."""
+type CreateBaseEntityPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `BaseEntity` that was created by this mutation."""
+  baseEntity: BaseEntity
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `BaseEntity`. May be used by Relay 1."""
+  baseEntityEdge(
+    """The method to use when ordering `BaseEntity`."""
+    orderBy: [BaseEntitiesOrderBy!] = [NATURAL]
+  ): BaseEntitiesEdge
+}
+
+"""All input for the create `BaseEntity` mutation."""
+input CreateBaseEntityInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `BaseEntity` to be created by this mutation."""
+  baseEntity: BaseEntityInput!
+}
+
+"""An input for mutations affecting `BaseEntity`"""
+input BaseEntityInput {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String!
+}
+
+"""The output of our create `BaseObject` mutation."""
+type CreateBaseObjectPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `BaseObject` that was created by this mutation."""
+  baseObject: BaseObject
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `BaseObject`. May be used by Relay 1."""
+  baseObjectEdge(
+    """The method to use when ordering `BaseObject`."""
+    orderBy: [BaseObjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): BaseObjectsEdge
+}
+
+"""All input for the create `BaseObject` mutation."""
+input CreateBaseObjectInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `BaseObject` to be created by this mutation."""
+  baseObject: BaseObjectInput!
+}
+
+"""An input for mutations affecting `BaseObject`"""
+input BaseObjectInput {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `DomainAccess` mutation."""
+type CreateDomainAccessPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `DomainAccess` that was created by this mutation."""
+  domainAccess: DomainAccess
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `DomainAccess`."""
+  user: User
+
+  """Reads a single `Domain` that is related to this `DomainAccess`."""
+  domain: Domain
+
+  """An edge for our `DomainAccess`. May be used by Relay 1."""
+  domainAccessEdge(
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DomainAccessesEdge
+}
+
+"""All input for the create `DomainAccess` mutation."""
+input CreateDomainAccessInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `DomainAccess` to be created by this mutation."""
+  domainAccess: DomainAccessInput!
+}
+
+"""An input for mutations affecting `DomainAccess`"""
+input DomainAccessInput {
+  userId: ShortId!
+  domainId: ShortId!
+  isAdmin: Boolean
+  createdAt: Datetime
+}
+
+"""The output of our create `Domain` mutation."""
+type CreateDomainPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Domain` that was created by this mutation."""
+  domain: Domain
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Domain`. May be used by Relay 1."""
+  domainEdge(
+    """The method to use when ordering `Domain`."""
+    orderBy: [DomainsOrderBy!] = [NATURAL]
+  ): DomainsEdge
+}
+
+"""All input for the create `Domain` mutation."""
+input CreateDomainInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Domain` to be created by this mutation."""
+  domain: DomainInput!
+}
+
+"""An input for mutations affecting `Domain`"""
+input DomainInput {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+  code: String!
+}
+
+"""The output of our create `TeamMember` mutation."""
+type CreateTeamMemberPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `TeamMember` that was created by this mutation."""
+  teamMember: TeamMember
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `TeamMember`."""
+  user: User
+
+  """Reads a single `TeamMember` that is related to this `TeamMember`."""
+  teamMemberByManager: TeamMember
+
+  """An edge for our `TeamMember`. May be used by Relay 1."""
+  teamMemberEdge(
+    """The method to use when ordering `TeamMember`."""
+    orderBy: [TeamMembersOrderBy!] = [NATURAL]
+  ): TeamMembersEdge
+}
+
+"""All input for the create `TeamMember` mutation."""
+input CreateTeamMemberInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `TeamMember` to be created by this mutation."""
+  teamMember: TeamMemberInput!
+}
+
+"""An input for mutations affecting `TeamMember`"""
+input TeamMemberInput {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String!
+  userId: ShortId
+  manager: ShortId
+  jobTitle: String
+  department: String
+  hireDate: Date
+  employmentStatus: String
+  workEmail: String
+  workPhone: String
+  officeLocation: String
+  bio: String
+}
+
+"""The output of our create `User` mutation."""
+type CreateUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `User` that was created by this mutation."""
+  user: User
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Domain` that is related to this `User`."""
+  domain: Domain
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [NATURAL]
+  ): UsersEdge
+}
+
+"""All input for the create `User` mutation."""
+input CreateUserInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `User` to be created by this mutation."""
+  user: UserInput!
+}
+
+"""An input for mutations affecting `User`"""
+input UserInput {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String!
+  cognitoId: UUID!
+  email: String!
+}
+
+"""The output of our update `BaseObject` mutation."""
+type UpdateBaseObjectPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `BaseObject` that was updated by this mutation."""
+  baseObject: BaseObject
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `BaseObject`. May be used by Relay 1."""
+  baseObjectEdge(
+    """The method to use when ordering `BaseObject`."""
+    orderBy: [BaseObjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): BaseObjectsEdge
+}
+
+"""All input for the `updateBaseObject` mutation."""
+input UpdateBaseObjectInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `BaseObject` being updated.
+  """
+  patch: BaseObjectPatch!
+  id: ShortId!
+}
+
+"""
+Represents an update to a `BaseObject`. Fields that are set will be updated.
+"""
+input BaseObjectPatch {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our update `DomainAccess` mutation."""
+type UpdateDomainAccessPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `DomainAccess` that was updated by this mutation."""
+  domainAccess: DomainAccess
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `DomainAccess`."""
+  user: User
+
+  """Reads a single `Domain` that is related to this `DomainAccess`."""
+  domain: Domain
+
+  """An edge for our `DomainAccess`. May be used by Relay 1."""
+  domainAccessEdge(
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DomainAccessesEdge
+}
+
+"""All input for the `updateDomainAccess` mutation."""
+input UpdateDomainAccessInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `DomainAccess` being updated.
+  """
+  patch: DomainAccessPatch!
+  userId: ShortId!
+  domainId: ShortId!
+}
+
+"""
+Represents an update to a `DomainAccess`. Fields that are set will be updated.
+"""
+input DomainAccessPatch {
+  userId: ShortId
+  domainId: ShortId
+  isAdmin: Boolean
+  createdAt: Datetime
+}
+
+"""The output of our update `Domain` mutation."""
+type UpdateDomainPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Domain` that was updated by this mutation."""
+  domain: Domain
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Domain`. May be used by Relay 1."""
+  domainEdge(
+    """The method to use when ordering `Domain`."""
+    orderBy: [DomainsOrderBy!] = [NATURAL]
+  ): DomainsEdge
+}
+
+"""All input for the `updateDomainById` mutation."""
+input UpdateDomainByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Domain` being updated.
+  """
+  patch: DomainPatch!
+  id: ShortId!
+}
+
+"""
+Represents an update to a `Domain`. Fields that are set will be updated.
+"""
+input DomainPatch {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+  code: String
+}
+
+"""All input for the `updateDomainByCode` mutation."""
+input UpdateDomainByCodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Domain` being updated.
+  """
+  patch: DomainPatch!
+  code: String!
+}
+
+"""The output of our update `TeamMember` mutation."""
+type UpdateTeamMemberPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `TeamMember` that was updated by this mutation."""
+  teamMember: TeamMember
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `TeamMember`."""
+  user: User
+
+  """Reads a single `TeamMember` that is related to this `TeamMember`."""
+  teamMemberByManager: TeamMember
+
+  """An edge for our `TeamMember`. May be used by Relay 1."""
+  teamMemberEdge(
+    """The method to use when ordering `TeamMember`."""
+    orderBy: [TeamMembersOrderBy!] = [NATURAL]
+  ): TeamMembersEdge
+}
+
+"""All input for the `updateTeamMemberById` mutation."""
+input UpdateTeamMemberByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `TeamMember` being updated.
+  """
+  patch: TeamMemberPatch!
+  id: ShortId!
+}
+
+"""
+Represents an update to a `TeamMember`. Fields that are set will be updated.
+"""
+input TeamMemberPatch {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String
+  userId: ShortId
+  manager: ShortId
+  jobTitle: String
+  department: String
+  hireDate: Date
+  employmentStatus: String
+  workEmail: String
+  workPhone: String
+  officeLocation: String
+  bio: String
+}
+
+"""All input for the `updateTeamMemberByUserId` mutation."""
+input UpdateTeamMemberByUserIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `TeamMember` being updated.
+  """
+  patch: TeamMemberPatch!
+  userId: ShortId!
+}
+
+"""The output of our update `User` mutation."""
+type UpdateUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `User` that was updated by this mutation."""
+  user: User
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Domain` that is related to this `User`."""
+  domain: Domain
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [NATURAL]
+  ): UsersEdge
+}
+
+"""All input for the `updateUserById` mutation."""
+input UpdateUserByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `User` being updated.
+  """
+  patch: UserPatch!
+  id: ShortId!
+}
+
+"""Represents an update to a `User`. Fields that are set will be updated."""
+input UserPatch {
+  id: ShortId
+  createdBy: ShortId
+  createdAt: Datetime
+  updatedAt: Datetime
+  domainId: ShortId
+  updatedBy: ShortId
+  name: String
+  cognitoId: UUID
+  email: String
+}
+
+"""All input for the `updateUserByCognitoId` mutation."""
+input UpdateUserByCognitoIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `User` being updated.
+  """
+  patch: UserPatch!
+  cognitoId: UUID!
+}
+
+"""All input for the `updateUserByEmail` mutation."""
+input UpdateUserByEmailInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `User` being updated.
+  """
+  patch: UserPatch!
+  email: String!
+}
+
+"""The output of our delete `BaseObject` mutation."""
+type DeleteBaseObjectPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `BaseObject` that was deleted by this mutation."""
+  baseObject: BaseObject
+  deletedBaseObjectNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `BaseObject`. May be used by Relay 1."""
+  baseObjectEdge(
+    """The method to use when ordering `BaseObject`."""
+    orderBy: [BaseObjectsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): BaseObjectsEdge
+}
+
+"""All input for the `deleteBaseObject` mutation."""
+input DeleteBaseObjectInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: ShortId!
+}
+
+"""The output of our delete `DomainAccess` mutation."""
+type DeleteDomainAccessPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `DomainAccess` that was deleted by this mutation."""
+  domainAccess: DomainAccess
+  deletedDomainAccessNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `DomainAccess`."""
+  user: User
+
+  """Reads a single `Domain` that is related to this `DomainAccess`."""
+  domain: Domain
+
+  """An edge for our `DomainAccess`. May be used by Relay 1."""
+  domainAccessEdge(
+    """The method to use when ordering `DomainAccess`."""
+    orderBy: [DomainAccessesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DomainAccessesEdge
+}
+
+"""All input for the `deleteDomainAccess` mutation."""
+input DeleteDomainAccessInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  userId: ShortId!
+  domainId: ShortId!
+}
+
+"""The output of our delete `Domain` mutation."""
+type DeleteDomainPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Domain` that was deleted by this mutation."""
+  domain: Domain
+  deletedDomainNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Domain`. May be used by Relay 1."""
+  domainEdge(
+    """The method to use when ordering `Domain`."""
+    orderBy: [DomainsOrderBy!] = [NATURAL]
+  ): DomainsEdge
+}
+
+"""All input for the `deleteDomainById` mutation."""
+input DeleteDomainByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: ShortId!
+}
+
+"""All input for the `deleteDomainByCode` mutation."""
+input DeleteDomainByCodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  code: String!
+}
+
+"""The output of our delete `TeamMember` mutation."""
+type DeleteTeamMemberPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `TeamMember` that was deleted by this mutation."""
+  teamMember: TeamMember
+  deletedTeamMemberNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `TeamMember`."""
+  user: User
+
+  """Reads a single `TeamMember` that is related to this `TeamMember`."""
+  teamMemberByManager: TeamMember
+
+  """An edge for our `TeamMember`. May be used by Relay 1."""
+  teamMemberEdge(
+    """The method to use when ordering `TeamMember`."""
+    orderBy: [TeamMembersOrderBy!] = [NATURAL]
+  ): TeamMembersEdge
+}
+
+"""All input for the `deleteTeamMemberById` mutation."""
+input DeleteTeamMemberByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: ShortId!
+}
+
+"""All input for the `deleteTeamMemberByUserId` mutation."""
+input DeleteTeamMemberByUserIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  userId: ShortId!
+}
+
+"""The output of our delete `User` mutation."""
+type DeleteUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `User` that was deleted by this mutation."""
+  user: User
+  deletedUserNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Domain` that is related to this `User`."""
+  domain: Domain
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [NATURAL]
+  ): UsersEdge
+}
+
+"""All input for the `deleteUserById` mutation."""
+input DeleteUserByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: ShortId!
+}
+
+"""All input for the `deleteUserByCognitoId` mutation."""
+input DeleteUserByCognitoIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  cognitoId: UUID!
+}
+
+"""All input for the `deleteUserByEmail` mutation."""
+input DeleteUserByEmailInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  email: String!
+}
+
+"""The output of our `disableAuditing` mutation."""
+type DisableAuditingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `disableAuditing` mutation."""
+input DisableAuditingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our `enableAuditing` mutation."""
+type EnableAuditingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `enableAuditing` mutation."""
+input EnableAuditingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our `generateShortId` mutation."""
+type GenerateShortIdPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  shortId: ShortId
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `generateShortId` mutation."""
+input GenerateShortIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our `setupTableAuditing` mutation."""
+type SetupTableAuditingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `setupTableAuditing` mutation."""
+input SetupTableAuditingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  targetTable: String
+}
+
+"""The output of our `executeWithoutAuditing` mutation."""
+type ExecuteWithoutAuditingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `executeWithoutAuditing` mutation."""
+input ExecuteWithoutAuditingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  operation: String
+  description: String
+}

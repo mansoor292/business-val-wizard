@@ -1,0 +1,18 @@
+schema: http://localhost:3010/graphql
+documents: ['./src/**/*.tsx', './src/**/*.ts']
+generates:
+  ./src/generated/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-query'
+    config:
+      withHooks: true
+      fetcher:
+        func: './fetcher#fetchData'
+        isReactHook: false
+  ./src/gql/:
+    preset: 'client'
+    plugins: []
+    presetConfig:
+      gqlTagName: 'gql'
