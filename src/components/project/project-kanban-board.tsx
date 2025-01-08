@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Task } from 'src/lib/data/types';
+import { Task, TaskStatus } from 'src/lib/data/interface';
 import { Card } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { Badge } from '../ui/badge';
@@ -60,7 +60,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, disabled }) => {
     e.dataTransfer.setData('taskId', taskId);
   };
 
-  const priorityColors = {
+  const priorityColors: { [key: string]: string } = {
     LOW: 'bg-blue-500',
     MEDIUM: 'bg-yellow-500',
     HIGH: 'bg-red-500',
@@ -102,7 +102,12 @@ const ProjectKanbanBoard: React.FC<ProjectKanbanBoardProps> = ({
   onTaskStatusChange,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const columns: Task['status'][] = ['TODO', 'IN_PROGRESS', 'REVIEW', 'DONE'];
+  const columns: TaskStatus[] = [
+    TaskStatus.TODO,
+    TaskStatus.IN_PROGRESS,
+    TaskStatus.REVIEW,
+    TaskStatus.DONE
+  ];
 
   const getTasksByStatus = (status: Task['status']) => {
     return tasks.filter((task) => task.status === status);

@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from 'react';
-import { useToast } from 'src/hooks/use-toast';
-import { useData } from 'src/lib/data/context';
+import { useToast } from '../../hooks/use-toast';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
 import { CalendarIcon, Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import {
   Dialog,
   DialogContent,
@@ -23,8 +23,8 @@ import {
 } from '../ui/popover';
 
 export function CreateProjectDialog() {
-  const { createProject, loadProject } = useData();
   const { toast } = useToast();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,21 +39,36 @@ export function CreateProjectDialog() {
 
     setIsSubmitting(true);
     try {
-      const projectData = {
-        name: formData.name,
-        description: formData.description,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        status: 'ACTIVE' as const,
-        teamIds: [],
-      };
+      const response = await fetch('/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          description: formData.description,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          status: 'ACTIVE',
+          teamIds: [],
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create project');
+      }
+
+      const newProject = await response.json();
       
-      const newProject = await createProject(projectData);
-      await loadProject(newProject.id);
       toast({
         title: "Project created",
         description: `Successfully created project "${formData.name}"`,
       });
+
+      // Refresh the projects list
+      router.refresh();
+
+      // Close dialog and reset form
       setOpen(false);
       setFormData({
         name: '',
@@ -61,8 +76,16 @@ export function CreateProjectDialog() {
         startDate: undefined,
         endDate: undefined,
       });
+
+      // Navigate to the new project
+      router.push(`/projects/${newProject.id}`);
     } catch (error) {
       console.error('Error creating project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create project. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }

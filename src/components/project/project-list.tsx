@@ -1,40 +1,25 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { useData } from 'src/lib/data/context';
+import React, { useState } from 'react';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { CreateProjectDialog } from './create-project-dialog';
 import { format } from 'date-fns';
+import { Project } from '../../lib/data/interface';
+import { useRouter } from 'next/navigation';
 
-export function ProjectList() {
-  const [isLoading, setIsLoading] = useState(true);
-  const { projects, loadProject, loadAllProjects, selectedProjectId } = useData();
+interface ProjectListProps {
+  projects: Project[];
+}
 
-  useEffect(() => {
-    const loadProjects = async () => {
-      setIsLoading(true);
-      await loadAllProjects();
-      setIsLoading(false);
-    };
-    loadProjects();
-  }, [loadAllProjects]);
+export function ProjectList({ projects }: ProjectListProps) {
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const router = useRouter();
 
-  if (isLoading) {
-    return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((i) => (
-          <Card key={i} className="p-4">
-            <div className="space-y-3">
-              <div className="h-4 bg-secondary/60 rounded w-3/4 animate-pulse" />
-              <div className="h-4 bg-secondary/60 rounded w-1/2 animate-pulse" />
-              <div className="h-4 bg-secondary/60 rounded w-1/4 animate-pulse" />
-            </div>
-          </Card>
-        ))}
-      </div>
-    );
-  }
+  const handleProjectSelect = (projectId: string) => {
+    setSelectedProjectId(projectId);
+    router.push(`/projects/${projectId}`);
+  };
 
   if (projects.length === 0) {
     return (
@@ -75,7 +60,7 @@ export function ProjectList() {
           className={`p-4 cursor-pointer hover:shadow-md transition-shadow ${
             project.id === selectedProjectId ? 'border-2 border-primary' : ''
           }`}
-          onClick={() => loadProject(project.id)}
+          onClick={() => handleProjectSelect(project.id)}
         >
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">

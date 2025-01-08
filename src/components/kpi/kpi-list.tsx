@@ -1,30 +1,21 @@
 import React from 'react';
 import { ChevronRight, ChevronDown, ArrowRight, UserPlus, UserMinus } from 'lucide-react';
-import { kpiData } from './data';
-
-interface KPI {
-  id: string;
-  level: string;
-  title: string;
-  frequency: string;
-  owner: string;
-  ownerInitials: string;
-  target: number;
-  current: number;
-  children: KPI[];
-}
+import { KPI } from '../../lib/data/interface';
 
 interface KPIListProps {
+  kpis: KPI[];
   expandedKPIs: Set<string>;
   toggleExpand: (id: string) => void;
 }
 
-const KPIRow = ({ kpi, level = 0, expandedKPIs, toggleExpand }: { 
-  kpi: KPI; 
-  level?: number; 
+interface KPIRowProps {
+  kpi: KPI;
+  level?: number;
   expandedKPIs: Set<string>;
   toggleExpand: (id: string) => void;
-}) => {
+}
+
+const KPIRow = ({ kpi, level = 0, expandedKPIs, toggleExpand }: KPIRowProps) => {
   const progress = (kpi.current / kpi.target) * 100;
   const hasChildren = kpi.children.length > 0;
 
@@ -111,10 +102,10 @@ const KPIRow = ({ kpi, level = 0, expandedKPIs, toggleExpand }: {
   );
 };
 
-export const KPIList = ({ expandedKPIs, toggleExpand }: KPIListProps) => {
+export const KPIList = ({ kpis, expandedKPIs, toggleExpand }: KPIListProps) => {
   return (
     <div className="space-y-1">
-      {kpiData.map(kpi => (
+      {kpis.map(kpi => (
         <KPIRow
           key={kpi.id}
           kpi={kpi}

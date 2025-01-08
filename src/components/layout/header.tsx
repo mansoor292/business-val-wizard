@@ -1,10 +1,11 @@
 'use client';
 
 import React from "react";
-import { useAuth } from "src/lib/auth/auth-context"
-import { Button } from "src/components/ui/button"
-import { Avatar, AvatarFallback } from "src/components/ui/avatar"
+import { Button } from "../ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useTheme } from "next-themes"
+import { useSession, signOut } from "next-auth/react"
+import { TeamMember } from "../../lib/data/interface"
 import { 
   Home,
   MessageCircle,
@@ -30,16 +31,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "src/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "src/components/ui/sheet"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "src/components/ui/dialog"
-import { UserProfile } from "../team/user-profile"
-import { UserSettings } from "../team/user-settings"
-import { mockUserData, UserProfile as UserProfileType } from "src/lib/mock/user-data"
+} from "../ui/dropdown-menu"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { UserProfileCard } from "../user/user-profile-card"
 import { useState } from "react"
-
-type PreferencesSection = keyof UserProfileType['preferences'];
-type PreferenceValue<T extends PreferencesSection> = UserProfileType['preferences'][T];
 
 interface NavItem {
   icon: React.ReactNode;
@@ -48,14 +44,13 @@ interface NavItem {
   onClick?: () => void;
 }
 
-export type ActiveView = 'dashboard' | 'agents' | 'projects' | 'team' | 'training' | 'analytics' | 'kpi';
+export type ActiveView = 'dashboard' | 'chirp' | 'projects' | 'team' | 'training' | 'analytics';
 interface HeaderProps {
   activeView: ActiveView;
   onViewChange: (view: ActiveView) => void;
 }
 
 export function Header({ activeView, onViewChange }: HeaderProps) {
-
   const getNavItems = (): NavItem[] => [
     { 
       icon: <Home className="w-5 h-5" />, 
@@ -65,9 +60,9 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
     },
     { 
       icon: <MessageCircle className="w-5 h-5" />, 
-      label: 'Agents',
-      active: activeView === 'agents',
-      onClick: () => onViewChange('agents')
+      label: 'Chirp',
+      active: activeView === 'chirp',
+      onClick: () => onViewChange('chirp')
     },
     { 
       icon: <FolderKanban className="w-5 h-5" />, 
@@ -93,35 +88,14 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
       active: activeView === 'analytics',
       onClick: () => onViewChange('analytics')
     },
-    {
-      icon: <BarChart2 className="w-5 h-5" />,
-      label: 'KPIs',
-      active: activeView === 'kpi',
-      onClick: () => onViewChange('kpi')
-    },
   ];
-  const { isAuthenticated, user, logout } = useAuth()
+
+  const { data: session, status } = useSession()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
-  const [currentUser, setCurrentUser] = useState(mockUserData)
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
 
-  const handleUpdateSettings = <T extends PreferencesSection>(
-    section: T,
-    key: keyof PreferenceValue<T>,
-    value: PreferenceValue<T>[keyof PreferenceValue<T>]
-  ) => {
-    setCurrentUser(prev => ({
-      ...prev,
-      preferences: {
-        ...prev.preferences,
-        [section]: {
-          ...prev.preferences[section],
-          [key]: value
-        }
-      }
-    }))
-  }
+  const user = session?.user as TeamMember | undefined
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -219,13 +193,14 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
             <HelpCircle className="w-5 h-5" />
           </button>
 
-          {isAuthenticated ? (
+          {status === "authenticated" && user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center space-x-2 p-1 rounded-md hover:bg-slate-700 cursor-pointer">
-                  <Avatar className="bg-purple-500">
-                    <AvatarFallback className="text-white">
-                      {currentUser.name.split(' ').map(n => n[0]).join('')}
+                  <Avatar>
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback className="text-white bg-purple-500">
+                      {user.name?.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
                 </div>
@@ -242,7 +217,9 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
                     <DialogHeader>
                       <DialogTitle>Profile</DialogTitle>
                     </DialogHeader>
-                    <UserProfile user={currentUser} />
+                    <div className="p-4">
+                      {user && <UserProfileCard member={user} />}
+                    </div>
                   </DialogContent>
                 </Dialog>
 
@@ -257,16 +234,16 @@ export function Header({ activeView, onViewChange }: HeaderProps) {
                     <SheetHeader>
                       <SheetTitle>Settings</SheetTitle>
                     </SheetHeader>
-                    <UserSettings 
-                      user={currentUser} 
-                      onUpdateSettings={handleUpdateSettings}
-                    />
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold mb-4">User Settings</h3>
+                      <p className="text-sm text-muted-foreground">Settings functionality will be implemented soon.</p>
+                    </div>
                   </SheetContent>
                 </Sheet>
 
                 <DropdownMenuSeparator />
                 
-                <DropdownMenuItem onClick={() => logout()}>
+                <DropdownMenuItem onClick={() => signOut()}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>

@@ -4,8 +4,14 @@ import BusinessDrivers from './business-drivers';
 import KPIList from './kpi-list';
 import SidebarTabs from './sidebar-tabs';
 import ActionItems from './action-items';
+import { KPI, BusinessDriver } from '../../lib/data/interface';
 
-export const KPIView = () => {
+interface KPIViewProps {
+  kpis: KPI[];
+  businessDrivers: BusinessDriver[];
+}
+
+export const KPIView = ({ kpis, businessDrivers }: KPIViewProps) => {
   const [expandedKPIs, setExpandedKPIs] = useState(new Set(['L1']));
 
   const toggleExpand = (id: string) => {
@@ -55,7 +61,7 @@ export const KPIView = () => {
           </button>
         </div>
 
-        <BusinessDrivers />
+        <BusinessDrivers businessDrivers={businessDrivers} />
 
         <div className="bg-background rounded-lg p-4">
           <div className="flex items-center justify-between mb-4">
@@ -68,7 +74,11 @@ export const KPIView = () => {
               </button>
             </div>
           </div>
-          <KPIList expandedKPIs={expandedKPIs} toggleExpand={toggleExpand} />
+          <KPIList 
+            kpis={kpis}
+            expandedKPIs={expandedKPIs} 
+            toggleExpand={toggleExpand} 
+          />
         </div>
       </div>
 

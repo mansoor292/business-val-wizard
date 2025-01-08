@@ -1,18 +1,21 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useData } from 'src/lib/data/context';
-import { ValueProposition } from 'src/lib/data/types';
+import { ValueProposition } from 'src/lib/data/interface';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'src/components/ui/card';
 import { Badge } from 'src/components/ui/badge';
-
+import { getValuePropositions } from 'src/lib/actions/value-prop';
 
 export function ValuePropositionsList() {
-  const { valuePropositions, listValuePropositions } = useData();
+  const [valuePropositions, setValuePropositions] = useState<ValueProposition[]>([]);
 
   useEffect(() => {
-    listValuePropositions();
-  }, [listValuePropositions]);
+    const loadValuePropositions = async () => {
+      const data = await getValuePropositions();
+      setValuePropositions(data);
+    };
+    loadValuePropositions();
+  }, []);
 
   function getImpactColor(impact: ValueProposition['impact']) {
     switch (impact) {
@@ -29,7 +32,7 @@ export function ValuePropositionsList() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {valuePropositions.map((vp) => (
+      {valuePropositions.map((vp: ValueProposition) => (
         <Card key={vp.id}>
           <CardHeader>
             <CardTitle>{vp.title}</CardTitle>
